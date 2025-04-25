@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- CSS Styles -->
     <style>
-        /* Root Variables */
         :root {
             --primary: #c9a227;
             --secondary: #8b5e34;
@@ -16,14 +15,12 @@
             --shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Global Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body Styling */
         body {
             font-family: Roboto, sans-serif;
             background: linear-gradient(135deg, #1c2526, #4a6fa5);
@@ -34,7 +31,6 @@
             padding: 15px;
         }
 
-        /* Container */
         .container {
             background: rgba(255, 255, 255, 0.95);
             padding: 15px;
@@ -44,7 +40,6 @@
             border: 2px solid var(--primary);
         }
 
-        /* Typography */
         h1 {
             font-size: 1.8em;
             color: var(--primary);
@@ -63,7 +58,6 @@
             font-weight: 700;
         }
 
-        /* Info Box */
         .info-box {
             background: var(--panel-bg);
             padding: 12px;
@@ -79,7 +73,6 @@
             font-size: 0.85em;
         }
 
-        /* Form Styling */
         .form-group {
             margin: 8px 0;
         }
@@ -102,7 +95,6 @@
             background: #f8f9fa;
         }
 
-        /* Button Styling */
         .btn {
             background: linear-gradient(var(--primary), var(--secondary));
             color: #fff;
@@ -120,7 +112,6 @@
             box-shadow: 0 0 10px var(--primary);
         }
 
-        /* Panel Styling */
         .panel {
             background: var(--panel-bg);
             padding: 12px;
@@ -136,7 +127,6 @@
             margin-bottom: 10px;
         }
 
-        /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -164,12 +154,10 @@
             font-size: 0.9em;
         }
 
-        /* Admin Panel */
         .admin-panel {
             display: none;
         }
 
-        /* Form Row */
         .form-row {
             display: flex;
             gap: 10px;
@@ -185,18 +173,24 @@
             min-width: 150px;
         }
 
-        /* Client Panel */
         .client-panel {
             display: none;
         }
 
-        /* NEW: Withdrawal Request Styling */
         .withdrawal-request {
             margin: 10px 0;
         }
 
         .withdrawal-request table td button {
             margin: 0 5px;
+        }
+
+        /* NEW: Password Info Styling */
+        .password-info {
+            font-size: 0.85em;
+            color: var(--text);
+            margin-top: 5px;
+            font-style: italic;
         }
     </style>
 </head>
@@ -238,6 +232,7 @@
             <div class="form-group">
                 <label for="clientLoginPassword">Senha:</label>
                 <input type="password" id="clientLoginPassword" placeholder="Sua senha">
+                <p class="password-info">Use seu nome como senha, a menos que tenha alterado.</p>
             </div>
             <button class="btn" onclick="loginClient()">Entrar</button>
         </section>
@@ -249,7 +244,7 @@
                 <p><strong>Saldo:</strong> R$<span id="clientBalance">0.00</span></p>
                 <p><strong>Total Sacado:</strong> R$<span id="clientWithdrawn">0.00</span></p>
             </div>
-            <!-- NEW: Withdrawal Request Form -->
+            <!-- Withdrawal Request Form -->
             <div class="form-group withdrawal-request">
                 <h2>Solicitar Saque</h2>
                 <div class="form-row">
@@ -282,7 +277,7 @@
             </div>
             <div id="adminControls" style="display:none">
                 <button class="btn" onclick="changeAdminPassword()">Mudar Senha Admin</button>
-                <!-- NEW: Pending Withdrawal Requests -->
+                <!-- Pending Withdrawal Requests -->
                 <div class="form-group withdrawal-request">
                     <h2>Solicitações de Saque Pendentes</h2>
                     <table>
@@ -345,16 +340,21 @@
         let clients, transactions, lastResetDate, adminPassword, pendingWithdrawals;
         try {
             clients = JSON.parse(localStorage.getItem("clients")) || {};
+            // Atribuir senha padrão (nome do cliente) a clientes sem senha
             Object.keys(clients).forEach(name => {
                 if (!clients[name].password) {
-                    clients[name].password = name;
+                    clients[name].password = name; // Garante senha padrão como nome
+                    console.log(`Senha padrão atribuída para ${name}: ${name}`);
                 }
             });
+            // Salvar dados imediatamente para persistir senhas
+            localStorage.setItem("clients", JSON.stringify(clients));
             transactions = JSON.parse(localStorage.getItem("transactions")) || [];
             lastResetDate = localStorage.getItem("lastResetDate") || new Date().toISOString().split("T")[0];
             adminPassword = localStorage.getItem("adminPassword") || "887789";
             pendingWithdrawals = JSON.parse(localStorage.getItem("pendingWithdrawals")) || [];
         } catch (e) {
+            console.error("Erro ao carregar dados:", e);
             clients = {};
             transactions = [];
             lastResetDate = new Date().toISOString().split("T")[0];
@@ -388,7 +388,6 @@
             clientBalance: document.getElementById("clientBalance"),
             clientWithdrawn: document.getElementById("clientWithdrawn"),
             clientTransactionTable: document.getElementById("clientTransactionTable"),
-            // NEW: Withdrawal Request Elements
             withdrawalAmount: document.getElementById("withdrawalAmount"),
             withdrawalPixKey: document.getElementById("withdrawalPixKey"),
             pendingWithdrawalsTable: document.getElementById("pendingWithdrawalsTable")
@@ -397,6 +396,13 @@
         // Data Management
         function saveData() {
             try {
+                // Garantir que todos os clientes tenham senha antes de salvar
+                Object.keys(clients).forEach(name => {
+                    if (!clients[name].password) {
+                        clients[name].password = name; // Garante senha padrão como nome
+                        console.log(`Senha padrão atribuída para ${name} ao salvar: ${name}`);
+                    }
+                });
                 localStorage.setItem("clients", JSON.stringify(clients));
                 localStorage.setItem("transactions", JSON.stringify(transactions));
                 localStorage.setItem("lastResetDate", lastResetDate);
@@ -455,7 +461,7 @@
             transactions.push({ type, client, value, source, timestamp: formatDateTime() });
         }
 
-        // NEW: Request Withdrawal
+        // Request Withdrawal
         function requestWithdrawal() {
             const amount = parseFloat(DOM.withdrawalAmount.value);
             const pixKey = DOM.withdrawalPixKey.value.trim();
@@ -484,7 +490,7 @@
             updatePendingWithdrawalsTable();
         }
 
-        // NEW: Update Pending Withdrawals Table
+        // Update Pending Withdrawals Table
         function updatePendingWithdrawalsTable() {
             DOM.pendingWithdrawalsTable.innerHTML = pendingWithdrawals.map((req, index) => `
                 <tr>
@@ -500,7 +506,7 @@
             `).join("");
         }
 
-        // NEW: Confirm Withdrawal
+        // Confirm Withdrawal
         function confirmWithdrawal(index) {
             const req = pendingWithdrawals[index];
             if (!req || !clients[req.client]) {
@@ -641,9 +647,10 @@
                     dailyLoss: 0, 
                     lastDate: "", 
                     dailyOps: 0, 
-                    password: name 
+                    password: name // Senha padrão é o nome do cliente
                 };
-                alert(`Cliente ${name} adicionado. Senha padrão: ${name}`);
+                saveData(); // Salvar imediatamente para persistir o novo cliente
+                alert(`Cliente ${name} adicionado. Use o nome "${name}" como senha padrão para login.`);
             } else {
                 if (!clients[name]) {
                     return alert("Cliente não encontrado.");
@@ -667,14 +674,20 @@
             resetDailyData();
             Object.entries(clients).forEach(([client, c]) => {
                 c.dailyOps += hits + misses;
+                // Processa acertos (+R$0,50 por acerto)
                 for (let i = 0; i < hits; i++) {
                     c.balance += 0.5;
                     addTransaction("Acerto", client, 0.5, "Sistema");
                 }
+                // Processa erros (-R$0,50 por erro, máx. R$3/dia)
                 for (let i = 0; i < misses; i++) {
-                    let loss = -1;
-                    if (c.dailyLoss + Math.abs(loss) > 3) loss = -(3 - c.dailyLoss);
-                    if (c.balance + loss < 0) loss = -c.balance;
+                    let loss = -0.5;
+                    if (c.dailyLoss + Math.abs(loss) > 3) {
+                        loss = -(3 - c.dailyLoss);
+                    }
+                    if (c.balance + loss < 0) {
+                        loss = -c.balance;
+                    }
                     c.balance += loss;
                     c.dailyLoss += Math.abs(loss);
                     addTransaction("Erro", client, loss, "Sistema");
@@ -686,7 +699,7 @@
                 if (hits + misses === 0) {
                     alert("Insira acertos ou erros.");
                 } else {
-                    alert(`Registrado: ${hits} acertos (+R$0,50/cliente), ${misses} erros (-R$1,00/cliente, máx. R$3/dia).`);
+                    alert(`Registrado: ${hits} acertos (+R$0,50/cliente), ${misses} erros (-R$0,50/cliente, máx. R$3/dia).`);
                 }
             } else {
                 alert("Nenhum cliente cadastrado.");
@@ -743,7 +756,7 @@
                 return;
             }
             if (clients[name].password !== password) {
-                alert("Senha incorreta.");
+                alert("Senha incorreta. Tente usar seu nome como senha, ou contate o administrador.");
                 return;
             }
             currentClient = name;
@@ -765,4 +778,4 @@
         updatePendingWithdrawalsTable();
     </script>
 </body>
-  </html>
+    </html>
