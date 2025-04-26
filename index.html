@@ -8,40 +8,82 @@
     <style>
         :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 15px rgba(0,0,0,.3);}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:15px;}
-        .container{background:rgba(255,255,255,.95);padding:15px;border-radius:10px;max-width:550px;box-shadow:0 5px 20px rgba(0,0,0,.5);border:2px solid var(--primary);text-align:center;}
-        h1{font-size:1.8em;color:var(--primary);margin-bottom:10px;}
-        .info-box,.panel{background:var(--panel-bg);padding:12px;border-radius:8px;margin:10px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
+        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px;overflow-x:hidden;}
+        .container{background:rgba(255,255,255,.95);padding:12px;border-radius:10px;max-width:550px;width:100%;margin:0 auto;box-shadow:0 5px 20px rgba(0,0,0,.5);border:2px solid var(--primary);text-align:center;}
+        h1{font-size:1.7em;color:var(--primary);margin-bottom:8px;}
+        .info-box,.panel{background:var(--panel-bg);padding:10px;border-radius:8px;margin:8px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
         .info-box{cursor:pointer;}
-        p,.promo{color:var(--text);font-size:.85em;}
-        .promo{font-weight:700;margin:10px 0;}
-        h2{color:var(--text);font-size:1.1em;margin-bottom:10px;}
+        p,.promo{color:var(--text);font-size:.8em;}
+        .promo{font-weight:700;margin:8px 0;}
+        h2{color:var(--text);font-size:1em;margin-bottom:8px;}
+        table{width:100%;border-collapse:collapse;font-size:.75em;color:var(--text);}
+        th,td{padding:7px;text-align:right;border-bottom:1px solid #ddd;line-height:1.2;}
+        th{background:#e8ecef;color:var(--text);font-weight:700;text-align:left;}
+        td:first-child{text-align:left;font-weight:700;}
+        .totals p{font-size:.8em;color:var(--text);margin:4px 0;}
+        @media (max-width:550px){
+            .container{padding:10px;}
+            table{font-size:.7em;}
+            th,td{padding:5px;}
+            h1{font-size:1.5em;}
+            h2{font-size:.9em;}
+            .promo{font-size:.75em;}
+            .info-box,.panel{padding:8px;}
+        }
+        @media (max-width:400px){
+            table{font-size:.65em;}
+            th,td{padding:4px;}
+            .container{padding:8px;}
+            .info-box,.panel{padding:6px;margin:6px 0;}
+            .promo{font-size:.7em;}
+            h1{font-size:1.4em;}
+            h2{font-size:.85em;}
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Casa do Trader</h1>
         <section class="info-box" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">
-            <p><strong>Chave Pix Celular:</strong>+5577998175899</p>
+            <p><strong>Chave Pix Celular:</strong> +5577998175899</p>
         </section>
         <section class="info-box" onclick="copyToClipboard('+557798175899','Número do WhatsApp copiado!')">
             <p>Envie o comprovante para: <strong>+55 77 9817-5899</strong></p>
         </section>
-        <p class="promo">Faça seu depósito via Pix e maximize seus ganhos com retornos de até R$5 reais por dia, com risco de perca controlada de apenas R$3 reais diários.</p>
+        <p class="promo">Faça seu depósito via Pix e maximize seus ganhos com retornos de até R$5 por dia, com risco de perda controlada de apenas R$3 diários.</p>
         <section class="panel">
-            <h2>Clientes</h2>
-            <p><strong>Luzia:</strong> Depósito: R$20.00 | Lucro: R$3.00 | Total: R$23.00</p>
-            <p><strong>Isayah:</strong> Depósito: R$10.00 | Lucro: R$3.00 | Total: R$13.00</p>
-            <p><strong>Domingo:</strong> Depósito: R$5.00 | Lucro: R$3.00 | Total: R$8.00</p>
-            <p><strong>Larissa:</strong> Depósito: R$5.00 | Lucro: R$3.00 | Total: R$8.00</p>
-            <p><strong>Felipe:</strong> Depósito: R$5.00 | Lucro: R$3.00 | Total: R$8.00</p>
-            <p><strong>Toinha:</strong> Depósito: R$20.00 | Lucro: R$0.00 | Total: R$20.00</p>
-            <p><strong>Total dos saldos:</strong> R$80.00</p>
-            <p><strong>Total sacado:</strong> R$0.00</p>
+            <h2>Relatório de Clientes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Depósito</th>
+                        <th>Lucro</th>
+                        <th>Perda Dia</th>
+                        <th>Saldo</th>
+                        <th>Sacado</th>
+                        <th>Perda Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Luzia</td><td>R$20,00</td><td>R$3,00</td><td>R$0,00</td><td>R$23,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Isayah</td><td>R$10,00</td><td>R$3,00</td><td>R$0,00</td><td>R$13,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Domingo</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Larissa</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Felipe</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Toinha</td><td>R$20,00</td><td>R$0,00</td><td>R$0,00</td><td>R$20,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Eunice</td><td>R$10,00</td><td>R$0,00</td><td>R$0,00</td><td>R$10,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                </tbody>
+            </table>
+            <div class="totals">
+                <p><strong>Total dos saldos:</strong> R$90,00</p>
+                <p><strong>Total sacado:</strong> R$0,00</p>
+                <p><strong>Total de perdas:</strong> R$0,00</p>
+            </div>
         </section>
     </div>
     <script>
-        function copyToClipboard(t,m){navigator.clipboard.writeText(t).then(()=>alert(m)).catch(()=>alert("Erro ao copiar."));}
+        function copyToClipboard(t,m){navigator.clipboard.writeText(t).then(()=>alert(m)).catch(e=>alert("Erro ao copiar."));}
     </script>
 </body>
-</html>
+    </html>
