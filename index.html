@@ -6,38 +6,38 @@
     <title>Casa do Trader</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 15px rgba(0,0,0,.3);}
+        :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 10px rgba(0,0,0,.2);}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px;overflow-x:hidden;}
-        .container{background:rgba(255,255,255,.95);padding:12px;border-radius:10px;max-width:550px;width:100%;margin:0 auto;box-shadow:0 5px 20px rgba(0,0,0,.5);border:2px solid var(--primary);text-align:center;}
-        h1{font-size:1.7em;color:var(--primary);margin-bottom:8px;}
-        .info-box,.panel{background:var(--panel-bg);padding:10px;border-radius:8px;margin:8px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
+        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:8px;}
+        .container{background:rgba(255,255,255,.95);padding:10px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
+        h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
+        .info-box,.panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
         .info-box{cursor:pointer;}
-        p,.promo{color:var(--text);font-size:.8em;}
-        .promo{font-weight:700;margin:8px 0;}
-        h2{color:var(--text);font-size:1em;margin-bottom:8px;}
-        table{width:100%;border-collapse:collapse;font-size:.75em;color:var(--text);}
-        th,td{padding:7px;text-align:right;border-bottom:1px solid #ddd;line-height:1.2;}
+        p,.promo{color:var(--text);font-size:.75em;}
+        .promo{font-weight:700;margin:6px 0;}
+        h2{color:var(--text);font-size:.95em;margin-bottom:6px;}
+        table{width:100%;border-collapse:collapse;font-size:.7em;color:var(--text);}
+        th,td{padding:5px;text-align:right;border-bottom:1px solid #ddd;line-height:1.1;}
         th{background:#e8ecef;color:var(--text);font-weight:700;text-align:left;}
         td:first-child{text-align:left;font-weight:700;}
-        .totals p{font-size:.8em;color:var(--text);margin:4px 0;}
-        @media (max-width:550px){
-            .container{padding:10px;}
-            table{font-size:.7em;}
-            th,td{padding:5px;}
-            h1{font-size:1.5em;}
-            h2{font-size:.9em;}
-            .promo{font-size:.75em;}
-            .info-box,.panel{padding:8px;}
-        }
-        @media (max-width:400px){
+        .totals p{font-size:.75em;color:var(--text);margin:3px 0;}
+        @media (max-width:500px){
+            .container{padding:8px;}
             table{font-size:.65em;}
             th,td{padding:4px;}
-            .container{padding:8px;}
-            .info-box,.panel{padding:6px;margin:6px 0;}
-            .promo{font-size:.7em;}
             h1{font-size:1.4em;}
             h2{font-size:.85em;}
+            .promo{font-size:.7em;}
+            .info-box,.panel{padding:6px;}
+        }
+        @media (max-width:400px){
+            table{font-size:.6em;}
+            th,td{padding:3px;}
+            .container{padding:6px;}
+            .info-box,.panel{padding:5px;margin:5px 0;}
+            .promo{font-size:.65em;}
+            h1{font-size:1.3em;}
+            h2{font-size:.8em;}
         }
     </style>
 </head>
@@ -50,7 +50,7 @@
         <section class="info-box" onclick="copyToClipboard('+557798175899','Número do WhatsApp copiado!')">
             <p>Envie o comprovante para: <strong>+55 77 9817-5899</strong></p>
         </section>
-        <p class="promo">Faça seu depósito via Pix e maximize seus ganhos com retornos de até R$5 por dia, com risco de perda controlada de apenas R$3 diários.</p>
+        <p class="promo">Depósito via Pix: até R$5/dia de retorno, com risco de perda de apenas R$3/dia.</p>
         <section class="panel">
             <h2>Relatório de Clientes</h2>
             <table>
@@ -68,7 +68,7 @@
                 <tbody>
                     <tr><td>Luzia</td><td>R$20,00</td><td>R$3,00</td><td>R$0,00</td><td>R$23,00</td><td>R$0,00</td><td>R$0,00</td></tr>
                     <tr><td>Isayah</td><td>R$10,00</td><td>R$3,00</td><td>R$0,00</td><td>R$13,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                    <tr><td>Domingo</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
+                    <tr><td>Domingo</td><td>R$5,00</td><td>R$0,00</td><td>R$0,00</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td></tr>
                     <tr><td>Larissa</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
                     <tr><td>Felipe</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
                     <tr><td>Toinha</td><td>R$20,00</td><td>R$0,00</td><td>R$0,00</td><td>R$20,00</td><td>R$0,00</td><td>R$0,00</td></tr>
@@ -76,8 +76,8 @@
                 </tbody>
             </table>
             <div class="totals">
-                <p><strong>Total dos saldos:</strong> R$90,00</p>
-                <p><strong>Total sacado:</strong> R$0,00</p>
+                <p><strong>Total dos saldos:</strong> R$87,00</p>
+                <p><strong>Total sacado:</strong> R$3,00</p>
                 <p><strong>Total de perdas:</strong> R$0,00</p>
             </div>
         </section>
@@ -86,4 +86,4 @@
         function copyToClipboard(t,m){navigator.clipboard.writeText(t).then(()=>alert(m)).catch(e=>alert("Erro ao copiar."));}
     </script>
 </body>
-    </html>
+                       </html>
