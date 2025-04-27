@@ -13,32 +13,23 @@
         h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
         .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
         .info-box{cursor:pointer;}
-        p,.promo{color:var(--text);font-size:.75em;}
-        .promo{font-weight:700;margin:6px 0;}
+        p,.promo,.vagas{color:var(--text);font-size:.75em;}
+        .promo,.vagas{font-weight:700;margin:6px 0;}
+        .botao-quotex,.botao-whatsapp{display:inline-block;color:#fff;padding:8px 16px;border-radius:4px;font-size:.8em;font-weight:700;text-decoration:none;margin:6px 0;box-shadow:var(--shadow);transition:filter .2s;}
+        .botao-quotex{background:var(--primary);}
+        .botao-whatsapp{background:#25D366;}
+        .botao-quotex:hover,.botao-whatsapp:hover{filter:brightness(0.9);}
         h2{color:var(--text);font-size:.95em;margin-bottom:6px;}
         table{width:100%;border-collapse:collapse;font-size:.7em;color:var(--text);}
-        th,td{padding:5px;text-align:right;border-bottom:1px solid #ddd;line-height:1.1;}
+        th,td{padding:4px;border-bottom:1px solid #ddd;line-height:1.1;}
         th{background:#e8ecef;color:var(--text);font-weight:700;text-align:left;}
-        td:first-child{text-align:left;font-weight:700;}
+        td{text-align:right;}
+        th:first-child,td:first-child{text-align:left;font-weight:700;}
+        th:nth-child(2),td:nth-child(2){text-align:center;min-width:80px;}
+        .posicao{width:30px;}
         .totals-panel p{font-size:.75em;color:var(--text);margin:3px 0;}
-        @media (max-width:500px){
-            .container{padding:8px;}
-            table{font-size:.65em;}
-            th,td{padding:4px;}
-            h1{font-size:1.4em;}
-            h2{font-size:.85em;}
-            .promo{font-size:.7em;}
-            .info-box,.panel,.totals-panel{padding:6px;}
-        }
-        @media (max-width:400px){
-            table{font-size:.6em;}
-            th,td{padding:3px;}
-            .container{padding:6px;}
-            .info-box,.panel,.totals-panel{padding:5px;margin:5px 0;}
-            .promo{font-size:.65em;}
-            h1{font-size:1.3em;}
-            h2{font-size:.8em;}
-        }
+        @media (max-width:500px){.container{padding:8px;}table{font-size:.65em;}th,td{padding:3px;}h1{font-size:1.4em;}h2{font-size:.85em;}.promo,.vagas{font-size:.7em;}.botao-quotex,.botao-whatsapp{font-size:.75em;padding:6px 12px;}.info-box,.panel,.totals-panel{padding:6px;}}
+        @media (max-width:400px){table{font-size:.6em;}th,td{padding:2px;}.container{padding:6px;}.info-box,.panel,.totals-panel{padding:5px;margin:5px 0;}.promo,.vagas{font-size:.65em;}h1{font-size:1.3em;}h2{font-size:.8em;}.botao-quotex,.botao-whatsapp{font-size:.7em;padding:5px 10px;}}
     </style>
 </head>
 <body>
@@ -47,15 +38,16 @@
         <section class="info-box" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">
             <p><strong>Chave Pix Celular:</strong> +5577998175899</p>
         </section>
-        <section class="info-box" onclick="copyToClipboard('+557798175899','Número do WhatsApp copiado!')">
-            <p>Envie o comprovante para: <strong>+55 77 9817-5899</strong></p>
-        </section>
+        <a href="https://wa.me/557798175899" class="botao-whatsapp">Enviar comprovante via WhatsApp</a>
         <p class="promo">Depósito via Pix: até R$5/dia de retorno, com risco de perda de apenas R$3/dia.</p>
+        <p class="vagas">Últimas 3 vagas disponíveis! Entre em contato para garantir a sua.</p>
+        <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="botao-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
         <section class="panel">
             <h2>Relatório de Clientes</h2>
             <table>
                 <thead>
                     <tr>
+                        <th class="posicao">Posição</th>
                         <th>Cliente</th>
                         <th>Depósito</th>
                         <th>Lucro</th>
@@ -81,22 +73,35 @@
         // Dados no array 'clientes': [{ nome, deposito, lucro, perda_dia, sacado, perda_total }, ...].
         // REGRAS:
         // - Depósito: Adicione ao 'deposito' (ex.: deposito: 20.00).
+        // - CLASSIFICAÇÃO: Ordene os clientes por 'deposito' (maior para menor) para exibir na tabela, com posições de 1º a 10º. Clientes flutuam entre as posições conforme 'deposito' muda. Exiba o número da posição (1 a 10) à esquerda do nome na tabela.
+        // - WHATSAPP: O botão 'Enviar comprovante via WhatsApp' redireciona para o chat do número +557798175899 (https://wa.me/557798175899) para envio direto do comprovante.
         // - Lucro: Incremente 'lucro' com ganhos diários (ex.: lucro: 3.00).
+        // - DISTRIBUIÇÃO DE LUCRO: Divida o lucro apenas entre clientes com saldo > 0 (deposito + lucro - perda_dia > 0). Exclua entradas com nome 'Vaga disponível'.
+        // - Perda: Registre a perda do dia em 'perda_dia'. No dia seguinte, atualize 'perda_dia' com a nova perda (se houver) e some o valor anterior (ou novo) de 'perda_dia' a 'perda_total'. A 'perda_total' acumula todas as perdas permanentemente.
         // - Saque de lucro: Zere 'lucro' (ex.: lucro: 0.00), adicione valor a 'sacado' (ex.: sacado: 3.00). Saldo = deposito (se perda_dia = 0).
         // - Outros saques: Reduza 'deposito' ou 'lucro', incremente 'sacado'.
         // - Saldo: Calculado como deposito + lucro - perda_dia. NÃO subtraia 'sacado'.
         // - Sacado: Registro histórico, usado no 'Total sacado'.
-        // - Perda: Incremente 'perda_dia' (diária) e 'perda_total' (acumulada).
-        // - SEMPRE envie o arquivo HTML completo com as alterações solicitadas, incluindo o array 'clientes' atualizado, para evitar erros de omissão.
+        // - Mantenha 10 posições no array 'clientes' (7 clientes + 3 vagas ou novos clientes).
+        // - SEMPRE envie o arquivo HTML completo com as alterações solicitadas, incluindo o array 'clientes' atualizado.
+        // CLASSIFICAÇÃO DOS CLIENTES POR DEPÓSITO (atual em 27/04/2025):
+        // 1. Luzia (R$ 40,00), 2. Toinha (R$ 20,00), 3. Isayah (R$ 10,00), 4. Eunice (R$ 10,00),
+        // 5. Domingo (R$ 5,00), 6. Larissa (R$ 5,00), 7. Felipe (R$ 5,00),
+        // 8. Vaga disponível (R$ 0,00), 9. Vaga disponível (R$ 0,00), 10. Vaga disponível (R$ 0,00).
+        // Ao atualizar 'clientes', ordene por 'deposito' para atualizar a classificação e a tabela.
         // COMO ATUALIZAR:
         // 1. Edite 'clientes' no código.
         // 2. Use valores numéricos (ex.: 20.00).
-        // 3. Salve e faça commit/push no GitHub.
+        // 3. Ordene 'clientes' por 'deposito' (decrescente) e atualize a classificação.
+        // 4. Mantenha 3 vagas (ou substitua por novos clientes).
+        // 5. Salve e faça commit/push no GitHub.
         // ERROS A EVITAR:
         // - Não subtraia 'sacado' do saldo (causa erro, ex.: Luzia saldo 17.00).
         // - Verifique valores negativos ou saques maiores que depósito + lucro.
+        // - Não distribua lucro para entradas 'Vaga disponível'.
+        // - Não zere 'perda_total'; ela acumula todas as perdas permanentemente.
+        // - Sempre ordene a tabela por 'deposito' para refletir as posições corretas.
 
-        // Dados dos clientes
         const clientes = [
             { nome: "Luzia", deposito: 40.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
             { nome: "Isayah", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
@@ -104,14 +109,16 @@
             { nome: "Larissa", deposito: 5.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Felipe", deposito: 5.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Toinha", deposito: 20.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Eunice", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
+            { nome: "Eunice", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
         ];
 
         function copyToClipboard(text, message) {
             navigator.clipboard.writeText(text).then(() => alert(message)).catch(() => alert("Erro ao copiar."));
         }
 
-        // Preenche tabela e relatório
         (function() {
             const tabela = document.getElementById('corpo-tabela');
             const totalSaldos = document.getElementById('total-saldos');
@@ -119,14 +126,16 @@
             const totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
 
-            clientes.forEach(cliente => {
+            clientes.sort((a, b) => b.deposito - a.deposito);
+
+            clientes.forEach((cliente, index) => {
                 const saldo = cliente.deposito + cliente.lucro - cliente.perda_dia;
                 somaSaldos += saldo;
                 somaSacado += cliente.sacado;
                 somaPerdas += cliente.perda_total;
-
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
+                    <td class="posicao">${index + 1}º</td>
                     <td>${cliente.nome}</td>
                     <td>R$ ${cliente.deposito.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${cliente.lucro.toFixed(2).replace('.', ',')}</td>
@@ -144,4 +153,4 @@
         })();
     </script>
 </body>
-</html>
+                   </html>
