@@ -87,6 +87,7 @@
         // - Saldo: Calculado como deposito + lucro - perda_dia. NÃO subtraia 'sacado'.
         // - Sacado: Registro histórico, usado no 'Total sacado'.
         // - Perda: Incremente 'perda_dia' (diária) e 'perda_total' (acumulada).
+        // - SEMPRE envie o arquivo HTML completo com as alterações solicitadas, incluindo o array 'clientes' atualizado, para evitar erros de omissão.
         // COMO ATUALIZAR:
         // 1. Edite 'clientes' no código.
         // 2. Use valores numéricos (ex.: 20.00).
@@ -98,7 +99,7 @@
         // Dados dos clientes
         const clientes = [
             { nome: "Luzia", deposito: 40.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
-            { nome: "Isayah", deposito: 10.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Isayah", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
             { nome: "Domingo", deposito: 5.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
             { nome: "Larissa", deposito: 5.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Felipe", deposito: 5.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
@@ -143,4 +144,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
