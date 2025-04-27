@@ -11,7 +11,92 @@
         body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:8px;}
         .container{background:rgba(255,255,255,.95);padding:10px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
         h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
-        .info-box,.panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
+        .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
+        .info-box{cursor:pointer;}
+        p,.promo{color:var(--text);font-size:.75em;}
+        .promo{font-weight:700;margin:6px 0;}
+        h2{color:var(--text);font-size:.95em;margin-bottom:6px;}
+        table{width:100%;border-collapse:collapse;font-size:.7em;color:var(--text);}
+        th,td{padding:5px;text-align:right;border-bottom:1px solid #ddd;line-height:1.1;}
+        th{background:#e8ecef;color:var(--text); Análise do Problema e Correção
+
+O erro apontado refere-se ao cálculo incorreto do saldo para clientes que sacaram o lucro, como Luzia e Domingo, onde os saldos resultaram em valores menores do que o esperado (`17.00` para Luzia e `2.00` para Domingo, em vez de `20.00` e `5.00`, respectivamente). Isso ocorre devido a uma falha na lógica financeira: ao sacar o lucro, o valor é registrado em `sacado` e o `lucro` é zerado, mas a fórmula do saldo (`deposito + lucro - perda_dia - sacado`) subtrai o `sacado`, causando uma redução dupla no saldo. Além disso, você enfatizou que os valores não devem "sumir" nem ser "duplicados", e o campo `sacado` deve registrar o histórico de saques corretamente.
+
+### Lógica Financeira Corrigida
+- **Objetivo**: Garantir que, ao sacar o lucro, o saldo retorne ao valor do `deposito` inicial, o `lucro` seja zerado, e o `sacado` registre o valor sacado sem duplicações ou perdas.
+- **Regra**:
+  - Antes do saque: O saldo é `deposito + lucro - perda_dia`.
+  - Ao sacar o lucro:
+    - Zerar `lucro` (ex.: `lucro: 0.00`), pois o lucro foi retirado.
+    - Adicionar o valor do lucro a `sacado` (ex.: `sacado: 3.00`), para registrar o histórico.
+    - O saldo deve ser `deposito`, já que o lucro foi sacado e não há perdas.
+  - Fórmula do saldo: `deposito + lucro - perda_dia - sacado`.
+  - Problema atual: A subtração de `sacado` na fórmula reduz o saldo abaixo do `deposito` (ex.: `20.00 + 0.00 - 0.00 - 3.00 = 17.00`).
+- **Correção**:
+  - Para evitar a subtração dupla, remover `sacado` da fórmula do saldo, usando `deposito + lucro - perda_dia`.
+  - O campo `sacado` serve apenas como um registro histórico para o relatório geral (`Total sacado`), não afetando o saldo diretamente.
+- **Justificativa**:
+  - Isso garante que o saldo após o saque do lucro seja igual ao `deposito` (ex.: `20.00` para Luzia).
+  - O `sacado` mantém o histórico de saques (ex.: `3.00`), visível na tabela e no relatório geral.
+  - Evita duplicações ou perdas de valores, pois `lucro` é zerado e `sacado` registra o valor exato.
+
+### Correções Específicas
+1. **Luzia**:
+   - Original: `deposito: 20.00`, `lucro: 3.00`, `perda_dia: 0.00`, `sacado: 0.00`, `perda_total: 0.00`.
+   - Antes do saque: Saldo = `20.00 + 3.00 = 23.00`.
+   - Após sacar o lucro (`3.00`):
+     - `lucro: 0.00`, `sacado: 3.00`.
+     - Novo saldo: `20.00 + 0.00 - 0.00 = 20.00` (correto).
+   - Ajuste: Atualizar `lucro` para `0.00`, `sacado` para `3.00`.
+
+2. **Domingo**:
+   - Original: `deposito: 5.00`, `lucro: 3.00`, `perda_dia: 0.00`, `sacado: 0.00`, `perda_total: 0.00`.
+   - Antes do saque: Saldo = `5.00 + 3.00 = 8.00`.
+   - Após sacar o lucro (`3.00`):
+     - `lucro: 0.00`, `sacado: 3.00`.
+     - Novo saldo: `5.00 + 0.00 - 0.00 = 5.00` (correto).
+   - Ajuste: Atualizar `lucro` para `0.00`, `sacado` para `3.00`.
+
+3. **Outros Clientes**:
+   - **Isayah**: `deposito: 10.00`, `lucro: 3.00`, `perda_dia: 0.00`, `sacado: 0.00` → Saldo: `10.00 + 3.00 = 13.00` (correto).
+   - **Larissa**: `deposito: 5.00`, `lucro: 3.00`, `perda_dia: 0.00`, `sacado: 0.00` → Saldo: `5.00 + 3.00 = 8.00` (correto).
+   - **Felipe**: `deposito: 5.00`, `lucro: 3.00`, `perda_dia: 0.00`, `sacado: 0.00` → Saldo: `5.00 + 3.00 = 8.00` (correto).
+   - **Toinha**: `deposito: 20.00`, `lucro: 0.00`, `perda_dia: 0.00`, `sacado: 0.00` → Saldo: `20.00 + 0.00 = 20.00` (correto).
+   - **Eunice**: `deposito: 10.00`, `lucro: 0.00`, `perda_dia: 0.00`, `sacado: 0.00` → Saldo: `10.00 + 0.00 = 10.00` (correto).
+
+4. **Relatório Geral**:
+   - Total dos saldos: `20.00 (Luzia) + 13.00 (Isayah) + 5.00 (Domingo) + 8.00 (Larissa) + 8.00 (Felipe) + 20.00 (Toinha) + 10.00 (Eunice) = 84.00`.
+   - Total sacado: `3.00 (Luzia) + 3.00 (Domingo) = 6.00`.
+   - Total de perdas: `0.00`.
+
+5. **Mudanças no Código**:
+   - Alterei a fórmula do saldo para `deposito + lucro - perda_dia`, removendo `sacado` do cálculo.
+   - O campo `sacado` é usado apenas para somar o `Total sacado` no relatório geral.
+   - Atualizei as instruções no código-fonte para esclarecer:
+     - Ao sacar o lucro, zerar `lucro` e adicionar o valor a `sacado`.
+     - O saldo é calculado como `deposito + lucro - perda_dia`.
+     - `sacado` é um registro histórico, não afeta o saldo diretamente.
+     - Para saques além do lucro, ajustar `deposito` ou `lucro` conforme necessário e incrementar `sacado`.
+
+6. **Compactação**:
+   - Mantive o arquivo compacto, ajustando apenas o array `clientes`, a fórmula do saldo, e as instruções.
+
+### Código Atualizado
+<xaiArtifact artifact_id="01f03551-bd09-464f-9f9e-437333e1f923" artifact_version_id="b6124825-c1ab-46dd-9522-37a0f544ad18" title="index.html" contentType="text/html">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Casa do Trader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 10px rgba(0,0,0,.2);}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:8px;}
+        .container{background:rgba(255,255,255,.95);padding:10px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
+        h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
+        .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
         .info-box{cursor:pointer;}
         p,.promo{color:var(--text);font-size:.75em;}
         .promo{font-weight:700;margin:6px 0;}
@@ -20,7 +105,7 @@
         th,td{padding:5px;text-align:right;border-bottom:1px solid #ddd;line-height:1.1;}
         th{background:#e8ecef;color:var(--text);font-weight:700;text-align:left;}
         td:first-child{text-align:left;font-weight:700;}
-        .totals p{font-size:.75em;color:var(--text);margin:3px 0;}
+        .totals-panel p{font-size:.75em;color:var(--text);margin:3px 0;}
         @media (max-width:500px){
             .container{padding:8px;}
             table{font-size:.65em;}
@@ -28,13 +113,13 @@
             h1{font-size:1.4em;}
             h2{font-size:.85em;}
             .promo{font-size:.7em;}
-            .info-box,.panel{padding:6px;}
+            .info-box,.panel,.totals-panel{padding:6px;}
         }
         @media (max-width:400px){
             table{font-size:.6em;}
             th,td{padding:3px;}
             .container{padding:6px;}
-            .info-box,.panel{padding:5px;margin:5px 0;}
+            .info-box,.panel,.totals-panel{padding:5px;margin:5px 0;}
             .promo{font-size:.65em;}
             h1{font-size:1.3em;}
             h2{font-size:.8em;}
@@ -65,25 +150,91 @@
                         <th>Perda Total</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>Luzia</td><td>R$20,00</td><td>R$3,00</td><td>R$0,00</td><td>R$23,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                    <tr><td>Isayah</td><td>R$10,00</td><td>R$3,00</td><td>R$0,00</td><td>R$13,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                    <tr><td>Domingo</td><td>R$5,00</td><td>R$0,00</td><td>R$0,00</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td></tr>
-                    <tr><td>Larissa</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                    <tr><td>Felipe</td><td>R$5,00</td><td>R$3,00</td><td>R$0,00</td><td>R$8,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                    <tr><td>Toinha</td><td>R$20,00</td><td>R$0,00</td><td>R$0,00</td><td>R$20,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                    <tr><td>Eunice</td><td>R$10,00</td><td>R$0,00</td><td>R$0,00</td><td>R$10,00</td><td>R$0,00</td><td>R$0,00</td></tr>
-                </tbody>
+                <tbody id="corpo-tabela"></tbody>
             </table>
-            <div class="totals">
-                <p><strong>Total dos saldos:</strong> R$87,00</p>
-                <p><strong>Total sacado:</strong> R$3,00</p>
-                <p><strong>Total de perdas:</strong> R$0,00</p>
-            </div>
+        </section>
+        <section class="totals-panel">
+            <h2>Relatório Geral</h2>
+            <p><strong>Total dos saldos:</strong> <span id="total-saldos">R$ 0,00</span></p>
+            <p><strong>Total sacado:</strong> <span id="total-sacado">R$ 0,00</span></p>
+            <p><strong>Total de perdas:</strong> <span id="total-perdas">R$ 0,00</span></p>
         </section>
     </div>
     <script>
-        function copyToClipboard(t,m){navigator.clipboard.writeText(t).then(()=>alert(m)).catch(e=>alert("Erro ao copiar."));}
+        // INSTRUÇÕES PARA IA (ou usuário):
+        // Este site exibe uma tabela dinâmica de clientes financeiros e um relatório geral para 'Casa do Trader'.
+        // Os dados estão no array 'clientes' abaixo, dentro deste arquivo.
+        // Estrutura do array:
+        // const clientes = [
+        //   { nome: "Nome do Cliente", deposito: 20.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+        //   ...
+        // ];
+        // Para adicionar um novo cliente:
+        // 1. Abra este arquivo (index.html).
+        // 2. No array 'clientes' abaixo, adicione um novo objeto, ex.:
+        //    { nome: "Novo Cliente", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
+        // 3. Salve e faça commit/push para o repositório GitHub.
+        // Para atualizar valores:
+        // 1. Edite os valores de 'deposito', 'lucro', 'perda_dia', 'sacado' ou 'perda_total' no objeto correspondente.
+        // 2. Se o cliente sacar o lucro, zere o campo 'lucro' (ex.: lucro: 0.00) e adicione o valor do lucro a 'sacado' (ex.: sacado: 3.00). O saldo (deposito + lucro - perda_dia) deve igualar o deposito se não houver perdas.
+        // 3. Para outros saques (não lucro), incremente 'sacado' e ajuste 'deposito' ou 'lucro' conforme necessário.
+        // 4. O campo 'sacado' registra o histórico de saques e é usado no relatório geral ('Total sacado'), mas não afeta o saldo diretamente.
+        // 5. Salve e faça commit/push.
+        // O site calculará automaticamente:
+        // - Saldo de cada cliente: deposito + lucro - perda_dia.
+        // - Relatório Geral: soma dos saldos, soma dos saques (sacado), soma das perdas totais.
+        // Use valores numéricos (ex.: 20.00, não "R$20,00") e mantenha a formatação correta.
+
+        // Dados dos clientes
+        const clientes = [
+            { nome: "Luzia", deposito: 20.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
+            { nome: "Isayah", deposito: 10.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Domingo", deposito: 5.00, lucro: 0.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
+            { nome: "Larissa", deposito: 5.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Felipe", deposito: 5.00, lucro: 3.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Toinha", deposito: 20.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Eunice", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
+        ];
+
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(() => alert(message)).catch(() => alert("Erro ao copiar."));
+        }
+
+        // Preenche a tabela e o relatório geral
+        (function() {
+            const tabela = document.getElementById('corpo-tabela');
+            const totalSaldos = document.getElementById('total-saldos');
+            const totalSacado = document.getElementById('total-sacado');
+            const totalPerdas = document.getElementById('total-perdas');
+            let somaSaldos = 0;
+            let somaSacado = 0;
+            let somaPerdas = 0;
+
+            // Preenche a tabela de clientes
+            clientes.forEach(cliente => {
+                const saldo = cliente.deposito + cliente.lucro - cliente.perda_dia;
+                somaSaldos += saldo;
+                somaSacado += cliente.sacado;
+                somaPerdas += cliente.perda_total;
+
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td>${cliente.nome}</td>
+                    <td>R$ ${cliente.deposito.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${cliente.lucro.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${cliente.perda_dia.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${saldo.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${cliente.sacado.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${cliente.perda_total.toFixed(2).replace('.', ',')}</td>
+                `;
+                tabela.appendChild(linha);
+            });
+
+            // Atualiza o relatório geral
+            totalSaldos.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
+            totalSacado.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
+            totalPerdas.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
+        })();
     </script>
 </body>
-                       </html>
+        </html>
