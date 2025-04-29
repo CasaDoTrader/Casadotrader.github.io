@@ -68,14 +68,56 @@
         </section>
     </div>
     <script>
+        /*
+         * NOTAS PARA FUTURAS IAs OU DESENVOLVEDORES
+         * ---------------------------------------
+         * Lógica Financeira:
+         * - O campo 'lucro' no array 'clientes' representa o lucro ACUMULADO ao longo do tempo.
+         * - Novos lucros diários devem ser SOMADOS ao valor existente de 'lucro', NUNCA substituídos,
+         *   para preservar o histórico financeiro e manter a integridade dos registros monetários.
+         * - Exemplo: Se o lucro anterior de um cliente é R$2,00 e o lucro diário é R$3,00,
+         *   o novo lucro deve ser R$5,00.
+         * - Lucros diários devem ser distribuídos apenas para clientes ativos (excluir 'Vaga disponível').
+         *
+         * Cuidado com Cálculos de Totais:
+         * - Antes de realizar alterações (como saques ou adição de lucros), SEMPRE valide o 'total-saldos'
+         *   inicial somando os saldos individuais (deposito + lucro - perda_dia) de todos os clientes.
+         *   Isso evita erros de suposição sobre o valor inicial. Por exemplo, em 29/04/2025, um erro
+         *   ocorreu ao assumir que o 'total-saldos' era R$126,00, quando na verdade era R$136,00.
+         *   O saque de R$5,00 do lucro de um cliente deve reduzir o 'total-saldos' exatamente por esse
+         *   valor (ex.: de R$136,00 para R$131,00).
+         * - Após alterações, verifique se o novo 'total-saldos' reflete corretamente a soma dos saldos
+         *   individuais para garantir consistência.
+         *
+         * Sugestões de Melhorias para o Site:
+         * 1. Formulário Dinâmico: Adicionar um campo para inserir lucros diários diretamente na página,
+         *    atualizando o array 'clientes' e salvando no localStorage ou backend.
+         * 2. Log de Transações: Implementar um registro de cada lucro diário (com data, valor e cliente)
+         *    para auditoria e rastreamento.
+         * 3. Distribuição Proporcional: Permitir que lucros sejam distribuídos proporcionalmente ao depósito,
+         *    em vez de igualmente, se desejado.
+         * 4. Validações: Adicionar verificações para garantir que lucros sejam aplicados apenas a clientes
+         *    ativos e que valores sejam positivos.
+         * 5. Persistência de Dados: Usar localStorage ou um backend para salvar o array 'clientes' e evitar
+         *    perda de dados ao recarregar a página.
+         * 6. Interface de Administração: Criar uma seção para gerenciar clientes (adicionar, remover, editar).
+         *
+         * Cuidados com o Código:
+         * - Evitar duplicações no HTML (como seções repetidas de botões ou textos).
+         * - Verificar chamadas de funções (ex.: 'copyToClipboard' deve ser consistente).
+         * - Manter o código limpo e comentado para facilitar manutenção.
+         * ---------------------------------------
+         */
+
+        // Array de clientes com valores financeiros
         const clientes = [
-            { nome: "Luzia", deposito: 40.00, lucro: 2.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
-            { nome: "Toinha", deposito: 20.00, lucro: 2.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Isayah", deposito: 10.00, lucro: 2.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
-            { nome: "Eunice", deposito: 10.00, lucro: 2.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Domingo", deposito: 5.00, lucro: 2.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
-            { nome: "Larissa", deposito: 5.00, lucro: 5.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Felipe", deposito: 5.00, lucro: 5.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Luzia", deposito: 40.00, lucro: 5.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
+            { nome: "Toinha", deposito: 20.00, lucro: 5.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Isayah", deposito: 10.00, lucro: 0.00, perda_dia: 0.00, sacado: 8.00, perda_total: 0.00 },
+            { nome: "Eunice", deposito: 10.00, lucro: 5.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Domingo", deposito: 5.00, lucro: 5.00, perda_dia: 0.00, sacado: 3.00, perda_total: 0.00 },
+            { nome: "Larissa", deposito: 5.00, lucro: 8.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Felipe", deposito: 5.00, lucro: 8.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
@@ -92,9 +134,12 @@
             const totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
 
+            // Ordenar clientes por depósito (maior para menor)
             clientes.sort((a, b) => b.deposito - a.deposito);
 
+            // Iterar sobre os clientes para preencher a tabela
             clientes.forEach((cliente, index) => {
+                // Calcular o saldo: depósito + lucro acumulado - perda do dia
                 const saldo = cliente.deposito + cliente.lucro - cliente.perda_dia;
                 somaSaldos += saldo;
                 somaSacado += cliente.sacado;
@@ -113,10 +158,11 @@
                 tabela.appendChild(linha);
             });
 
+            // Atualizar totais no relatório geral
             totalSaldos.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
             totalSacado.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
             totalPerdas.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
         })();
     </script>
 </body>
-</html>
+    </html>
