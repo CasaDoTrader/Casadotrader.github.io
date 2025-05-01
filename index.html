@@ -79,13 +79,29 @@
          *   o novo lucro deve ser R$5,00.
          * - Lucros diários devem ser distribuídos apenas para clientes ativos (excluir 'Vaga disponível').
          *
+         * Lógica de Perdas:
+         * - O saldo de cada cliente é calculado como: deposito + lucro - perda_total.
+         * - O campo 'perda_dia' é APENAS para exibição na tabela e NÃO afeta o cálculo do saldo.
+         * - Quando APENAS o lucro diário for informado, assumir que 'perda_dia' é 0.00 para todos os
+         *   clientes ativos, pois a presença de lucro implica ausência de perda no dia.
+         * - Definir 'perda_dia' como 0.00 para clientes ativos nesses casos, mantendo 'perda_total'
+         *   inalterado como o extrato consolidado das perdas históricas.
+         * - O campo 'perda_total' representa o EXTRATO CONSOLIDADO de todas as perdas do cliente
+         *   ao longo do tempo e só deve ser atualizado quando novas perdas forem explicitamente informadas.
+         *
+         * Exibição de Perdas:
+         * - Quando 'perda_dia' for 0.00, a coluna 'Perda Dia' na tabela deve exibir '-' (traço),
+         *   indicando que não houve perda naquele dia.
+         * - Exemplo: Se um cliente teve 'perda_dia' de R$1,50 ontem e hoje é R$0,00, a coluna
+         *   'Perda Dia' mostra '-' e 'perda_total' continua mostrando R$1,50.
+         *
          * Cuidado com Cálculos de Totais:
-         * - Antes de realizar alterações (como saques ou adição de lucros), SEMPRE valide o 'total-saldos'
-         *   inicial somando os saldos individuais (deposito + lucro - perda_dia) de todos os clientes.
-         *   Isso evita erros de suposição sobre o valor inicial. Por exemplo, em 29/04/2025, um erro
-         *   ocorreu ao assumir que o 'total-saldos' era R$126,00, quando na verdade era R$136,00.
-         *   O saque de R$5,00 do lucro de um cliente deve reduzir o 'total-saldos' exatamente por esse
-         *   valor (ex.: de R$136,00 para R$131,00).
+         * - SEMPRE valide o 'total-saldos' inicial somando os saldos individuais
+         *   (deposito + lucro - perda_total) de todos os clientes antes de aplicar lucros ou saques.
+         * - Exemplo: Em 01/05/2025, o saldo inicial total foi validado como R$120,50 antes de adicionar
+         *   um lucro diário de R$30,00, resultando em R$150,50.
+         * - Um erro anterior ocorreu ao usar 'perda_dia' no cálculo do saldo, inflando o total para
+         *   R$161,04. Sempre use 'perda_total' para o saldo.
          * - Após alterações, verifique se o novo 'total-saldos' reflete corretamente a soma dos saldos
          *   individuais para garantir consistência.
          *
@@ -109,15 +125,15 @@
          * ---------------------------------------
          */
 
-        // Array de clientes com valores financeiros
+        // Array de clientes atualizado com lucro diário de R$4,29 por cliente ativo (lucro total de R$30,00 em 01/05/2025) e perda_dia definida como 0.00
         const clientes = [
-            { nome: "Luzia", deposito: 40.00, lucro: 5.00, perda_dia: 1.50, sacado: 3.00, perda_total: 1.50 },
-            { nome: "Toinha", deposito: 20.00, lucro: 5.00, perda_dia: 1.50, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Isayah", deposito: 10.00, lucro: 0.00, perda_dia: 1.50, sacado: 8.00, perda_total: 1.50 },
-            { nome: "Eunice", deposito: 10.00, lucro: 5.00, perda_dia: 1.50, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Domingo", deposito: 5.00, lucro: 5.00, perda_dia: 1.50, sacado: 3.00, perda_total: 1.50 },
-            { nome: "Larissa", deposito: 5.00, lucro: 8.00, perda_dia: 1.50, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Felipe", deposito: 5.00, lucro: 8.00, perda_dia: 1.50, sacado: 0.00, perda_total: 1.50 },
+            { nome: "Luzia", deposito: 40.00, lucro: 9.29, perda_dia: 0.00, sacado: 3.00, perda_total: 1.50 },
+            { nome: "Toinha", deposito: 20.00, lucro: 9.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
+            { nome: "Isayah", deposito: 10.00, lucro: 4.29, perda_dia: 0.00, sacado: 8.00, perda_total: 1.50 },
+            { nome: "Eunice", deposito: 10.00, lucro: 9.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
+            { nome: "Domingo", deposito: 5.00, lucro: 9.29, perda_dia: 0.00, sacado: 3.00, perda_total: 1.50 },
+            { nome: "Larissa", deposito: 5.00, lucro: 12.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
+            { nome: "Felipe", deposito: 5.00, lucro: 12.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
@@ -139,18 +155,20 @@
 
             // Iterar sobre os clientes para preencher a tabela
             clientes.forEach((cliente, index) => {
-                // Calcular o saldo: depósito + lucro acumulado - perda do dia
-                const saldo = cliente.deposito + cliente.lucro - cliente.perda_dia;
+                // Calcular o saldo: depósito + lucro acumulado - perda_total
+                const saldo = cliente.deposito + cliente.lucro - cliente.perda_total;
                 somaSaldos += saldo;
                 somaSacado += cliente.sacado;
                 somaPerdas += cliente.perda_total;
                 const linha = document.createElement('tr');
+                // Exibir '-' na coluna Perda Dia se perda_dia for 0.00
+                const perdaDiaDisplay = cliente.perda_dia === 0.00 ? '-' : `R$ ${cliente.perda_dia.toFixed(2).replace('.', ',')}`;
                 linha.innerHTML = `
                     <td class="posicao">${index + 1}º</td>
                     <td>${cliente.nome}</td>
                     <td>R$ ${cliente.deposito.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${cliente.lucro.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${cliente.perda_dia.toFixed(2).replace('.', ',')}</td>
+                    <td>${perdaDiaDisplay}</td>
                     <td>R$ ${saldo.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${cliente.sacado.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${cliente.perda_total.toFixed(2).replace('.', ',')}</td>
