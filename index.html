@@ -71,6 +71,10 @@
         /*
          * NOTAS PARA FUTURAS IAs OU DESENVOLVEDORES
          * ---------------------------------------
+         * Instrução Atualizada (02/05/2025):
+         * - Sempre que fizer alterações no site, envie o arquivo HTML completo e atualizado.
+         * - Isso garante que todas as mudanças sejam refletidas corretamente e evita erros de versão.
+         *
          * Lógica Financeira:
          * - O campo 'lucro' no array 'clientes' representa o lucro ACUMULADO ao longo do tempo.
          * - Novos lucros diários devem ser SOMADOS ao valor existente de 'lucro', NUNCA substituídos,
@@ -125,7 +129,7 @@
          * ---------------------------------------
          */
 
-        // Array de clientes atualizado com lucro diário de R$4,29 por cliente ativo (lucro total de R$30,00 em 01/05/2025) e perda_dia definida como 0.00
+        // Array de clientes atualizado em 02/05/2025 com dois novos clientes: Kelviane e Zayla, ambos com depósito de R$5,00
         const clientes = [
             { nome: "Luzia", deposito: 40.00, lucro: 9.29, perda_dia: 0.00, sacado: 3.00, perda_total: 1.50 },
             { nome: "Toinha", deposito: 20.00, lucro: 9.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
@@ -134,8 +138,8 @@
             { nome: "Domingo", deposito: 5.00, lucro: 9.29, perda_dia: 0.00, sacado: 3.00, perda_total: 1.50 },
             { nome: "Larissa", deposito: 5.00, lucro: 12.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
             { nome: "Felipe", deposito: 5.00, lucro: 12.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Kelviane", deposito: 5.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
+            { nome: "Zayla", deposito: 5.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
             { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
         ];
 
@@ -183,4 +187,4 @@
         })();
     </script>
 </body>
-    </html>
+                   </html>
