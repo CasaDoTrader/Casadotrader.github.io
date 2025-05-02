@@ -8,9 +8,7 @@
     <style>
         :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 10px rgba(0,0,0,.2);}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Roboto,sans-serif;background:
-
-linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:8px;}
+        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:8px;}
         .container{background:rgba(255,255,255,.95);padding:8px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
         h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
         .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
@@ -42,7 +40,7 @@ linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:
         </section>
         <a href="https://wa.me/557798175899" class="botao-whatsapp">Enviar comprovante via WhatsApp</a>
         <p class="promo">Depósito via Pix: até R$5/dia de retorno, com risco de perda de apenas R$3/dia.</p>
-        <p class="vagas">Últimas 3 vagas disponíveis! Entre em contato para garantir a sua.</p>
+        <p class="vagas">Última 1 vagas disponíveis! Entre em contato para garantir a sua.</p>
         <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="botao-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
         <section class="panel">
             <h2>Relatório de Clientes</h2>
@@ -80,10 +78,11 @@ linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:
          * - Sugestões: Formulário dinâmico, log de transações, proporção por depósito, validações, localStorage, interface admin.
          */
         const clientes = [
-            {nome:"Luzia",deposito:40,lucro:11.51,perda_dia:0,sacado:3,perda_total:1.5},
+            {nome:"Luzia",deposito:40,lucro:0,perda_dia:0,sacado:14.51,perda_total:1.5},
             {nome:"Toinha",deposito:20,lucro:11.51,perda_dia:0,sacado:0,perda_total:1.5},
             {nome:"Isayah",deposito:10,lucro:6.51,perda_dia:0,sacado:8,perda_total:1.5},
             {nome:"Eunice",deposito:10,lucro:11.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Clarice",deposito:11.51,lucro:0,perda_dia:0,sacado:0,perda_total:0},
             {nome:"Domingo",deposito:5,lucro:11.51,perda_dia:0,sacado:3,perda_total:1.5},
             {nome:"Larissa",deposito:5,lucro:14.51,perda_dia:0,sacado:0,perda_total:1.5},
             {nome:"Felipe",deposito:5,lucro:14.51,perda_dia:0,sacado:0,perda_total:1.5},
@@ -119,4 +118,4 @@ linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:
         })();
     </script>
 </body>
-    </html>
+</html>
