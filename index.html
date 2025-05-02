@@ -8,28 +8,28 @@
     <style>
         :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 10px rgba(0,0,0,.2);}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:8px;}
-        .container{background:rgba(255,255,255,.95);padding:10px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
+        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:8px;}
+        .container{background:rgba(255,255,255,.95);padding:8px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
         h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
         .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
         .info-box{cursor:pointer;}
         p,.promo,.vagas{color:var(--text);font-size:.75em;}
         .promo,.vagas{font-weight:700;margin:6px 0;}
-        .botao-quotex,.botao-whatsapp{display:inline-block;color:#fff;padding:8px 16px;border-radius:4px;font-size:.8em;font-weight:700;text-decoration:none;margin:6px 0;box-shadow:var(--shadow);transition:filter .2s;}
+        .botao-quotex,.botao-whatsapp{display:inline-block;color:#fff;padding:8px 16px;border-radius:4px;font-size:.8em;font-weight:700;text-decoration:none;margin:6px;box-shadow:var(--shadow);transition:filter .2s;}
         .botao-quotex{background:var(--primary);}
         .botao-whatsapp{background:#25D366;}
-        .botao-quotex:hover,.botao-whatsapp:hover{filter:brightness(0.9);}
+        .botao-quotex:hover,.botao-whatsapp:hover{filter:brightness(.9);}
         h2{color:var(--text);font-size:.95em;margin-bottom:6px;}
         table{width:100%;border-collapse:collapse;font-size:.7em;color:var(--text);}
-        th,td{padding:4px;border-bottom:1px solid #ddd;line-height:1.1;}
+        th,td{padding:4px;border-bottom:1px solid #ddd;}
         th{background:#e8ecef;color:var(--text);font-weight:700;text-align:left;}
         td{text-align:right;}
         th:first-child,td:first-child{text-align:left;font-weight:700;}
         th:nth-child(2),td:nth-child(2){text-align:center;min-width:80px;}
         .posicao{width:30px;}
         .totals-panel p{font-size:.75em;color:var(--text);margin:3px 0;}
-        @media (max-width:500px){.container{padding:8px;}table{font-size:.65em;}th,td{padding:3px;}h1{font-size:1.4em;}h2{font-size:.85em;}.promo,.vagas{font-size:.7em;}.botao-quotex,.botao-whatsapp{font-size:.75em;padding:6px 12px;}.info-box,.panel,.totals-panel{padding:6px;}}
-        @media (max-width:400px){table{font-size:.6em;}th,td{padding:2px;}.container{padding:6px;}.info-box,.panel,.totals-panel{padding:5px;margin:5px 0;}.promo,.vagas{font-size:.65em;}h1{font-size:1.3em;}h2{font-size:.8em;}.botao-quotex,.botao-whatsapp{font-size:.7em;padding:5px 10px;}}
+        @media (max-width:500px){.container,.info-box,.panel,.totals-panel{padding:6px;}.promo,.vagas,h2{font-size:.7em;}h1{font-size:1.4em;}table{font-size:.65em;}th,td{padding:3px;}.botao-quotex,.botao-whatsapp{font-size:.75em;padding:6px 12px;}}
+        @media (max-width:400px){.container,.info-box,.panel,.totals-panel{padding:5px;margin:5px 0;}table{font-size:.6em;}th,td{padding:2px;}h1{font-size:1.3em;}h2{font-size:.8em;}.promo,.vagas{font-size:.65em;}.botao-quotex,.botao-whatsapp{font-size:.7em;padding:5px 10px;}}
     </style>
 </head>
 <body>
@@ -69,122 +69,52 @@
     </div>
     <script>
         /*
-         * NOTAS PARA FUTURAS IAs OU DESENVOLVEDORES
-         * ---------------------------------------
-         * Instrução Atualizada (02/05/2025):
-         * - Sempre que fizer alterações no site, envie o arquivo HTML completo e atualizado.
-         * - Isso garante que todas as mudanças sejam refletidas corretamente e evita erros de versão.
-         *
-         * Lógica Financeira:
-         * - O campo 'lucro' no array 'clientes' representa o lucro ACUMULADO ao longo do tempo.
-         * - Novos lucros diários devem ser SOMADOS ao valor existente de 'lucro', NUNCA substituídos,
-         *   para preservar o histórico financeiro e manter a integridade dos registros monetários.
-         * - Exemplo: Se o lucro anterior de um cliente é R$2,00 e o lucro diário é R$3,00,
-         *   o novo lucro deve ser R$5,00.
-         * - Lucros diários devem ser distribuídos apenas para clientes ativos (excluir 'Vaga disponível').
-         *
-         * Lógica de Perdas:
-         * - O saldo de cada cliente é calculado como: deposito + lucro - perda_total.
-         * - O campo 'perda_dia' é APENAS para exibição na tabela e NÃO afeta o cálculo do saldo.
-         * - Quando APENAS o lucro diário for informado, assumir que 'perda_dia' é 0.00 para todos os
-         *   clientes ativos, pois a presença de lucro implica ausência de perda no dia.
-         * - Definir 'perda_dia' como 0.00 para clientes ativos nesses casos, mantendo 'perda_total'
-         *   inalterado como o extrato consolidado das perdas históricas.
-         * - O campo 'perda_total' representa o EXTRATO CONSOLIDADO de todas as perdas do cliente
-         *   ao longo do tempo e só deve ser atualizado quando novas perdas forem explicitamente informadas.
-         *
-         * Exibição de Perdas:
-         * - Quando 'perda_dia' for 0.00, a coluna 'Perda Dia' na tabela deve exibir '-' (traço),
-         *   indicando que não houve perda naquele dia.
-         * - Exemplo: Se um cliente teve 'perda_dia' de R$1,50 ontem e hoje é R$0,00, a coluna
-         *   'Perda Dia' mostra '-' e 'perda_total' continua mostrando R$1,50.
-         *
-         * Cuidado com Cálculos de Totais:
-         * - SEMPRE valide o 'total-saldos' inicial somando os saldos individuais
-         *   (deposito + lucro - perda_total) de todos os clientes antes de aplicar lucros ou saques.
-         * - Exemplo: Em 01/05/2025, o saldo inicial total foi validado como R$120,50 antes de adicionar
-         *   um lucro diário de R$30,00, resultando em R$150,50.
-         * - Um erro anterior ocorreu ao usar 'perda_dia' no cálculo do saldo, inflando o total para
-         *   R$161,04. Sempre use 'perda_total' para o saldo.
-         * - Após alterações, verifique se o novo 'total-saldos' reflete corretamente a soma dos saldos
-         *   individuais para garantir consistência.
-         *
-         * Sugestões de Melhorias para o Site:
-         * 1. Formulário Dinâmico: Adicionar um campo para inserir lucros diários diretamente na página,
-         *    atualizando o array 'clientes' e salvando no localStorage ou backend.
-         * 2. Log de Transações: Implementar um registro de cada lucro diário (com data, valor e cliente)
-         *    para auditoria e rastreamento.
-         * 3. Distribuição Proporcional: Permitir que lucros sejam distribuídos proporcionalmente ao depósito,
-         *    em vez de igualmente, se desejado.
-         * 4. Validações: Adicionar verificações para garantir que lucros sejam aplicados apenas a clientes
-         *    ativos e que valores sejam positivos.
-         * 5. Persistência de Dados: Usar localStorage ou um backend para salvar o array 'clientes' e evitar
-         *    perda de dados ao recarregar a página.
-         * 6. Interface de Administração: Criar uma seção para gerenciar clientes (adicionar, remover, editar).
-         *
-         * Cuidados com o Código:
-         * - Evitar duplicações no HTML (como seções repetidas de botões ou textos).
-         * - Verificar chamadas de funções (ex.: 'copyToClipboard' deve ser consistente).
-         * - Manter o código limpo e comentado para facilitar manutenção.
-         * ---------------------------------------
+         * NOTAS (02/05/2025):
+         * - Enviar HTML completo após alterações.
+         * - Lucro: Somar lucros diários ao 'lucro' acumulado, apenas para clientes ativos (excluir 'Vaga disponível').
+         * - Saldo: deposito + lucro - perda_total. 'perda_dia' é só para exibição, não afeta saldo.
+         * - Perda: Se lucro diário informado, 'perda_dia' = 0.00. Exibir '-' se perda_dia = 0.00.
+         * - Totais: Validar 'total-saldos' somando saldos individuais antes de lucros/saques.
+         * - Sugestões: Formulário dinâmico, log de transações, proporção por depósito, validações, localStorage, interface admin.
          */
-
-        // Array de clientes atualizado em 02/05/2025 com dois novos clientes: Kelviane e Zayla, ambos com depósito de R$5,00
         const clientes = [
-            { nome: "Luzia", deposito: 40.00, lucro: 9.29, perda_dia: 0.00, sacado: 3.00, perda_total: 1.50 },
-            { nome: "Toinha", deposito: 20.00, lucro: 9.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Isayah", deposito: 10.00, lucro: 4.29, perda_dia: 0.00, sacado: 8.00, perda_total: 1.50 },
-            { nome: "Eunice", deposito: 10.00, lucro: 9.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Domingo", deposito: 5.00, lucro: 9.29, perda_dia: 0.00, sacado: 3.00, perda_total: 1.50 },
-            { nome: "Larissa", deposito: 5.00, lucro: 12.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Felipe", deposito: 5.00, lucro: 12.29, perda_dia: 0.00, sacado: 0.00, perda_total: 1.50 },
-            { nome: "Kelviane", deposito: 5.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Zayla", deposito: 5.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 },
-            { nome: "Vaga disponível", deposito: 0.00, lucro: 0.00, perda_dia: 0.00, sacado: 0.00, perda_total: 0.00 }
+            {nome:"Luzia",deposito:40,lucro:9.29,perda_dia:0,sacado:3,perda_total:1.5},
+            {nome:"Toinha",deposito:20,lucro:9.29,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Isayah",deposito:10,lucro:4.29,perda_dia:0,sacado:8,perda_total:1.5},
+            {nome:"Eunice",deposito:10,lucro:9.29,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Domingo",deposito:5,lucro:9.29,perda_dia:0,sacado:3,perda_total:1.5},
+            {nome:"Larissa",deposito:5,lucro:12.29,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Felipe",deposito:5,lucro:12.29,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Kelviane",deposito:5,lucro:0,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Zayla",deposito:5,lucro:0,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Vaga disponível",deposito:0,lucro:0,perda_dia:0,sacado:0,perda_total:0}
         ];
-
         function copyToClipboard(text, message) {
             navigator.clipboard.writeText(text).then(() => alert(message)).catch(() => alert("Erro ao copiar."));
         }
-
         (function() {
-            const tabela = document.getElementById('corpo-tabela');
-            const totalSaldos = document.getElementById('total-saldos');
-            const totalSacado = document.getElementById('total-sacado');
-            const totalPerdas = document.getElementById('total-perdas');
+            const tabela = document.getElementById('corpo-tabela'), totalSaldos = document.getElementById('total-saldos'),
+                  totalSacado = document.getElementById('total-sacado'), totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
-
-            // Ordenar clientes por depósito (maior para menor)
             clientes.sort((a, b) => b.deposito - a.deposito);
-
-            // Iterar sobre os clientes para preencher a tabela
-            clientes.forEach((cliente, index) => {
-                // Calcular o saldo: depósito + lucro acumulado - perda_total
-                const saldo = cliente.deposito + cliente.lucro - cliente.perda_total;
-                somaSaldos += saldo;
-                somaSacado += cliente.sacado;
-                somaPerdas += cliente.perda_total;
-                const linha = document.createElement('tr');
-                // Exibir '-' na coluna Perda Dia se perda_dia for 0.00
-                const perdaDiaDisplay = cliente.perda_dia === 0.00 ? '-' : `R$ ${cliente.perda_dia.toFixed(2).replace('.', ',')}`;
-                linha.innerHTML = `
-                    <td class="posicao">${index + 1}º</td>
-                    <td>${cliente.nome}</td>
-                    <td>R$ ${cliente.deposito.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${cliente.lucro.toFixed(2).replace('.', ',')}</td>
-                    <td>${perdaDiaDisplay}</td>
+            tabela.innerHTML = clientes.map((c, i) => {
+                const saldo = c.deposito + c.lucro - c.perda_total;
+                somaSaldos += saldo; somaSacado += c.sacado; somaPerdas += c.perda_total;
+                return `<tr>
+                    <td class="posicao">${i + 1}º</td>
+                    <td>${c.nome}</td>
+                    <td>R$ ${c.deposito.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${c.lucro.toFixed(2).replace('.', ',')}</td>
+                    <td>${c.perda_dia === 0 ? '-' : `R$ ${c.perda_dia.toFixed(2).replace('.', ',')}`}</td>
                     <td>R$ ${saldo.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${cliente.sacado.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${cliente.perda_total.toFixed(2).replace('.', ',')}</td>
-                `;
-                tabela.appendChild(linha);
-            });
-
-            // Atualizar totais no relatório geral
+                    <td>R$ ${c.sacado.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${c.perda_total.toFixed(2).replace('.', ',')}</td>
+                </tr>`;
+            }).join('');
             totalSaldos.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
             totalSacado.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
             totalPerdas.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
         })();
     </script>
 </body>
-                   </html>
+    </html>
