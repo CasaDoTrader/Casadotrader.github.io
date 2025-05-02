@@ -8,7 +8,9 @@
     <style>
         :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 10px rgba(0,0,0,.2);}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:8px;}
+        body{font-family:Roboto,sans-serif;background:
+
+linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:8px;}
         .container{background:rgba(255,255,255,.95);padding:8px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
         h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
         .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
@@ -78,15 +80,15 @@
          * - Sugestões: Formulário dinâmico, log de transações, proporção por depósito, validações, localStorage, interface admin.
          */
         const clientes = [
-            {nome:"Luzia",deposito:40,lucro:9.29,perda_dia:0,sacado:3,perda_total:1.5},
-            {nome:"Toinha",deposito:20,lucro:9.29,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Isayah",deposito:10,lucro:4.29,perda_dia:0,sacado:8,perda_total:1.5},
-            {nome:"Eunice",deposito:10,lucro:9.29,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Domingo",deposito:5,lucro:9.29,perda_dia:0,sacado:3,perda_total:1.5},
-            {nome:"Larissa",deposito:5,lucro:12.29,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Felipe",deposito:5,lucro:12.29,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Kelviane",deposito:5,lucro:0,perda_dia:0,sacado:0,perda_total:0},
-            {nome:"Zayla",deposito:5,lucro:0,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Luzia",deposito:40,lucro:11.51,perda_dia:0,sacado:3,perda_total:1.5},
+            {nome:"Toinha",deposito:20,lucro:11.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Isayah",deposito:10,lucro:6.51,perda_dia:0,sacado:8,perda_total:1.5},
+            {nome:"Eunice",deposito:10,lucro:11.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Domingo",deposito:5,lucro:11.51,perda_dia:0,sacado:3,perda_total:1.5},
+            {nome:"Larissa",deposito:5,lucro:14.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Felipe",deposito:5,lucro:14.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Kelviane",deposito:5,lucro:2.22,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Zayla",deposito:5,lucro:2.22,perda_dia:0,sacado:0,perda_total:0},
             {nome:"Vaga disponível",deposito:0,lucro:0,perda_dia:0,sacado:0,perda_total:0}
         ];
         function copyToClipboard(text, message) {
