@@ -35,12 +35,11 @@
 <body>
     <div class="container">
         <h1>Casa do Trader</h1>
-        <section class="info-box" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">
-            <p><strong>Chave Pix Celular:</strong> +5577998175899</p>
-        </section>
+        <a href="#" class="botao-quotex" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">Chave Pix Aleatória</a>
         <a href="https://wa.me/557798175899" class="botao-whatsapp">Enviar comprovante via WhatsApp</a>
         <p class="promo">Depósito via Pix: até R$5/dia de retorno, com risco de perda de apenas R$3/dia.</p>
         <p class="vagas">Última 1 vagas disponíveis! Entre em contato para garantir a sua.</p>
+        <a href="https://wa.me/557798175899" class="botao-whatsapp">Mentoria</a>
         <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="botao-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
         <section class="panel">
             <h2>Relatório de Clientes</h2>
@@ -97,7 +96,7 @@
             const tabela = document.getElementById('corpo-tabela'), totalSaldos = document.getElementById('total-saldos'),
                   totalSacado = document.getElementById('total-sacado'), totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
-            clientes.sort((a, b) => b.deposito - a.deposito);
+            clientes.sort((a, b) => (b.deposito + b.lucro - b.perda_total) - (a.deposito + a.lucro - a.perda_total));
             tabela.innerHTML = clientes.map((c, i) => {
                 const saldo = c.deposito + c.lucro - c.perda_total;
                 somaSaldos += saldo; somaSacado += c.sacado; somaPerdas += c.perda_total;
@@ -118,4 +117,4 @@
         })();
     </script>
 </body>
-</html>
+                    </html>
