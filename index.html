@@ -37,8 +37,8 @@
         <h1>Casa do Trader</h1>
         <a href="#" class="botao-quotex" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">Chave Pix Aleatória</a>
         <a href="https://wa.me/557798175899" class="botao-whatsapp">Enviar comprovante via WhatsApp</a>
-        <p class="promo">Depósito via Pix: até R$5/dia de retorno, com risco de perda de apenas R$3/dia.</p>
-        <p class="vagas">Última 1 vagas disponíveis! Entre em contato para garantir a sua.</p>
+        <p class="promo">Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
+        <p class="vagas">Última vaga disponível! Entre em contato para garantir a sua.</p>
         <a href="https://wa.me/557798175899" class="botao-whatsapp">Mentoria</a>
         <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="botao-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
         <section class="panel">
@@ -67,39 +67,36 @@
         </section>
     </div>
     <script>
-        /*
-         * NOTAS (02/05/2025):
-         * - Enviar HTML completo após alterações.
-         * - Lucro: Somar lucros diários ao 'lucro' acumulado, apenas para clientes ativos (excluir 'Vaga disponível').
-         * - Saldo: deposito + lucro - perda_total. 'perda_dia' é só para exibição, não afeta saldo.
-         * - Perda: Se lucro diário informado, 'perda_dia' = 0.00. Exibir '-' se perda_dia = 0.00.
-         * - Totais: Validar 'total-saldos' somando saldos individuais antes de lucros/saques.
-         * - Sugestões: Formulário dinâmico, log de transações, proporção por depósito, validações, localStorage, interface admin.
-         */
         const clientes = [
-            {nome:"Luzia",deposito:40,lucro:0,perda_dia:0,sacado:14.51,perda_total:1.5},
-            {nome:"Toinha",deposito:20,lucro:11.51,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Isayah",deposito:10,lucro:6.51,perda_dia:0,sacado:8,perda_total:1.5},
-            {nome:"Eunice",deposito:10,lucro:11.51,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Clarice",deposito:11.51,lucro:0,perda_dia:0,sacado:0,perda_total:0},
-            {nome:"Domingo",deposito:5,lucro:11.51,perda_dia:0,sacado:3,perda_total:1.5},
-            {nome:"Larissa",deposito:5,lucro:14.51,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Felipe",deposito:5,lucro:14.51,perda_dia:0,sacado:0,perda_total:1.5},
-            {nome:"Kelviane",deposito:5,lucro:2.22,perda_dia:0,sacado:0,perda_total:0},
-            {nome:"Zayla",deposito:5,lucro:2.22,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Luzia",deposito:40,lucro:2,perda_dia:0,sacado:14.51,perda_total:1.5},
+            {nome:"Toinha",deposito:20,lucro:13.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Isayah",deposito:10,lucro:8.51,perda_dia:0,sacado:8,perda_total:1.5},
+            {nome:"Eunice",deposito:10,lucro:13.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Clarice",deposito:11.51,lucro:2,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Domingo",deposito:5,lucro:13.51,perda_dia:0,sacado:3,perda_total:1.5},
+            {nome:"Larissa",deposito:5,lucro:16.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Felipe",deposito:5,lucro:16.51,perda_dia:0,sacado:0,perda_total:1.5},
+            {nome:"Kelviane",deposito:5,lucro:4.22,perda_dia:0,sacado:0,perda_total:0},
+            {nome:"Zayla",deposito:5,lucro:4.22,perda_dia:0,sacado:0,perda_total:0},
             {nome:"Vaga disponível",deposito:0,lucro:0,perda_dia:0,sacado:0,perda_total:0}
         ];
         function copyToClipboard(text, message) {
             navigator.clipboard.writeText(text).then(() => alert(message)).catch(() => alert("Erro ao copiar."));
         }
         (function() {
-            const tabela = document.getElementById('corpo-tabela'), totalSaldos = document.getElementById('total-saldos'),
-                  totalSacado = document.getElementById('total-sacado'), totalPerdas = document.getElementById('total-perdas');
+            const tabela = document.getElementById('corpo-tabela'), 
+                  totalSaldos = document.getElementById('total-saldos'),
+                  totalSacado = document.getElementById('total-sacado'), 
+                  totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
             clientes.sort((a, b) => (b.deposito + b.lucro - b.perda_total) - (a.deposito + a.lucro - a.perda_total));
             tabela.innerHTML = clientes.map((c, i) => {
                 const saldo = c.deposito + c.lucro - c.perda_total;
-                somaSaldos += saldo; somaSacado += c.sacado; somaPerdas += c.perda_total;
+                if (c.nome !== "Vaga disponível") {
+                    somaSaldos += saldo;
+                    somaSacado += c.sacado;
+                    somaPerdas += c.perda_total;
+                }
                 return `<tr>
                     <td class="posicao">${i + 1}º</td>
                     <td>${c.nome}</td>
@@ -117,4 +114,4 @@
         })();
     </script>
 </body>
-                    </html>
+    </html>
