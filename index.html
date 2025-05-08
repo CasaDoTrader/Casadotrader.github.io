@@ -68,17 +68,17 @@
     </div>
     <script>
         const clientes = [
-            {nome:"Luzia", deposito:40, lucro:4, perda_dia:1.36, sacado:14.51, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Toinha", deposito:20, lucro:15.51, perda_dia:1.36, sacado:0, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Isayah", deposito:10, lucro:10.51, perda_dia:1.36, sacado:8, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Eunice", deposito:10, lucro:15.51, perda_dia:1.36, sacado:0, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Clarice", deposito:11.51, lucro:4, perda_dia:1.36, sacado:0, perda_total:1.36}, // 0 + 1.36
-            {nome:"Domingo", deposito:5, lucro:15.51, perda_dia:1.36, sacado:3, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Larissa", deposito:5, lucro:18.51, perda_dia:1.36, sacado:0, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Felipe", deposito:5, lucro:18.51, perda_dia:1.36, sacado:0, perda_total:2.86}, // 1.5 + 1.36
-            {nome:"Kelviane", deposito:5, lucro:6.22, perda_dia:1.36, sacado:0, perda_total:1.36}, // 0 + 1.36
-            {nome:"Zayla", deposito:5, lucro:6.22, perda_dia:1.36, sacado:0, perda_total:1.36}, // 0 + 1.36
-            {nome:"Grazi", deposito:5, lucro:0, perda_dia:1.36, sacado:0, perda_total:1.36}, // 0 + 1.36
+            {nome:"Luzia", deposito:40, lucro:4, perda_dia:1.36, sacado:14.51, perda_total:2.86},
+            {nome:"Toinha", deposito:20, lucro:15.51, perda_dia:1.36, sacado:0, perda_total:2.86},
+            {nome:"Isayah", deposito:10, lucro:10.51, perda_dia:1.36, sacado:8, perda_total:2.86},
+            {nome:"Eunice", deposito:10, lucro:15.51, perda_dia:1.36, sacado:0, perda_total:2.86},
+            {nome:"Clarice", deposito:11.51, lucro:4, perda_dia:1.36, sacado:0, perda_total:1.36},
+            {nome:"Domingo", deposito:5, lucro:15.51, perda_dia:1.36, sacado:3, perda_total:2.86},
+            {nome:"Larissa", deposito:5, lucro:18.51, perda_dia:1.36, sacado:0, perda_total:2.86},
+            {nome:"Felipe", deposito:5, lucro:18.51, perda_dia:1.36, sacado:0, perda_total:2.86},
+            {nome:"Kelviane", deposito:5, lucro:6.22, perda_dia:1.36, sacado:0, perda_total:1.36},
+            {nome:"Zayla", deposito:5, lucro:6.22, perda_dia:1.36, sacado:0, perda_total:1.36},
+            {nome:"Grazi", deposito:5, lucro:0, perda_dia:1.36, sacado:0, perda_total:1.36},
             {nome:"Vaga disponível", deposito:0, lucro:0, perda_dia:0, sacado:0, perda_total:0}
         ];
 
@@ -93,8 +93,22 @@
                   totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
 
+            // Distribuir o lucro diário de R$15,00 entre os 11 clientes ativos
+            const lucroDiario = 15.00;
+            const numeroClientesAtivos = clientes.filter(c => c.nome !== "Vaga disponível").length;
+            const lucroPorCliente = lucroDiario / numeroClientesAtivos;
+
+            // Atualizar o lucro de cada cliente ativo
+            clientes.forEach(cliente => {
+                if (cliente.nome !== "Vaga disponível") {
+                    cliente.lucro = Number(cliente.lucro) + lucroPorCliente;
+                }
+            });
+
+            // Ordenar clientes pelo saldo (depósito + lucro - perda_total)
             clientes.sort((a, b) => (b.deposito + b.lucro - b.perda_total) - (a.deposito + a.lucro - a.perda_total));
 
+            // Gerar tabela
             tabela.innerHTML = clientes.map((c, i) => {
                 const saldo = c.deposito + c.lucro - c.perda_total;
                 if (c.nome !== "Vaga disponível") {
@@ -120,4 +134,4 @@
         })();
     </script>
 </body>
-    </html>
+                                                     </html>
