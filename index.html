@@ -67,23 +67,29 @@
         </section>
     </div>
     <script>
-        const clientes = [
-            {nome:"Luzia", deposito:40, lucro:4, perda_dia:1.36, sacado:14.51, perda_total:2.86},
-            {nome:"Toinha", deposito:20, lucro:15.51, perda_dia:1.36, sacado:0, perda_total:2.86},
-            {nome:"Isayah", deposito:10, lucro:10.51, perda_dia:1.36, sacado:8, perda_total:2.86},
-            {nome:"Eunice", deposito:10, lucro:15.51, perda_dia:1.36, sacado:0, perda_total:2.86},
-            {nome:"Clarice", deposito:11.51, lucro:4, perda_dia:1.36, sacado:0, perda_total:1.36},
-            {nome:"Domingo", deposito:5, lucro:15.51, perda_dia:1.36, sacado:3, perda_total:2.86},
-            {nome:"Larissa", deposito:5, lucro:18.51, perda_dia:1.36, sacado:0, perda_total:2.86},
-            {nome:"Felipe", deposito:5, lucro:18.51, perda_dia:1.36, sacado:0, perda_total:2.86},
-            {nome:"Kelviane", deposito:5, lucro:6.22, perda_dia:1.36, sacado:0, perda_total:1.36},
-            {nome:"Zayla", deposito:5, lucro:6.22, perda_dia:1.36, sacado:0, perda_total:1.36},
-            {nome:"Grazi", deposito:5, lucro:0, perda_dia:1.36, sacado:0, perda_total:1.36},
+        // Initial client data
+        const defaultClientes = [
+            {nome:"Luzia", deposito:40, lucro:4, perda_dia:0, sacado:14.51, perda_total:2.86},
+            {nome:"Toinha", deposito:20, lucro:15.51, perda_dia:0, sacado:0, perda_total:2.86},
+            {nome:"Isayah", deposito:12, lucro:10.51, perda_dia:0, sacado:8, perda_total:2.86},
+            {nome:"Eunice", deposito:10, lucro:15.51, perda_dia:0, sacado:0, perda_total:2.86},
+            {nome:"Clarice", deposito:11.51, lucro:4, perda_dia:0, sacado:0, perda_total:1.36},
+            {nome:"Domingo", deposito:5, lucro:15.51, perda_dia:0, sacado:3, perda_total:2.86},
+            {nome:"Larissa", deposito:5, lucro:18.51, perda_dia:0, sacado:0, perda_total:2.86},
+            {nome:"Felipe", deposito:5, lucro:18.51, perda_dia:0, sacado:0, perda_total:2.86},
+            {nome:"Kelviane", deposito:5, lucro:6.22, perda_dia:0, sacado:0, perda_total:1.36},
+            {nome:"Zayla", deposito:5, lucro:6.22, perda_dia:0, sacado:0, perda_total:1.36},
+            {nome:"Grazi", deposito:5, lucro:0, perda_dia:0, sacado:0, perda_total:1.36},
             {nome:"Vaga disponível", deposito:0, lucro:0, perda_dia:0, sacado:0, perda_total:0}
         ];
 
         function copyToClipboard(text, message) {
             navigator.clipboard.writeText(text).then(() => alert(message)).catch(() => alert("Erro ao copiar."));
+        }
+
+        // Round down to 2 decimal places
+        function roundDown(value) {
+            return Math.floor(value * 100) / 100;
         }
 
         (function() {
@@ -93,33 +99,57 @@
                   totalPerdas = document.getElementById('total-perdas');
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
 
-            // Distribuir o lucro diário de R$15,00 entre os 11 clientes ativos
-            const lucroDiario = 15.00;
-            const numeroClientesAtivos = clientes.filter(c => c.nome !== "Vaga disponível").length;
-            const lucroPorCliente = lucroDiario / numeroClientesAtivos;
+            // Reset to default clients
+            let clientes = defaultClientes;
 
-            // Atualizar o lucro de cada cliente ativo
-            clientes.forEach(cliente => {
+            // Distribute R$15.00 profit among active clients (first distribution)
+            const lucroTotal = 15.00;
+            const clientesAtivos = clientes.filter(c => c.nome !== "Vaga disponível").length;
+            const lucroPorCliente = roundDown(lucroTotal / clientesAtivos); // R$1.36 per client
+
+            // Add first profit to each active client
+            clientes = clientes.map(cliente => {
                 if (cliente.nome !== "Vaga disponível") {
-                    cliente.lucro = Number(cliente.lucro) + lucroPorCliente;
+                    return { ...cliente, lucro: roundDown(cliente.lucro + lucroPorCliente) };
                 }
+                return cliente;
             });
 
-            // Ordenar clientes pelo saldo (depósito + lucro - perda_total)
-            clientes.sort((a, b) => (b.deposito + b.lucro - b.perda_total) - (a.deposito + a.lucro - a.perda_total));
+            // Distribute additional R$15.00 profit among active clients (second distribution)
+            const lucroAdicional = 15.00;
+            const lucroPorClienteAdicional = roundDown(lucroAdicional / clientesAtivos); // R$1.36 per client
 
-            // Gerar tabela
+            // Add additional profit to each active client
+            clientes = clientes.map(cliente => {
+                if (cliente.nome !== "Vaga disponível") {
+                    return { ...cliente, lucro: roundDown(cliente.lucro + lucroPorClienteAdicional) };
+                }
+                return cliente;
+            });
+
+            // Save updated clients to localStorage
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+
+            // Sort clients by balance ((deposito - perda_total) + lucro)
+            clientes.sort((a, b) => {
+                const saldoA = roundDown((a.deposito - a.perda_total) + a.lucro);
+                const saldoB = roundDown((b.deposito - b.perda_total) + b.lucro);
+                return saldoB - saldoA;
+            });
+
+            // Generate table
             tabela.innerHTML = clientes.map((c, i) => {
-                const saldo = c.deposito + c.lucro - c.perda_total;
+                const creditoLiquido = roundDown(c.deposito - c.perda_total);
+                const saldo = roundDown(creditoLiquido + c.lucro);
                 if (c.nome !== "Vaga disponível") {
-                    somaSaldos += saldo;
-                    somaSacado += c.sacado;
-                    somaPerdas += c.perda_total;
+                    somaSaldos = roundDown(somaSaldos + saldo);
+                    somaSacado = roundDown(somaSacado + c.sacado);
+                    somaPerdas = roundDown(somaPerdas + c.perda_total);
                 }
                 return `<tr>
                     <td class="posicao">${i + 1}º</td>
                     <td>${c.nome}</td>
-                    <td>R$ ${c.deposito.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${creditoLiquido.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${c.lucro.toFixed(2).replace('.', ',')}</td>
                     <td>${c.perda_dia === 0 ? '-' : `R$ ${c.perda_dia.toFixed(2).replace('.', ',')}`}</td>
                     <td>R$ ${saldo.toFixed(2).replace('.', ',')}</td>
@@ -134,4 +164,4 @@
         })();
     </script>
 </body>
-                                                     </html>
+</html>
