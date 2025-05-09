@@ -136,6 +136,15 @@
                 return cliente;
             });
 
+            // Clarice withdraws her entire profit
+            clientes = clientes.map(cliente => {
+                if (cliente.nome === "Clarice") {
+                    const novoSacado = roundDown(cliente.sacado + cliente.lucro);
+                    return { ...cliente, sacado: novoSacado, lucro: 0 };
+                }
+                return cliente;
+            });
+
             // Save updated clients to localStorage
             localStorage.setItem('clientes', JSON.stringify(clientes));
 
@@ -173,4 +182,4 @@
         })();
     </script>
 </body>
-</html>
+    </html>
