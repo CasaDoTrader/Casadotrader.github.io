@@ -145,6 +145,24 @@
                 return cliente;
             });
 
+            // Larissa withdraws her entire profit
+            clientes = clientes.map(cliente => {
+                if (cliente.nome === "Larissa") {
+                    const novoSacado = roundDown(cliente.sacado + cliente.lucro);
+                    return { ...cliente, sacado: novoSacado, lucro: 0 };
+                }
+                return cliente;
+            });
+
+            // Larissa makes a deposit of R$7.86
+            clientes = clientes.map(cliente => {
+                if (cliente.nome === "Larissa") {
+                    const novoDeposito = roundDown(cliente.deposito + 7.86);
+                    return { ...cliente, deposito: novoDeposito };
+                }
+                return cliente;
+            });
+
             // Save updated clients to localStorage
             localStorage.setItem('clientes', JSON.stringify(clientes));
 
@@ -182,4 +200,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
