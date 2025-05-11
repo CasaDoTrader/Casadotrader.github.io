@@ -28,15 +28,20 @@
             border-radius: 8px;
             max-width: 500px;
             width: 100%;
-            margin: 0 auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,.4);
             border: 1px solid var(--primary);
+            box-shadow: var(--shadow);
             text-align: center;
         }
         h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: .5rem; }
-        .panel, .totals { background: var(--panel-bg); padding: .5rem; border-radius: 6px; margin: .5rem 0; border: 1px solid var(--primary); box-shadow: var(--shadow); }
-        p, .promo, .vagas { color: var(--text); font-size: .75rem; }
-        .promo, .vagas { font-weight: 700; margin: .5rem 0; }
+        .panel, .totals {
+            background: var(--panel-bg);
+            padding: .5rem;
+            margin: .5rem 0;
+            border-radius: 6px;
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+        .promo, .vagas { color: var(--text); font-size: .75rem; font-weight: 700; margin: .5rem 0; }
         .btn {
             display: inline-block;
             color: #fff;
@@ -45,7 +50,7 @@
             font-size: .8rem;
             font-weight: 700;
             text-decoration: none;
-            margin: .5rem;
+            margin: .3rem;
             box-shadow: var(--shadow);
             transition: filter .2s;
         }
@@ -55,27 +60,19 @@
         h2 { color: var(--text); font-size: .9rem; margin-bottom: .5rem; }
         table { width: 100%; border-collapse: collapse; font-size: .7rem; color: var(--text); }
         th, td { padding: .25rem; border-bottom: 1px solid #ddd; }
-        th { background: #e8ecef; color: var(--text); font-weight: 700; text-align: left; }
+        th { background: #e8ecef; font-weight: 700; text-align: left; }
         td { text-align: right; }
         th:first-child, td:first-child { text-align: left; font-weight: 700; }
-        th:nth-child(2), td:nth-child(2) { text-align: center; min-width: 80px; }
-        .pos { width: 30px; }
+        th:nth-child(2), td:nth-child(2) { text-align: center; min-width: 5rem; }
+        .pos { width: 2rem; }
         .totals p { font-size: .75rem; color: var(--text); margin: .2rem 0; }
-        @media (max-width: 500px) {
-            .container, .panel, .totals { padding: .4rem; }
-            h1 { font-size: 1.4rem; }
-            h2, .promo, .vagas { font-size: .7rem; }
-            table { font-size: .65rem; }
-            th, td { padding: .2rem; }
-            .btn { font-size: .75rem; padding: .4rem .8rem; }
-        }
         @media (max-width: 400px) {
             .container, .panel, .totals { padding: .3rem; margin: .3rem 0; }
             h1 { font-size: 1.3rem; }
-            h2 { font-size: .8rem; }
-            .promo, .vagas { font-size: .65rem; }
+            h2, .promo, .vagas { font-size: .65rem; }
             table { font-size: .6rem; }
             .btn { font-size: .7rem; padding: .3rem .6rem; }
+            th, td { padding: .2rem; }
         }
     </style>
 </head>
@@ -87,13 +84,13 @@
         <p class="promo">Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
         <p class="vagas">Última vaga disponível! Entre em contato para garantir a sua.</p>
         <a href="https://wa.me/557798175899" class="btn btn-whatsapp">Mentoria</a>
-        <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="btn btn-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
+        <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="btn btn-quotex">Cadastre-se na Quotex</a>
         <section class="panel">
             <h2>Relatório de Clientes</h2>
             <table>
                 <thead>
                     <tr>
-                        <th class="pos">Posição</th>
+                        <th class="pos">Pos</th>
                         <th>Cliente</th>
                         <th>Crédito</th>
                         <th>Lucro</th>
@@ -114,7 +111,7 @@
         </section>
     </div>
     <script>
-        const defaultClients = [
+        const clientsData = [
             {name:"Luzia", deposit:40, profit:4, daily_loss:0, withdrawn:14.51, total_loss:2.86},
             {name:"Toinha", deposit:20, profit:15.51, daily_loss:0, withdrawn:0, total_loss:2.86},
             {name:"Isayah", deposit:12, profit:10.51, daily_loss:0, withdrawn:8, total_loss:2.86},
@@ -142,55 +139,45 @@
             const totalSaldos = document.getElementById('total-saldos');
             const totalSacado = document.getElementById('total-sacado');
             const totalPerdas = document.getElementById('total-perdas');
-            let clients = defaultClients;
+            let clients = clientsData;
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
 
-            // Calculate active clients with non-zero credit
-            const activeClients = clients.filter(c => c.name !== "Vaga disponível" && (c.deposit - c.total_loss) > 0);
-            const profitTotal = 30.00; // Combined profit distributions (15 + 15)
-            const profitPerClient = activeClients.length > 0 ? roundDown(profitTotal / activeClients.length) : 0;
+            // Filter active clients with non-zero credit
+            const activeClients = clients.filter(c => c.name !== "Vaga disponível" && c.deposit > c.total_loss);
+            const profitPerClient = activeClients.length ? roundDown(30 / activeClients.length) : 0;
 
-            // Update clients: distribute profit, handle withdrawals, and Larissa's deposit
+            // Update clients
             clients = clients.map(c => {
+                const credit = roundDown(c.deposit - c.total_loss);
                 let client = { ...c };
-                if (c.name !== "Vaga disponível" && (c.deposit - c.total_loss) > 0) {
-                    client.profit = roundDown(c.profit + profitPerClient);
-                }
+                if (c.name !== "Vaga disponível" && credit > 0) client.profit += profitPerClient;
                 if (["Luzia", "Toinha", "Clarice", "Larissa"].includes(c.name)) {
-                    client.withdrawn = roundDown(c.withdrawn + client.profit);
+                    client.withdrawn += client.profit;
                     client.profit = 0;
                 }
-                if (c.name === "Larissa") {
-                    client.deposit = roundDown(c.deposit + 7.86);
-                }
+                if (c.name === "Larissa") client.deposit += 7.86;
                 return client;
             });
 
             // Save to localStorage
             localStorage.setItem('clients', JSON.stringify(clients));
 
-            // Sort clients by balance
-            clients.sort((a, b) => {
-                const saldoA = roundDown((a.deposit - a.total_loss) + a.profit);
-                const saldoB = roundDown((b.deposit - b.total_loss) + b.profit);
-                return saldoB - saldoA;
-            });
-
-            // Generate table and calculate totals
+            // Sort and generate table
+            clients.sort((a, b) => roundDown((b.deposit - b.total_loss) + b.profit) - roundDown((a.deposit - a.total_loss) + a.profit));
             tableBody.innerHTML = clients.map((c, i) => {
                 const credit = roundDown(c.deposit - c.total_loss);
                 const balance = roundDown(credit + c.profit);
                 if (c.name !== "Vaga disponível") {
-                    somaSaldos = roundDown(somaSaldos + balance);
-                    somaSacado = roundDown(somaSacado + c.withdrawn);
-                    somaPerdas = roundDown(somaPerdas + c.total_loss);
+                    somaSaldos += balance;
+                    somaSacado += c.withdrawn;
+                    somaPerdas += c.total_loss;
                 }
                 return `<tr>
                     <td class="pos">${i + 1}º</td>
                     <td>${c.name}</td>
                     <td>R$ ${credit.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${c.profit.toFixed(2).replace('.', ',')}</td>
-                    <td>${c.daily_loss === 0 ? '-' : `R$ ${c.daily_loss.toFixed(2).replace('.', ',')}`}</td>
+                    <td>${c.daily_loss ? `R$ ${c.daily_loss.toFixed(2).replace('.', ',')}` : '-'}</td>
                     <td>R$ ${balance.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${c.withdrawn.toFixed(2).replace('.', ',')}</td>
                     <td>R$ ${c.total_loss.toFixed(2).replace('.', ',')}</td>
