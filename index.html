@@ -6,47 +6,94 @@
     <title>Casa do Trader</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root{--primary:#c9a227;--text:#2d3436;--panel-bg:linear-gradient(135deg,#f8f9fa,#e8ecef);--shadow:0 3px 10px rgba(0,0,0,.2);}
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Roboto,sans-serif;background:linear-gradient(135deg,#1c2526,#4a6fa5);color:#fff;display:flex;justify-content:center;min-height:100vh;padding:8px;}
-        .container{background:rgba(255,255,255,.95);padding:8px;border-radius:8px;max-width:500px;width:100%;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,.4);border:1px solid var(--primary);text-align:center;}
-        h1{font-size:1.6em;color:var(--primary);margin-bottom:6px;}
-        .info-box,.panel,.totals-panel{background:var(--panel-bg);padding:8px;border-radius:6px;margin:6px 0;box-shadow:var(--shadow);border:1px solid var(--primary);}
-        .info-box{cursor:pointer;}
-        p,.promo,.vagas{color:var(--text);font-size:.75em;}
-        .promo,.vagas{font-weight:700;margin:6px 0;}
-        .botao-quotex,.botao-whatsapp{display:inline-block;color:#fff;padding:8px 16px;border-radius:4px;font-size:.8em;font-weight:700;text-decoration:none;margin:6px;box-shadow:var(--shadow);transition:filter .2s;}
-        .botao-quotex{background:var(--primary);}
-        .botao-whatsapp{background:#25D366;}
-        .botao-quotex:hover,.botao-whatsapp:hover{filter:brightness(.9);}
-        h2{color:var(--text);font-size:.95em;margin-bottom:6px;}
-        table{width:100%;border-collapse:collapse;font-size:.7em;color:var(--text);}
-        th,td{padding:4px;border-bottom:1px solid #ddd;}
-        th{background:#e8ecef;color:var(--text);font-weight:700;text-align:left;}
-        td{text-align:right;}
-        th:first-child,td:first-child{text-align:left;font-weight:700;}
-        th:nth-child(2),td:nth-child(2){text-align:center;min-width:80px;}
-        .posicao{width:30px;}
-        .totals-panel p{font-size:.75em;color:var(--text);margin:3px 0;}
-        @media (max-width:500px){.container,.info-box,.panel,.totals-panel{padding:6px;}.promo,.vagas,h2{font-size:.7em;}h1{font-size:1.4em;}table{font-size:.65em;}th,td{padding:3px;}.botao-quotex,.botao-whatsapp{font-size:.75em;padding:6px 12px;}}
-        @media (max-width:400px){.container,.info-box,.panel,.totals-panel{padding:5px;margin:5px 0;}table{font-size:.6em;}th,td{padding:2px;}h1{font-size:1.3em;}h2{font-size:.8em;}.promo,.vagas{font-size:.65em;}.botao-quotex,.botao-whatsapp{font-size:.7em;padding:5px 10px;}}
+        :root {
+            --primary: #c9a227;
+            --text: #2d3436;
+            --panel-bg: linear-gradient(135deg, #f8f9fa, #e8ecef);
+            --shadow: 0 3px 10px rgba(0,0,0,.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Roboto, sans-serif;
+            background: linear-gradient(135deg, #1c2526, #4a6fa5);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: .5rem;
+        }
+        .container {
+            background: rgba(255,255,255,.95);
+            padding: .5rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,.4);
+            border: 1px solid var(--primary);
+            text-align: center;
+        }
+        h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: .5rem; }
+        .panel, .totals { background: var(--panel-bg); padding: .5rem; border-radius: 6px; margin: .5rem 0; border: 1px solid var(--primary); box-shadow: var(--shadow); }
+        p, .promo, .vagas { color: var(--text); font-size: .75rem; }
+        .promo, .vagas { font-weight: 700; margin: .5rem 0; }
+        .btn {
+            display: inline-block;
+            color: #fff;
+            padding: .5rem 1rem;
+            border-radius: 4px;
+            font-size: .8rem;
+            font-weight: 700;
+            text-decoration: none;
+            margin: .5rem;
+            box-shadow: var(--shadow);
+            transition: filter .2s;
+        }
+        .btn-quotex { background: var(--primary); }
+        .btn-whatsapp { background: #25D366; }
+        .btn:hover { filter: brightness(.9); }
+        h2 { color: var(--text); font-size: .9rem; margin-bottom: .5rem; }
+        table { width: 100%; border-collapse: collapse; font-size: .7rem; color: var(--text); }
+        th, td { padding: .25rem; border-bottom: 1px solid #ddd; }
+        th { background: #e8ecef; color: var(--text); font-weight: 700; text-align: left; }
+        td { text-align: right; }
+        th:first-child, td:first-child { text-align: left; font-weight: 700; }
+        th:nth-child(2), td:nth-child(2) { text-align: center; min-width: 80px; }
+        .pos { width: 30px; }
+        .totals p { font-size: .75rem; color: var(--text); margin: .2rem 0; }
+        @media (max-width: 500px) {
+            .container, .panel, .totals { padding: .4rem; }
+            h1 { font-size: 1.4rem; }
+            h2, .promo, .vagas { font-size: .7rem; }
+            table { font-size: .65rem; }
+            th, td { padding: .2rem; }
+            .btn { font-size: .75rem; padding: .4rem .8rem; }
+        }
+        @media (max-width: 400px) {
+            .container, .panel, .totals { padding: .3rem; margin: .3rem 0; }
+            h1 { font-size: 1.3rem; }
+            h2 { font-size: .8rem; }
+            .promo, .vagas { font-size: .65rem; }
+            table { font-size: .6rem; }
+            .btn { font-size: .7rem; padding: .3rem .6rem; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Casa do Trader</h1>
-        <a href="#" class="botao-quotex" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">Chave Pix Aleatória</a>
-        <a href="https://wa.me/557798175899" class="botao-whatsapp">Enviar comprovante via WhatsApp</a>
+        <a href="#" class="btn btn-quotex" onclick="copyToClipboard('cec912eb-c181-40e3-accd-381cdd21ae33','Chave Pix copiada!')">Chave Pix Aleatória</a>
+        <a href="https://wa.me/557798175899" class="btn btn-whatsapp">Enviar comprovante via WhatsApp</a>
         <p class="promo">Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
         <p class="vagas">Última vaga disponível! Entre em contato para garantir a sua.</p>
-        <a href="https://wa.me/557798175899" class="botao-whatsapp">Mentoria</a>
-        <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="botao-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
+        <a href="https://wa.me/557798175899" class="btn btn-whatsapp">Mentoria</a>
+        <a href="https://broker-qx.pro/sign-up/?lid=1328180" class="btn btn-quotex">Cadastre-se na Quotex, nossa patrocinadora!</a>
         <section class="panel">
             <h2>Relatório de Clientes</h2>
             <table>
                 <thead>
                     <tr>
-                        <th class="posicao">Posição</th>
+                        <th class="pos">Posição</th>
                         <th>Cliente</th>
                         <th>Crédito</th>
                         <th>Lucro</th>
@@ -56,10 +103,10 @@
                         <th>Perda Total</th>
                     </tr>
                 </thead>
-                <tbody id="corpo-tabela"></tbody>
+                <tbody id="table-body"></tbody>
             </table>
         </section>
-        <section class="totals-panel">
+        <section class="totals">
             <h2>Relatório Geral</h2>
             <p><strong>Total dos saldos:</strong> <span id="total-saldos">R$ 0,00</span></p>
             <p><strong>Total sacado:</strong> <span id="total-sacado">R$ 0,00</span></p>
@@ -67,142 +114,90 @@
         </section>
     </div>
     <script>
-        // Initial client data
-        const defaultClientes = [
-            {nome:"Luzia", deposito:40, lucro:4, perda_dia:0, sacado:14.51, perda_total:2.86},
-            {nome:"Toinha", deposito:20, lucro:15.51, perda_dia:0, sacado:0, perda_total:2.86},
-            {nome:"Isayah", deposito:12, lucro:10.51, perda_dia:0, sacado:8, perda_total:2.86},
-            {nome:"Eunice", deposito:10, lucro:15.51, perda_dia:0, sacado:0, perda_total:2.86},
-            {nome:"Clarice", deposito:11.51, lucro:4, perda_dia:0, sacado:0, perda_total:1.36},
-            {nome:"Domingo", deposito:5, lucro:15.51, perda_dia:0, sacado:3, perda_total:2.86},
-            {nome:"Larissa", deposito:5, lucro:18.51, perda_dia:0, sacado:0, perda_total:2.86},
-            {nome:"Felipe", deposito:5, lucro:18.51, perda_dia:0, sacado:0, perda_total:2.86},
-            {nome:"Kelviane", deposito:5, lucro:6.22, perda_dia:0, sacado:0, perda_total:1.36},
-            {nome:"Zayla", deposito:5, lucro:6.22, perda_dia:0, sacado:0, perda_total:1.36},
-            {nome:"Grazi", deposito:5, lucro:0, perda_dia:0, sacado:0, perda_total:1.36},
-            {nome:"Vaga disponível", deposito:0, lucro:0, perda_dia:0, sacado:0, perda_total:0}
+        const defaultClients = [
+            {name:"Luzia", deposit:40, profit:4, daily_loss:0, withdrawn:14.51, total_loss:2.86},
+            {name:"Toinha", deposit:20, profit:15.51, daily_loss:0, withdrawn:0, total_loss:2.86},
+            {name:"Isayah", deposit:12, profit:10.51, daily_loss:0, withdrawn:8, total_loss:2.86},
+            {name:"Eunice", deposit:10, profit:15.51, daily_loss:0, withdrawn:0, total_loss:2.86},
+            {name:"Clarice", deposit:11.51, profit:4, daily_loss:0, withdrawn:0, total_loss:1.36},
+            {name:"Domingo", deposit:5, profit:15.51, daily_loss:0, withdrawn:3, total_loss:2.86},
+            {name:"Larissa", deposit:5, profit:18.51, daily_loss:0, withdrawn:0, total_loss:2.86},
+            {name:"Felipe", deposit:5, profit:18.51, daily_loss:0, withdrawn:0, total_loss:2.86},
+            {name:"Kelviane", deposit:5, profit:6.22, daily_loss:0, withdrawn:0, total_loss:1.36},
+            {name:"Zayla", deposit:5, profit:6.22, daily_loss:0, withdrawn:0, total_loss:1.36},
+            {name:"Grazi", deposit:5, profit:0, daily_loss:0, withdrawn:0, total_loss:1.36},
+            {name:"Vaga disponível", deposit:0, profit:0, daily_loss:0, withdrawn:0, total_loss:0}
         ];
 
         function copyToClipboard(text, message) {
             navigator.clipboard.writeText(text).then(() => alert(message)).catch(() => alert("Erro ao copiar."));
         }
 
-        // Round down to 2 decimal places
         function roundDown(value) {
             return Math.floor(value * 100) / 100;
         }
 
         (function() {
-            const tabela = document.getElementById('corpo-tabela'), 
-                  totalSaldos = document.getElementById('total-saldos'),
-                  totalSacado = document.getElementById('total-sacado'), 
-                  totalPerdas = document.getElementById('total-perdas');
+            const tableBody = document.getElementById('table-body');
+            const totalSaldos = document.getElementById('total-saldos');
+            const totalSacado = document.getElementById('total-sacado');
+            const totalPerdas = document.getElementById('total-perdas');
+            let clients = defaultClients;
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
 
-            // Reset to default clients
-            let clientes = defaultClientes;
+            // Calculate active clients with non-zero credit
+            const activeClients = clients.filter(c => c.name !== "Vaga disponível" && (c.deposit - c.total_loss) > 0);
+            const profitTotal = 30.00; // Combined profit distributions (15 + 15)
+            const profitPerClient = activeClients.length > 0 ? roundDown(profitTotal / activeClients.length) : 0;
 
-            // Distribute R$15.00 profit among active clients (first distribution)
-            const lucroTotal = 15.00;
-            const clientesAtivos = clientes.filter(c => c.nome !== "Vaga disponível").length;
-            const lucroPorCliente = roundDown(lucroTotal / clientesAtivos); // R$1.36 per client
-
-            // Add first profit to each active client
-            clientes = clientes.map(cliente => {
-                if (cliente.nome !== "Vaga disponível") {
-                    return { ...cliente, lucro: roundDown(cliente.lucro + lucroPorCliente) };
+            // Update clients: distribute profit, handle withdrawals, and Larissa's deposit
+            clients = clients.map(c => {
+                let client = { ...c };
+                if (c.name !== "Vaga disponível" && (c.deposit - c.total_loss) > 0) {
+                    client.profit = roundDown(c.profit + profitPerClient);
                 }
-                return cliente;
+                if (["Luzia", "Toinha", "Clarice", "Larissa"].includes(c.name)) {
+                    client.withdrawn = roundDown(c.withdrawn + client.profit);
+                    client.profit = 0;
+                }
+                if (c.name === "Larissa") {
+                    client.deposit = roundDown(c.deposit + 7.86);
+                }
+                return client;
             });
 
-            // Distribute additional R$15.00 profit among active clients (second distribution)
-            const lucroAdicional = 15.00;
-            const lucroPorClienteAdicional = roundDown(lucroAdicional / clientesAtivos); // R$1.36 per client
+            // Save to localStorage
+            localStorage.setItem('clients', JSON.stringify(clients));
 
-            // Add additional profit to each active client
-            clientes = clientes.map(cliente => {
-                if (cliente.nome !== "Vaga disponível") {
-                    return { ...cliente, lucro: roundDown(cliente.lucro + lucroPorClienteAdicional) };
-                }
-                return cliente;
-            });
-
-            // Luzia withdraws her entire profit (R$6.72)
-            clientes = clientes.map(cliente => {
-                if (cliente.nome === "Luzia") {
-                    const novoSacado = roundDown(cliente.sacado + cliente.lucro);
-                    return { ...cliente, sacado: novoSacado, lucro: 0 };
-                }
-                return cliente;
-            });
-
-            // Clarice withdraws her entire profit
-            clientes = clientes.map(cliente => {
-                if (cliente.nome === "Clarice") {
-                    const novoSacado = roundDown(cliente.sacado + cliente.lucro);
-                    return { ...cliente, sacado: novoSacado, lucro: 0 };
-                }
-                return cliente;
-            });
-
-            // Larissa withdraws her entire profit
-            clientes = clientes.map(cliente => {
-                if (cliente.nome === "Larissa") {
-                    const novoSacado = roundDown(cliente.sacado + cliente.lucro);
-                    return { ...cliente, sacado: novoSacado, lucro: 0 };
-                }
-                return cliente;
-            });
-
-            // Larissa makes a deposit of R$7.86
-            clientes = clientes.map(cliente => {
-                if (cliente.nome === "Larissa") {
-                    const novoDeposito = roundDown(cliente.deposito + 7.86);
-                    return { ...cliente, deposito: novoDeposito };
-                }
-                return cliente;
-            });
-
-            // Toinha withdraws her entire profit
-            clientes = clientes.map(cliente => {
-                if (cliente.nome === "Toinha") {
-                    const novoSacado = roundDown(cliente.sacado + cliente.lucro);
-                    return { ...cliente, sacado: novoSacado, lucro: 0 };
-                }
-                return cliente;
-            });
-
-            // Save updated clients to localStorage
-            localStorage.setItem('clientes', JSON.stringify(clientes));
-
-            // Sort clients by balance ((deposito - perda_total) + lucro)
-            clientes.sort((a, b) => {
-                const saldoA = roundDown((a.deposito - a.perda_total) + a.lucro);
-                const saldoB = roundDown((b.deposito - b.perda_total) + b.lucro);
+            // Sort clients by balance
+            clients.sort((a, b) => {
+                const saldoA = roundDown((a.deposit - a.total_loss) + a.profit);
+                const saldoB = roundDown((b.deposit - b.total_loss) + b.profit);
                 return saldoB - saldoA;
             });
 
-            // Generate table
-            tabela.innerHTML = clientes.map((c, i) => {
-                const creditoLiquido = roundDown(c.deposito - c.perda_total);
-                const saldo = roundDown(creditoLiquido + c.lucro);
-                if (c.nome !== "Vaga disponível") {
-                    somaSaldos = roundDown(somaSaldos + saldo);
-                    somaSacado = roundDown(somaSacado + c.sacado);
-                    somaPerdas = roundDown(somaPerdas + c.perda_total);
+            // Generate table and calculate totals
+            tableBody.innerHTML = clients.map((c, i) => {
+                const credit = roundDown(c.deposit - c.total_loss);
+                const balance = roundDown(credit + c.profit);
+                if (c.name !== "Vaga disponível") {
+                    somaSaldos = roundDown(somaSaldos + balance);
+                    somaSacado = roundDown(somaSacado + c.withdrawn);
+                    somaPerdas = roundDown(somaPerdas + c.total_loss);
                 }
                 return `<tr>
-                    <td class="posicao">${i + 1}º</td>
-                    <td>${c.nome}</td>
-                    <td>R$ ${creditoLiquido.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${c.lucro.toFixed(2).replace('.', ',')}</td>
-                    <td>${c.perda_dia === 0 ? '-' : `R$ ${c.perda_dia.toFixed(2).replace('.', ',')}`}</td>
-                    <td>R$ ${saldo.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${c.sacado.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${c.perda_total.toFixed(2).replace('.', ',')}</td>
+                    <td class="pos">${i + 1}º</td>
+                    <td>${c.name}</td>
+                    <td>R$ ${credit.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${c.profit.toFixed(2).replace('.', ',')}</td>
+                    <td>${c.daily_loss === 0 ? '-' : `R$ ${c.daily_loss.toFixed(2).replace('.', ',')}`}</td>
+                    <td>R$ ${balance.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${c.withdrawn.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${c.total_loss.toFixed(2).replace('.', ',')}</td>
                 </tr>`;
             }).join('');
 
+            // Update totals
             totalSaldos.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
             totalSacado.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
             totalPerdas.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
