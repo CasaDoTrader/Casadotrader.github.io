@@ -137,11 +137,13 @@
 
         (function() {
             const tableBody = document.getElementById('table-body');
-            const totalSaldos = document.getElementById('total-saldos');
-            const totalSacado = document.getElementById('total-sacado');
-            const totalPerdas = document.getElementById('total-perdas');
+            const totalSaldosElement = document.getElementById('total-saldos');
+            const totalSacadoElement = document.getElementById('total-sacado');
+            const totalPerdasElement = document.getElementById('total-perdas');
             const clients = JSON.parse(localStorage.getItem('clients')) || initialClientsData;
-            let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
+            let somaSaldos = 0;
+            let somaSacado = 0;
+            let somaPerdas = 0;
 
             // Sort and generate table based on data from localStorage (or initial data)
             clients.sort((a, b) => roundDown((b.deposit - b.total_loss) + b.profit) - roundDown((a.deposit - a.total_loss) + a.profit));
@@ -166,9 +168,9 @@
             }).join('');
 
             // Update totals
-            totalSaldos.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
-            totalSacado.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
-            totalPerdas.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
+            totalSaldosElement.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
+            totalSacadoElement.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
+            totalPerdasElement.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
 
             // We are no longer automatically updating the profit here.
             // Any updates to the data should be handled by other actions
@@ -176,4 +178,4 @@
         })();
     </script>
 </body>
-    </html>
+            </html>
