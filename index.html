@@ -114,7 +114,7 @@
     <script>
         const initialClientsData = [
             {name:"Luzia", deposit:37.14, profit: 1.36, daily_loss:0, withdrawn:21.23, total_loss:2.86},
-            {name:"Eunice", deposit:7.14, profit: 19.59, daily_loss:0, withdrawn:0, total_loss:2.86},
+            {name:"Eunice", deposit:7.14, profit: 19.59, daily_loss:0, withdrawn:0.00, total_loss:2.86},
             {name:"Isayah", deposit:9.14, profit: 14.58, daily_loss:0, withdrawn:8.00, total_loss:2.86},
             {name:"Domingo", deposit:2.14, profit: 19.59, daily_loss:0, withdrawn:3.00, total_loss:2.86},
             {name:"Toinha", deposit:17.14, profit: 1.36, daily_loss:0, withdrawn:18.23, total_loss:2.86},
@@ -140,12 +140,13 @@
             const totalSaldosElement = document.getElementById('total-saldos');
             const totalSacadoElement = document.getElementById('total-sacado');
             const totalPerdasElement = document.getElementById('total-perdas');
-            const clients = JSON.parse(localStorage.getItem('clients')) || initialClientsData;
+            const clients = initialClientsData; // Usando diretamente os dados iniciais
+
             let somaSaldos = 0;
             let somaSacado = 0;
             let somaPerdas = 0;
 
-            // Sort and generate table based on data from localStorage (or initial data)
+            // Sort and generate table based on the correct data
             clients.sort((a, b) => roundDown((b.deposit - b.total_loss) + b.profit) - roundDown((a.deposit - a.total_loss) + a.profit));
             tableBody.innerHTML = clients.map((c, i) => {
                 const credit = roundDown(c.deposit - c.total_loss);
@@ -167,14 +168,23 @@
                 </tr>`;
             }).join('');
 
-            // Update totals
+            // Update totals with the correct sums
             totalSaldosElement.textContent = `R$ ${somaSaldos.toFixed(2).replace('.', ',')}`;
             totalSacadoElement.textContent = `R$ ${somaSacado.toFixed(2).replace('.', ',')}`;
             totalPerdasElement.textContent = `R$ ${somaPerdas.toFixed(2).replace('.', ',')}`;
 
-            // We are no longer automatically updating the profit here.
-            // Any updates to the data should be handled by other actions
-            // that modify the 'clients' array and then save it to localStorage.
+             // Verificação adicional para o total dos saldos
+            let saldoCalculado = 0;
+            clients.forEach(client => {
+                if (client.name !== "Vaga disponível") {
+                    saldoCalculado += roundDown((client.deposit - client.total_loss) + client.profit);
+                }
+            });
+            console.log("Total dos saldos calculado:", saldoCalculado.toFixed(2));
+            console.log("Total dos saldos da imagem:", "191.13");
+            if (saldoCalculado.toFixed(2) !== "191.13") {
+                console.error("O total dos saldos calculado não corresponde ao valor da imagem!");
+            }
         })();
     </script>
 </body>
