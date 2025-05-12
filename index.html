@@ -112,7 +112,7 @@
         </section>
     </div>
     <script>
-        const clientsData = [
+        const initialClientsData = [
             {name:"Luzia", deposit:40, profit:4, daily_loss:0, withdrawn:14.51, total_loss:2.86},
             {name:"Toinha", deposit:20, profit:15.51, daily_loss:0, withdrawn:0, total_loss:2.86},
             {name:"Isayah", deposit:12, profit:10.51, daily_loss:0, withdrawn:8, total_loss:2.86},
@@ -140,23 +140,22 @@
             const totalSaldos = document.getElementById('total-saldos');
             const totalSacado = document.getElementById('total-sacado');
             const totalPerdas = document.getElementById('total-perdas');
-            let clients = clientsData;
+            let clients = JSON.parse(localStorage.getItem('clients')) || initialClientsData;
             let somaSaldos = 0, somaSacado = 0, somaPerdas = 0;
+            const dailyProfit = 15;
 
             // Filter active clients with non-zero credit
-            const activeClients = clients.filter(c => c.name !== "Vaga disponível" && c.deposit > c.total_loss);
-            const profitPerClient = activeClients.length ? roundDown(30 / activeClients.length) : 0;
+            const activeClients = clients.filter(c => c.name !== "Vaga disponível" && roundDown(c.deposit - c.total_loss) > 0);
+            const profitPerClient = activeClients.length ? roundDown(dailyProfit / activeClients.length) : 0;
 
             // Update clients
             clients = clients.map(c => {
                 const credit = roundDown(c.deposit - c.total_loss);
                 let client = { ...c };
-                if (c.name !== "Vaga disponível" && credit > 0) client.profit += profitPerClient;
-                if (["Luzia", "Toinha", "Clarice", "Larissa", "Felipe"].includes(c.name)) {
-                    client.withdrawn += client.profit;
-                    client.profit = 0;
+                if (c.name !== "Vaga disponível" && credit > 0) {
+                    client.profit = roundDown(client.profit + profitPerClient);
                 }
-                if (c.name === "Larissa") client.deposit += 7.86;
+                // Removi a lógica de saque automático para clientes específicos
                 return client;
             });
 
@@ -192,4 +191,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
