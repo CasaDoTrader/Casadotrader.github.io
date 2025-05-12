@@ -120,7 +120,7 @@
             {name:"Clarice", deposit:11.51, profit:4, daily_loss:0, withdrawn:0, total_loss:1.36},
             {name:"Domingo", deposit:5, profit:15.51, daily_loss:0, withdrawn:3, total_loss:2.86},
             {name:"Larissa", deposit:5, profit:18.51, daily_loss:0, withdrawn:0, total_loss:2.86},
-            {name:"Felipe", deposit:5, profit:18.51, daily_loss:0, withdrawn:0, total_loss:2.86},
+            {name:"Felipe", deposit:5, profit:21.23, daily_loss:0, withdrawn:0, total_loss:2.86},
             {name:"Kelviane", deposit:5, profit:6.22, daily_loss:0, withdrawn:0, total_loss:1.36},
             {name:"Zayla", deposit:5, profit:6.22, daily_loss:0, withdrawn:0, total_loss:1.36},
             {name:"Grazi", deposit:5, profit:0, daily_loss:0, withdrawn:0, total_loss:1.36},
@@ -152,7 +152,7 @@
                 const credit = roundDown(c.deposit - c.total_loss);
                 let client = { ...c };
                 if (c.name !== "Vaga disponível" && credit > 0) client.profit += profitPerClient;
-                if (["Luzia", "Toinha", "Clarice", "Larissa"].includes(c.name)) {
+                if (["Luzia", "Toinha", "Clarice", "Larissa", "Felipe"].includes(c.name)) {
                     client.withdrawn += client.profit;
                     client.profit = 0;
                 }
@@ -192,4 +192,4 @@
         })();
     </script>
 </body>
-</html>
+    </html>
