@@ -36,7 +36,7 @@
              margin: 0;
          }
 
-         .header-buttons, .header-notice, .header-actions {
+         .header-buttons {
              display: flex;
              justify-content: center;
              gap: 10px;
@@ -45,8 +45,19 @@
          }
 
          .header-notice {
+             display: flex;
              flex-direction: column;
              align-items: center;
+             margin-top: 10px;
+             width: 100%;
+         }
+
+         .header-actions {
+             display: flex;
+             justify-content: center;
+             gap: 10px;
+             margin-top: 10px;
+             width: 100%;
          }
 
          .client-report {
@@ -73,6 +84,7 @@
          .general-report {
              padding: 15px;
              border-radius: 5px;
+             margin-top: 20px;
          }
 
          .general-report p {
@@ -84,6 +96,21 @@
              padding: 10px 0;
              border-top: 1px solid #ccc;
              color: #777;
+             margin-top: 20px;
+         }
+
+         .header-buttons button, .header-actions button {
+             padding: 10px 15px;
+             border: none;
+             border-radius: 5px;
+             background-color: #0088cc; /* Cor tema do Telegram */
+             color: white;
+             cursor: pointer;
+             font-size: 1em;
+         }
+
+         .header-buttons button:hover, .header-actions button:hover {
+             background-color: #0077b3;
          }
      </style>
  </head>
@@ -94,8 +121,10 @@
                  <h1>Casa do Trader</h1>
              </div>
              <div class="header-buttons">
-                 <button>Chave Pix Aleatória</button>
-                 <button>Enviar comprovante via Telegram</button>
+                 <button id="copyPixButton" data-pix-key="cec912eb-c181-40e3-accd-381cdd21ae33">Chave Pix Aleatória</button>
+                 <a href="tg://resolve?domain=+5577998175899" target="_blank">
+                     <button>Enviar comprovante via Telegram</button>
+                 </a>
              </div>
              <div class="header-notice">
                  <p>Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
@@ -256,6 +285,25 @@
 
          <footer>
              </footer>
+
+         <script>
+             document.addEventListener('DOMContentLoaded', function() {
+                 const copyPixButton = document.getElementById('copyPixButton');
+
+                 copyPixButton.addEventListener('click', function() {
+                     const pixKey = this.getAttribute('data-pix-key');
+
+                     navigator.clipboard.writeText(pixKey)
+                         .then(() => {
+                             alert('Chave Pix copiada para a área de transferência!');
+                         })
+                         .catch(err => {
+                             console.error('Erro ao copiar a chave Pix: ', err);
+                             alert('Não foi possível copiar a chave Pix.');
+                         });
+                 });
+             });
+         </script>
      </div>
  </body>
-                         </html>
+                          </html>
