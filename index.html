@@ -1,178 +1,261 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa do Trader - Visualização</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <h1>Casa do Trader</h1>
-        </div>
-        <div class="header-buttons">
-            <button>Chave Pix Aleatória</button>
-            <button>Enviar comprovante via Telegram</button>
-        </div>
-        <div class="header-notice">
-            <p>Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
-            <p>Última vaga disponível! Entre em contato para garantir a sua.</p>
-        </div>
-        <div class="header-actions">
-            <button class="mentoria">Mentoria</button>
-            <button class="cadastrar">Cadastre-se na Quotex</button>
-        </div>
-    </header>
+ <html lang="pt-BR">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Casa do Trader - Visualização</title>
+     <style>
+         body {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             margin: 0;
+             padding: 20px;
+             font-family: sans-serif;
+         }
 
-    <section class="client-report">
-        <h2>Relatório de Clientes</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Pos</th>
-                    <th>Cliente</th>
-                    <th>Crédito</th>
-                    <th>Lucro</th>
-                    <th>Perda Dia</th>
-                    <th>Saldo</th>
-                    <th>Sacado</th>
-                    <th>Perda Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1º</td>
-                    <td>Luzia</td>
-                    <td>R$ 37,14</td>
-                    <td>R$ 1,36</td>
-                    <td>R$ -</td>
-                    <td>R$ 38,50</td>
-                    <td>R$ 21,23</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>2º</td>
-                    <td>Eunice</td>
-                    <td>R$ 7,14</td>
-                    <td>R$ 19,59</td>
-                    <td>R$ -</td>
-                    <td>R$ 26,73</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>3º</td>
-                    <td>Isayah</td>
-                    <td>R$ 9,14</td>
-                    <td>R$ 14,58</td>
-                    <td>R$ -</td>
-                    <td>R$ 23,72</td>
-                    <td>R$ 8,00</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>4º</td>
-                    <td>Domingo</td>
-                    <td>R$ 2,14</td>
-                    <td>R$ 19,59</td>
-                    <td>R$ -</td>
-                    <td>R$ 21,73</td>
-                    <td>R$ 3,00</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>5º</td>
-                    <td>Toinha</td>
-                    <td>R$ 17,14</td>
-                    <td>R$ 1,36</td>
-                    <td>R$ -</td>
-                    <td>R$ 18,50</td>
-                    <td>R$ 18,23</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>6º</td>
-                    <td>Kelviane</td>
-                    <td>R$ 3,63</td>
-                    <td>R$ 10,30</td>
-                    <td>R$ -</td>
-                    <td>R$ 13,93</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 1,36</td>
-                </tr>
-                <tr>
-                    <td>7º</td>
-                    <td>Zayla</td>
-                    <td>R$ 3,63</td>
-                    <td>R$ 10,30</td>
-                    <td>R$ -</td>
-                    <td>R$ 13,93</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 1,36</td>
-                </tr>
-                <tr>
-                    <td>8º</td>
-                    <td>Clarice</td>
-                    <td>R$ 10,15</td>
-                    <td>R$ 1,36</td>
-                    <td>R$ -</td>
-                    <td>R$ 11,51</td>
-                    <td>R$ 6,72</td>
-                    <td>R$ 1,36</td>
-                </tr>
-                <tr>
-                    <td>9º</td>
-                    <td>Larissa</td>
-                    <td>R$ 10,00</td>
-                    <td>R$ 1,36</td>
-                    <td>R$ -</td>
-                    <td>R$ 11,36</td>
-                    <td>R$ 21,23</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>10º</td>
-                    <td>Grazi</td>
-                    <td>R$ 3,63</td>
-                    <td>R$ 4,08</td>
-                    <td>R$ -</td>
-                    <td>R$ 7,71</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 1,36</td>
-                </tr>
-                <tr>
-                    <td>11º</td>
-                    <td>Felipe</td>
-                    <td>R$ 2,14</td>
-                    <td>R$ 1,36</td>
-                    <td>R$ -</td>
-                    <td>R$ 3,50</td>
-                    <td>R$ 23,95</td>
-                    <td>R$ 2,86</td>
-                </tr>
-                <tr>
-                    <td>12º</td>
-                    <td>Vaga disponível</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 0,00</td>
-                    <td>R$ 0,00</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+         .container {
+             max-width: 1200px;
+             width: 100%;
+         }
 
-    <section class="general-report">
-        <h2>Relatório Geral</h2>
-        <p><strong>Total dos saldos:</strong> R$ 191,12</p>
-        <p><strong>Total sacado:</strong> R$ 102,36</p>
-        <p><strong>Total de perdas:</strong> R$ 25,46</p>
-    </section>
+         header, .client-report, .general-report, footer {
+             width: 100%;
+             margin-bottom: 20px;
+         }
 
-    <footer>
-        </footer>
-</body>
-                    </html>
+         header {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             padding: 20px 0;
+             border-bottom: 1px solid #ccc;
+         }
+
+         .logo h1 {
+             margin: 0;
+         }
+
+         .header-buttons, .header-notice, .header-actions {
+             display: flex;
+             justify-content: center;
+             gap: 10px;
+             margin-top: 10px;
+             width: 100%;
+         }
+
+         .header-notice {
+             flex-direction: column;
+             align-items: center;
+         }
+
+         .client-report {
+             overflow-x: auto;
+         }
+
+         .client-report table {
+             width: 100%;
+             border-collapse: collapse;
+             margin-top: 10px;
+         }
+
+         .client-report th, .client-report td {
+             border: 1px solid black;
+             padding: 8px;
+             text-align: left;
+             white-space: nowrap;
+         }
+
+         .client-report th {
+             background-color: #ddd;
+         }
+
+         .general-report {
+             padding: 15px;
+             border-radius: 5px;
+         }
+
+         .general-report p {
+             margin: 5px 0;
+         }
+
+         footer {
+             text-align: center;
+             padding: 10px 0;
+             border-top: 1px solid #ccc;
+             color: #777;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <header>
+             <div class="logo">
+                 <h1>Casa do Trader</h1>
+             </div>
+             <div class="header-buttons">
+                 <button>Chave Pix Aleatória</button>
+                 <button>Enviar comprovante via Telegram</button>
+             </div>
+             <div class="header-notice">
+                 <p>Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
+                 <p>Última vaga disponível! Entre em contato para garantir a sua.</p>
+             </div>
+             <div class="header-actions">
+                 <button class="mentoria">Mentoria</button>
+                 <button class="cadastrar">Cadastre-se na Quotex</button>
+             </div>
+         </header>
+
+         <section class="client-report">
+             <h2>Relatório Cliente</h2>
+             <table>
+                 <thead>
+                     <tr>
+                         <th>Pos</th>
+                         <th>Cliente</th>
+                         <th>Crédito</th>
+                         <th>Lucro</th>
+                         <th>Perda Dia</th>
+                         <th>Saldo</th>
+                         <th>Sacado</th>
+                         <th>Perda Total</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>1º</td>
+                         <td>Luzia</td>
+                         <td>R$ 37,14</td>
+                         <td>R$ 1,36</td>
+                         <td>R$ -</td>
+                         <td>R$ 38,50</td>
+                         <td>R$ 21,23</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>2º</td>
+                         <td>Eunice</td>
+                         <td>R$ 7,14</td>
+                         <td>R$ 19,59</td>
+                         <td>R$ -</td>
+                         <td>R$ 26,73</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>3º</td>
+                         <td>Isayah</td>
+                         <td>R$ 9,14</td>
+                         <td>R$ 14,58</td>
+                         <td>R$ -</td>
+                         <td>R$ 23,72</td>
+                         <td>R$ 8,00</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>4º</td>
+                         <td>Domingo</td>
+                         <td>R$ 2,14</td>
+                         <td>R$ 19,59</td>
+                         <td>R$ -</td>
+                         <td>R$ 21,73</td>
+                         <td>R$ 3,00</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>5º</td>
+                         <td>Toinha</td>
+                         <td>R$ 17,14</td>
+                         <td>R$ 1,36</td>
+                         <td>R$ -</td>
+                         <td>R$ 18,50</td>
+                         <td>R$ 18,23</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>6º</td>
+                         <td>Kelviane</td>
+                         <td>R$ 3,63</td>
+                         <td>R$ 10,30</td>
+                         <td>R$ -</td>
+                         <td>R$ 13,93</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 1,36</td>
+                     </tr>
+                     <tr>
+                         <td>7º</td>
+                         <td>Zayla</td>
+                         <td>R$ 3,63</td>
+                         <td>R$ 10,30</td>
+                         <td>R$ -</td>
+                         <td>R$ 13,93</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 1,36</td>
+                     </tr>
+                     <tr>
+                         <td>8º</td>
+                         <td>Clarice</td>
+                         <td>R$ 10,15</td>
+                         <td>R$ 1,36</td>
+                         <td>R$ -</td>
+                         <td>R$ 11,51</td>
+                         <td>R$ 6,72</td>
+                         <td>R$ 1,36</td>
+                     </tr>
+                     <tr>
+                         <td>9º</td>
+                         <td>Larissa</td>
+                         <td>R$ 10,00</td>
+                         <td>R$ 1,36</td>
+                         <td>R$ -</td>
+                         <td>R$ 11,36</td>
+                         <td>R$ 21,23</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>10º</td>
+                         <td>Grazi</td>
+                         <td>R$ 3,63</td>
+                         <td>R$ 4,08</td>
+                         <td>R$ -</td>
+                         <td>R$ 7,71</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 1,36</td>
+                     </tr>
+                     <tr>
+                         <td>11º</td>
+                         <td>Felipe</td>
+                         <td>R$ 2,14</td>
+                         <td>R$ 1,36</td>
+                         <td>R$ -</td>
+                         <td>R$ 3,50</td>
+                         <td>R$ 23,95</td>
+                         <td>R$ 2,86</td>
+                     </tr>
+                     <tr>
+                         <td>12º</td>
+                         <td>Vaga disponível</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 0,00</td>
+                         <td>R$ 0,00</td>
+                     </tr>
+                 </tbody>
+             </table>
+         </section>
+
+         <section class="general-report">
+             <h2>Relatório Geral</h2>
+             <p><strong>Total dos saldos:</strong> R$ 191,12</p>
+             <p><strong>Total sacado:</strong> R$ 102,36</p>
+             <p><strong>Total de perdas:</strong> R$ 25,46</p>
+         </section>
+
+         <footer>
+             </footer>
+     </div>
+ </body>
+                         </html>
