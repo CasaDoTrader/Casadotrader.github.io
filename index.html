@@ -149,10 +149,10 @@
 
          <section class="client-report">
              <h2>Relatório Cliente</h2>
-             <table>
+             <table id="clientTable">
                  <thead>
                      <tr>
-                         <th>Pos</th>
+                         <th>Posição</th>
                          <th>Cliente</th>
                          <th>Crédito</th>
                          <th>Lucro</th>
@@ -313,8 +313,31 @@
                              alert('Não foi possível copiar a chave Pix.');
                          });
                  });
+
+                 const table = document.getElementById('clientTable');
+                 const tbody = table.querySelector('tbody');
+                 const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                 function getSaldoValue(row) {
+                     const saldoText = row.querySelector('td:nth-child(6)').textContent.replace('R$ ', '').replace(',', '.');
+                     return parseFloat(saldoText);
+                 }
+
+                 rows.sort((rowA, rowB) => {
+                     const saldoA = getSaldoValue(rowA);
+                     const saldoB = getSaldoValue(rowB);
+                     return saldoB - saldoA;
+                 });
+
+                 tbody.innerHTML = '';
+
+                 rows.forEach((row, index) => {
+                     const newRow = row.cloneNode(true);
+                     newRow.querySelector('td:first-child').textContent = `${index + 1}º`;
+                     tbody.appendChild(newRow);
+                 });
              });
          </script>
      </div>
  </body>
-                      </html>
+                                </html>
