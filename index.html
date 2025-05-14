@@ -3,7 +3,7 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Casa do Trader - Visualização</title>
+     <title>Casa do Trader</title>
      <style>
          body {
              display: flex;
@@ -34,6 +34,14 @@
 
          .logo h1 {
              margin: 0;
+         }
+
+         .header-notice-top { /* Estilo para o novo aviso */
+             color: red;
+             font-size: 0.9em;
+             margin-top: 5px;
+             text-align: center;
+             width: 100%;
          }
 
          .header-buttons {
@@ -119,6 +127,9 @@
          <header>
              <div class="logo">
                  <h1>Casa do Trader</h1>
+             </div>
+             <div class="header-notice-top">
+                 <p>Aviso: Clientes com crédito zerado não participam do lucro e nem das perdas.</p>
              </div>
              <div class="header-buttons">
                  <button id="copyPixButton" data-pix-key="cec912eb-c181-40e3-accd-381cdd21ae33">Chave Pix Aleatória</button>
@@ -306,4 +317,4 @@
          </script>
      </div>
  </body>
-  </html>
+                      </html>
