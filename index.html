@@ -1,365 +1,127 @@
 <!DOCTYPE html>
- <html lang="pt-BR">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Casa do Trader</title>
-     <style>
-         body {
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             margin: 0;
-             padding: 20px;
-             font-family: sans-serif;
-         }
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa do Trader</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; margin: 10px; }
+        .aviso { background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; text-align: center; }
+        .botoes { display: flex; justify-content: center; margin-bottom: 10px; }
+        .botoes button { padding: 8px 15px; margin: 0 5px; cursor: pointer; }
+        .tc { overflow-x: auto; margin-bottom: 20px; width: 90%; }
+        .tc > table > thead > tr > th { position: sticky; top: 0; z-index: 1; left: auto; }
+        table { border-collapse: collapse; width: auto; }
+        th, td { border: 1px solid black; padding: 8px; min-width: 80px; text-align: left; }
+        #saldoTotalContainer { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="aviso">
+        <h2>Casa do Trader</h2>
+        <p><strong>Aviso:</strong> Clientes com crédito zerado não participam do lucro e nem das perdas.</p>
+        <p>Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
+        <p>Envie o comprovante do seu depósito para a Letícia, sua gerente pessoal para confirmar seu pix.</p>
+    </div>
 
-         .container {
-             max-width: 1200px;
-             width: 100%;
-         }
+    <div class="botoes">
+        <button id="copiarPix">Cópia chave pix Aleatória</button>
+        <button id="abrirChat">Gerente</button>
+        </div>
 
-         header, .client-report, .general-report, footer {
-             width: 100%;
-             margin-bottom: 20px;
-         }
+    <h2>Registro do Cliente</h2>
+    <div class="tc">
+        <table id="registroClientes">
+            <thead><tr><th>Nome</th><th>Crédito</th><th>Lucro</th><th>Saldo</th><th>Perca</th><th>Extrato Saque</th><th>Extrato Depósito</th></tr></thead>
+            <tbody>
+                <tr><td>Luzia</td><td>0.00</td><td>7.90</td><td>0.00</td><td>7.34</td><td>21.23</td><td>50</td></tr>
 
-         header {
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             padding: 20px 0;
-             border-bottom: 1px solid #ccc;
-         }
+                <tr><td>Eunice</td><td>0.00</td><td>0.00</td><td>0.00</td><td>7.00</td><td>26.13</td><td>10</td></tr>
 
-         .logo h1 {
-             margin: 0;
-         }
+                <tr><td>Isayah</td><td>0.00</td><td>0.00</td><td>0.00</td><td>6.94</td><td>29.12</td><td>10</td></tr>
 
-         .header-notice-top { /* Estilo para o novo aviso */
-             color: red;
-             font-size: 0.9em;
-             margin-top: 5px;
-             text-align: center;
-             width: 100%;
-         }
+                <tr><td>Domingo</td><td>0.00</td><td>26.13</td><td>0.00</td><td>5.00</td><td>3.00</td><td>5.00</td></tr>
 
-         .header-buttons {
-             display: flex;
-             justify-content: center;
-             gap: 10px;
-             margin-top: 10px;
-             width: 100%;
-         }
+                <tr><td>Toinha</td><td>0.00</td><td>7.90</td><td>0.00</td><td>7.24</td><td>18.23</td><td>20.00</td></tr>
 
-         .header-notice {
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             margin-top: 10px;
-             width: 100%;
-         }
+                <tr><td>Kelviane</td><td>0.00</td><td>16.18</td><td>0.00</td><td>5.00</td><td>0.00</td><td>5.00</td></tr>
 
-         .header-actions {
-             display: flex;
-             justify-content: center;
-             gap: 10px;
-             margin-top: 10px;
-             width: 100%;
-         }
+                <tr><td>Zayla</td><td>0.00</td><td>16.18</td><td>0.00</td><td>5.00</td><td>0.00</td><td>5.00</td></tr>
 
-         .client-report {
-             overflow-x: auto;
-         }
+               <tr><td>Clarice</td><td>0.00</td><td>7.90</td><td>0.00</td><td>5.00</td><td>6.72</td><td>10.00</td></tr>
 
-         .client-report table {
-             width: 100%;
-             border-collapse: collapse;
-             margin-top: 10px;
-         }
+               <tr><td>Larissa</td><td>0.00</td><td>7.90</td><td>0.00</td><td>9.00</td><td>21.23</td><td>15.00</td></tr>
 
-         .client-report th, .client-report td {
-             border: 1px solid black;
-             padding: 8px;
-             text-align: left;
-             white-space: nowrap;
-         }
+                <tr><td>Grazi</td><td>0.00</td><td>10.62</td><td>0.00</td><td>5.00</td><td>0.00</t><td>5.00</td></tr>
 
-         .client-report th {
-             background-color: #ddd;
-         }
+                <tr><td>Felipe</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>31.85</td><td>5.00</td></tr>
+                </tbody>
+        </table>
+    </div>
 
-         .general-report {
-             padding: 15px;
-             border-radius: 5px;
-             margin-top: 20px;
-         }
+<div><strong>Saldo Total:</strong> <span>173.19</span></div>
 
-         .general-report p {
-             margin: 5px 0;
-         }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabelaClientesBody = document.getElementById('registroClientes').getElementsByTagName('tbody')[0];
+            const linhasClientes = Array.from(tabelaClientesBody.getElementsByTagName('tr'));
+            const botaoCopiarPix = document.getElementById('copiarPix');
+            const botaoAbrirChat = document.getElementById('abrirChat');
+            const chavePix = "cec912eb-c181-40e3-accd-381cdd21ae33";
+            const chatScriptURL = 'https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1';
+            
 
-         footer {
-             text-align: center;
-             padding: 10px 0;
-             border-top: 1px solid #ccc;
-             color: #777;
-             margin-top: 20px;
-         }
+            // Função para converter string de moeda para número
+            const parseCurrency = (value) => parseFloat(value.replace('R$ ', '').replace(',', '.')) || parseFloat(value) || 0;
 
-         .header-buttons button, .header-actions button {
-             padding: 10px 15px;
-             border: none;
-             border-radius: 5px;
-             background-color: #0088cc; /* Cor tema do Telegram */
-             color: white;
-             cursor: pointer;
-             font-size: 1em;
-         }
+            // Função para formatar número para moeda BRL
+            const formatBRL = (value) => {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            };
 
-         .header-buttons button:hover, .header-actions button:hover {
-             background-color: #0077b3;
-         }
+            // Função inicial para calcular e exibir crédito, lucro e saldo
+            const atualizarCredito = () => {
+                linhasClientes.forEach(linha => {
+                    const deposito = parseCurrency(linha.cells[6].textContent);
+                    const perca = parseCurrency(linha.cells[4].textContent);
+                    const credito = deposito - perca;
+                    const lucro = parseCurrency(linha.cells[2].textContent);
+                    const saldo = credito + lucro;
 
-         .gerente-pessoal {
-             display: none; /* Oculta o botão Gerente Pessoal */
-         }
-     </style>
- </head>
- <body>
-     <div class="container">
-         <header>
-             <div class="logo">
-                 <h1>Casa do Trader</h1>
-             </div>
-             <div class="header-notice-top">
-                 <p>Aviso: Clientes com crédito zerado não participam do lucro e nem das perdas.</p>
-             </div>
-             <div class="header-buttons">
-                 <button id="copyPixButton" data-pix-key="cec912eb-c181-40e3-accd-381cdd21ae33">Chave Pix Aleatória</button>
-             </div>
-             <div class="header-notice">
-                 <p>Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
-                 <p>Última vaga disponível! Entre em contato para garantir a sua.</p>
-                 <p>Envie o comprovante do seu depósito para a Letícia, sua gerente pessoal.</p>
-             </div>
-             <div class="header-actions">
-                 <button class="gerente-pessoal">Gerente Pessoal <script src='https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1'></script></button>
-                 <button class="cadastrar">Cadastre-se na Quotex</button>
-             </div>
-         </header>
+                    linha.cells[1].textContent = formatBRL(credito);
+                    linha.cells[2].textContent = formatBRL(lucro);
+                    linha.cells[3].textContent = formatBRL(saldo);
+                    linha.cells[4].textContent = formatBRL(perca);
+                    linha.cells[5].textContent = formatBRL(parseCurrency(linha.cells[5].textContent));
+                    linha.cells[6].textContent = formatBRL(deposito);
+                });
+            };
 
-         <section class="client-report">
-             <h2>Relatório Cliente</h2>
-             <table id="clientTable">
-                 <thead>
-                     <tr>
-                         <th>Posição</th>
-                         <th>Cliente</th>
-                         <th>Crédito</th>
-                         <th>Lucro</th>
-                         <th>Perda Dia</th>
-                         <th>Saldo</th>
-                         <th>Sacado</th>
-                         <th>Perda Total</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     <tr>
-                         <td>1º</td>
-                         <td>Luzia</td>
-                         <td>R$ 36,16</td>
-                         <td>R$ 6,01</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 42,17</td>
-                         <td>R$ 21,23</td>
-                         <td>R$ 4,34</td>
-                     </tr>
-                     <tr>
-                         <td>2º</td>
-                         <td>Eunice</td>
-                         <td>R$ 6,16</td>
-                         <td>R$ 24,24</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 30,39</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 4,04</td>
-                     </tr>
-                     <tr>
-                         <td>3º</td>
-                         <td>Isayah</td>
-                         <td>R$ 8,16</td>
-                         <td>R$ 19,23</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 27,39</td>
-                         <td>R$ 8,00</td>
-                         <td>R$ 3,94</td>
-                     </tr>
-                     <tr>
-                         <td>4º</td>
-                         <td>Domingo</td>
-                         <td>R$ 1,16</td>
-                         <td>R$ 24,24</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 25,39</td>
-                         <td>R$ 3,00</td>
-                         <td>R$ 4,14</td>
-                     </tr>
-                     <tr>
-                         <td>5º</td>
-                         <td>Toinha</td>
-                         <td>R$ 16,16</td>
-                         <td>R$ 6,01</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 22,17</td>
-                         <td>R$ 18,23</td>
-                         <td>R$ 4,24</td>
-                     </tr>
-                     <tr>
-                         <td>6º</td>
-                         <td>Kelviane</td>
-                         <td>R$ 2,65</td>
-                         <td>R$ 14,95</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 17,54</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 2,39</td>
-                     </tr>
-                     <tr>
-                         <td>7º</td>
-                         <td>Zayla</td>
-                         <td>R$ 2,65</td>
-                         <td>R$ 14,95</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 17,54</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 2,36</td>
-                     </tr>
-                     <tr>
-                         <td>8º</td>
-                         <td>Clarice</td>
-                         <td>R$ 9,17</td>
-                         <td>R$ 6,01</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 15,06</td>
-                         <td>R$ 6,72</td>
-                         <td>R$ 2,49</td>
-                     </tr>
-                     <tr>
-                         <td>9º</td>
-                         <td>Larissa</td>
-                         <td>R$ 9,02</td>
-                         <td>R$ 6,01</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 14,91</td>
-                         <td>R$ 21,23</td>
-                         <td>R$ 4,09</td>
-                     </tr>
-                     <tr>
-                         <td>10º</td>
-                         <td>Grazi</td>
-                         <td>R$ 2,65</td>
-                         <td>R$ 8,73</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 11,34</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 2,35</td>
-                     </tr>
-                     <tr>
-                         <td>11º</td>
-                         <td>Felipe</td>
-                         <td>R$ 1,16</td>
-                         <td>R$ 6,01</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 7,05</td>
-                         <td>R$ 23,95</td>
-                         <td>R$ 4,19</td>
-                     </tr>
-                     <tr>
-                         <td>12º</td>
-                         <td>Vaga disponível</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 0,00</td>
-                         <td>R$ 0,00</td>
-                     </tr>
-                 </tbody>
-             </table>
-         </section>
+            atualizarCredito();
 
-         <section class="general-report">
-             <h2>Relatório Geral</h2>
-             <p><strong>Total dos saldos:</strong> R$ 229,84</p>
-             <p><strong>Total sacado:</strong> R$ 102,36</p>
-             <p><strong>Total de perdas:</strong> R$ 36,21</p>
-         </section>
+            // Define o valor do saldo total diretamente no elemento
+            exibirSaldoTotalManual.textContent = formatBRL(saldoTotalManual);
 
-         <footer>
-             </footer>
+            botaoCopiarPix.addEventListener('click', () => {
+                navigator.clipboard.writeText(chavePix)
+                    .then(() => {
+                        alert('Chave Pix copiada para a área de transferência!');
+                    })
+                    .catch(err => {
+                        console.error('Erro ao copiar a chave Pix: ', err);
+                        alert('Não foi possível copiar a chave Pix.');
+                    });
+            });
 
-         <script>
-             document.addEventListener('DOMContentLoaded', function() {
-                 const copyPixButton = document.getElementById('copyPixButton');
-
-                 copyPixButton.addEventListener('click', function() {
-                     const pixKey = this.getAttribute('data-pix-key');
-
-                     navigator.clipboard.writeText(pixKey)
-                         .then(() => {
-                             alert('Chave Pix copiada para a área de transferência!');
-                         })
-                         .catch(err => {
-                             console.error('Erro ao copiar a chave Pix: ', err);
-                             alert('Não foi possível copiar a chave Pix.');
-                         });
-             });
-
-             const table = document.getElementById('clientTable');
-             const tbody = table.querySelector('tbody');
-             const rows = Array.from(tbody.querySelectorAll('tr'));
-             const lucroTotalDistribuido = 20.80;
-             const clientesComCreditoPositivo = rows.filter(row => parseFloat(row.querySelector('td:nth-child(3)').textContent.replace('R$ ', '').replace(',', '.')) > 0);
-             const lucroPorCliente = clientesComCreditoPositivo.length > 0 ? lucroTotalDistribuido / clientesComCreditoPositivo.length : 0;
-             const houveLucro = lucroTotalDistribuido > 0;
-
-             function getCreditoValue(row) {
-                 return parseFloat(row.querySelector('td:nth-child(3)').textContent.replace('R$ ', '').replace(',', '.'));
-             }
-
-             function getLucroValue(row) {
-                 return parseFloat(row.querySelector('td:nth-child(4)').textContent.replace('R$ ', '').replace(',', '.'));
-             }
-
-             function getSaldoValue(row) {
-                 return parseFloat(row.querySelector('td:nth-child(6)').textContent.replace('R$ ', '').replace(',', '.'));
-             }
-
-             tbody.innerHTML = '';
-
-             rows.forEach((rowOriginal, index) => {
-                 const newRow = rowOriginal.cloneNode(true);
-                 const creditoOriginal = getCreditoValue(newRow);
-                 let lucroOriginal = getLucroValue(newRow);
-                 let novoLucro = lucroOriginal;
-
-                 if (creditoOriginal > 0 && houveLucro) {
-                     novoLucro += lucroPorCliente;
-                 }
-
-                 newRow.querySelector('td:nth-child(4)').textContent = `R$ ${novoLucro.toFixed(2).replace('.', ',')}`;
-                 newRow.querySelector('td:nth-child(6)').textContent = `R$ ${(creditoOriginal + novoLucro).toFixed(2).replace('.', ',')}`;
-                 newRow.querySelector('td:first-child').textContent = `${index + 1}º`;
-                 tbody.appendChild(newRow);
-             });
-
-             // Reordena a tabela pelo saldo
-             const rowsToSort = Array.from(tbody.querySelectorAll('tr'));
-             rowsToSort.sort((rowA, rowB) => getSaldoValue(rowB) - getSaldoValue(rowA));
-             tbody.innerHTML = '';
-             rowsToSort.forEach(row => tbody.appendChild(row));
-         });
-     </script>
- </body>
-  </html>
+            botaoAbrirChat.addEventListener('click', () => {
+                const script = document.createElement('script');
+                script.src = chatScriptURL;
+                document.body.appendChild(script);
+            });
+        });
+    </script>
+</body>
+ </html>
