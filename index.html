@@ -19,8 +19,8 @@
 <body>
     <div class="aviso">
         <h2>Casa do Trader</h2>
-        <p><strong>Aviso:</strong> Clientes com crédito zerado não participam do lucro e nem das perdas.</p>
-        <p>Depósito via Pix, com risco de perda de apenas R$3/dia.</p>
+        <p><strong>Aviso:</strong> Cliente com crédito zerado caso estiver com lucro, será deduzido o valor mínimo da perca diária do lucro.</p>
+        <p>Depósito via Pix, com risco de perda de apenas R$5/dia.</p>
         <p>Envie o comprovante do seu depósito para a Letícia, sua gerente pessoal para confirmar seu pix.</p>
     </div>
 
@@ -34,27 +34,27 @@
         <table id="registroClientes">
             <thead><tr><th>Nome</th><th>Crédito</th><th>Lucro</th><th>Saldo</th><th>Perca</th><th>Extrato Saque</th><th>Extrato Depósito</th></tr></thead>
             <tbody>
-                <tr><td>Luzia</td><td>0.00</td><td>8.20</td><td>0.00</td><td>7.34</td><td>36.43</td><td>40</td></tr>
+                <tr><td>Luzia</td><td>0.00</td><td>0.00</td><td>0.00</td><td>7.34</td><td>44.63</td><td>40</td></tr>
 
-                <tr><td>Eunice</td><td>0.00</td><td>10.30</td><td>0.00</td><td>7.00</td><td>26.13</td><td>10</td></tr>
+                <tr><td>Eunice</td><td>0.00</td><td>0.00</td><td>0.00</td><td>7.00</td><td>36.43</td><td>12</td></tr>
 
-                <tr><td>Isayah</td><td>0.00</td><td>10.30</td><td>0.00</td><td>6.94</td><td>29.12</td><td>10</td></tr>
+                <tr><td>Isayah</td><td>0.00</td><td>0.00</td><td>0.00</td><td>6.94</td><td>39.42</td><td>12</td></tr>
 
-                <tr><td>Domingo</td><td>0.00</td><td>26.13</td><td>0.00</td><td>5.00</td><td>3.00</td><td>5.00</td></tr>
+                <tr><td>Domingo</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>29.13</td><td>10.00</td></tr>
 
-                <tr><td>Toinha</td><td>0.00</td><td>18.20</td><td>0.00</td><td>7.24</td><td>18.23</td><td>20.00</td></tr>
+                <tr><td>Toinha</td><td>0.00</td><td>0.00</td><td>0.00</td><td>7.24</td><td>36.43</td><td>20.00</td></tr>
 
-                <tr><td>Kelviane</td><td>0.00</td><td>16.18</td><td>0.00</td><td>5.00</td><td>0.00</td><td>5.00</td></tr>
+                <tr><td>Kelviane</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>16.18</td><td>10.00</td></tr>
 
-                <tr><td>Zayla</td><td>0.00</td><td>16.18</td><td>0.00</td><td>5.00</td><td>0.00</td><td>5.00</td></tr>
+                <tr><td>Zayla</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>16.18</td><td>10.00</td></tr>
 
-               <tr><td>Clarice</td><td>0.00</td><td>3.00</td><td>0.00</td><td>5.00</td><td>21.92</td><td>20.00</td></tr>
+               <tr><td>Clarice</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>24.92</td><td>20.00</td></tr>
 
-               <tr><td>Larissa</td><td>0.00</td><td>18.20</td><td>0.00</td><td>9.00</td><td>21.23</td><td>15.00</td></tr>
+               <tr><td>Larissa</td><td>0.00</td><td>0.00</td><td>0.00</td><td>9.00</td><td>39.43</td><td>15.00</td></tr>
 
                 <tr><td>Grazi</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>13.62</td><td>15.00</td></tr>
 
-                <tr><td>Felipe</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>31.85</td><td>5.00</td></tr>
+                <tr><td>Felipe</td><td>0.00</td><td>0.00</td><td>0.00</td><td>5.00</td><td>31.85</td><td>10.00</td></tr>
                 </tbody>
         </table>
     </div>
@@ -69,7 +69,7 @@
             const botaoAbrirChat = document.getElementById('abrirChat');
             const chavePix = "cec912eb-c181-40e3-accd-381cdd21ae33";
             const chatScriptURL = 'https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1';
-            const saldoTotalManual = 209.17; // Definição do valor do saldo total
+            const saldoTotalManual = 106.48; // Definição do valor do saldo total
             const exibirSaldoTotalElement = document.querySelector('#saldoTotalContainer span'); // Seleciona o span do saldo total
 
             // Função para converter string de moeda para número
