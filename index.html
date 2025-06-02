@@ -26,36 +26,28 @@
 
     <div class="botoes">
         <button id="copiarPix">Cópia chave pix Aleatória</button>
-        <button id="abrirChat">Gerente</button>
-        </div>
+        <button id="abrirChat">Letícia (Gerente)</button>
+        <button id="abrirPDF">Curso em PDF</button>
+        <button id="abrirBroker">Treinamento</button>
+    </div>
 
     <h2>Registro do Cliente</h2>
     <div class="tc">
         <table id="registroClientes">
             <thead><tr><th>Nome</th><th>Crédito</th><th>Lucro</th><th>Saldo</th><th>Perca</th><th>Extrato Saque</th><th>Extrato Depósito</th></tr></thead>
             <tbody>
-                <tr><td>Luzia</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.34</td><td>44.63</td><td>40</td></tr>
-
-                <tr><td>Eunice</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>36.43</td><td>12</td></tr>
-
-                <tr><td>Isayah</td><td>0.00</td><td>6.93</td><td>0.00</td><td>9.94</td><td>39.42</td><td>12</td></tr>
-
-                <tr><td>Domingo</td><td>0.00</td><td>6.93</td><td>0.00</td><td>8.00</td><td>29.13</td><td>10.00</td></tr>
-
-                <tr><td>Toinha</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.24</td><td>36.43</td><td>20.00</td></tr>
-
-                <tr><td>Kelviane</td><td>0.00</td><td>6.93</td><td>0.00</td><td>8.00</td><td>16.18</td><td>10.00</td></tr>
-
-                <tr><td>Zayla</td><td>0.00</td><td>6.93</td><td>0.00</td><td>8.00</td><td>16.18</td><td>10.00</td></tr>
-
-               <tr><td>Clarice</td><td>0.00</td><td>6.93</td><td>0.00</td><td>8.00</td><td>24.92</td><td>20.00</td></tr>
-
-               <tr><td>Larissa</td><td>0.00</td><td>6.93</td><td>0.00</td><td>12.00</td><td>39.43</td><td>15.00</td></tr>
-
-                <tr><td>Grazi</td><td>0.00</td><td>6.93</td><td>0.00</td><td>8.00</td><td>13.62</td><td>15.00</td></tr>
-
-                <tr><td>Felipe</td><td>0.00</td><td>6.93</td><td>0.00</td><td>8.00</td><td>31.85</td><td>10.00</td></tr>
-                </tbody>
+                <tr><td>Luzia</td><td>0.00</td><td>6.93</td><td>0.00</td><td>12.34</td><td>44.63</td><td>40</td></tr>
+                <tr><td>Eunice</td><td>0.00</td><td>6.93</td><td>0.00</td><td>12.00</td><td>36.43</td><td>12</td></tr>
+                <tr><td>Isayah</td><td>0.00</td><td>6.93</td><td>0.00</td><td>11.94</td><td>39.42</td><td>12</td></tr>
+                <tr><td>Domingo</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>29.13</td><td>10.00</td></tr>
+                <tr><td>Toinha</td><td>0.00</td><td>6.93</td><td>0.00</td><td>12.24</td><td>36.43</td><td>20.00</td></tr>
+                <tr><td>Kelviane</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
+                <tr><td>Zayla</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
+               <tr><td>Clarice</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>24.92</td><td>20.00</td></tr>
+               <tr><td>Larissa</td><td>0.00</td><td>6.93</td><td>0.00</td><td>14.00</td><td>39.43</td><td>15.00</td></tr>
+                <tr><td>Grazi</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>13.62</td><td>15.00</td></tr>
+                <tr><td>Felipe</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>31.85</td><td>10.00</td></tr>
+            </tbody>
         </table>
     </div>
 
@@ -67,10 +59,16 @@
             const linhasClientes = Array.from(tabelaClientesBody.getElementsByTagName('tr'));
             const botaoCopiarPix = document.getElementById('copiarPix');
             const botaoAbrirChat = document.getElementById('abrirChat');
+            const botaoAbrirPDF = document.getElementById('abrirPDF');
+            const botaoAbrirBroker = document.getElementById('abrirBroker'); // Seleciona o novo botão 'Abrir Broker'
+
             const chavePix = "cec912eb-c181-40e3-accd-381cdd21ae33";
             const chatScriptURL = 'https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1';
-            const saldoTotalManual = 149.71; // Definição do valor do saldo total
-            const exibirSaldoTotalElement = document.querySelector('#saldoTotalContainer span'); // Seleciona o span do saldo total
+            const saldoTotalManual = 127.71;
+            const exibirSaldoTotalElement = document.querySelector('#saldoTotalContainer span');
+            
+            const pdfURL ="https://hvmipssb.manus.space";
+            const brokerURL = "https://broker-qx.pro/sign-up/?lid=1153131"; // URL do broker
 
             // Função para converter string de moeda para número
             const parseCurrency = (value) => parseFloat(value.replace('R$ ', '').replace(',', '.')) || parseFloat(value) || 0;
@@ -110,6 +108,7 @@
                 console.error('Elemento para exibir o saldo total não encontrado.');
             }
 
+            // Listener para o botão de copiar Pix
             botaoCopiarPix.addEventListener('click', () => {
                 navigator.clipboard.writeText(chavePix)
                     .then(() => {
@@ -121,12 +120,23 @@
                     });
             });
 
+            // Listener para o botão de abrir chat
             botaoAbrirChat.addEventListener('click', () => {
                 const script = document.createElement('script');
                 script.src = chatScriptURL;
                 document.body.appendChild(script);
             });
+
+            // Listener para o botão 'Abrir PDF'
+            botaoAbrirPDF.addEventListener('click', () => {
+                window.open(pdfURL, '_blank');
+            });
+
+            // Listener para o NOVO botão 'Abrir Broker'
+            botaoAbrirBroker.addEventListener('click', () => {
+                window.open(brokerURL, '_blank'); // Abre o link do broker em uma nova aba
+            });
         });
     </script>
 </body>
-                    </html>
+    </html>
