@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <p>06/06/2025 - Atualizem a página as 17:00 hrs</p>
+    <p>Atualizem a página apartir das 17:00 hrs</p>
+    <p>07/06/2025</p>
     <title>Casa do Trader</title>
     <style>
         body { display: flex; flex-direction: column; align-items: center; margin: 10px; }
@@ -15,14 +16,40 @@
         table { border-collapse: collapse; width: auto; }
         th, td { border: 1px solid black; padding: 8px; min-width: 80px; text-align: left; }
         #saldoTotalContainer { margin-top: 20px; font-weight: bold; }
+        .mercado-pago-promo {
+            background-color: #ffe000;
+            border: 1px solid #ccad00;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .mercado-pago-promo h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        .mercado-pago-promo button {
+            background-color: #009ee3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .mercado-pago-promo button:hover {
+            background-color: #007bbd;
+        }
     </style>
 </head>
 <body>
     <div class="aviso">
         <h2>Casa do Trader</h2>
-        <p><strong>Aviso:</strong> Cliente com crédito zerado não participam do lucro.</p>
-        <p>Depósito via Pix, com risco de perda de até R$15 ao dia.</p>
-        <p>Envie o comprovante do seu depósito para a Letícia, sua gerente pessoal para confirmar seu pix.</p>
+        <p><strong>Aviso:</strong> Cliente com CRÉDITO ZERADO não participam do lucro.</p>
+        <p>Risco de PERDA de até R$15 ao DIA.</p>
+        <p>ENVIE o COMPROVANTE do seu PAGAMENTO para a Letícia, sua gerente pessoal para CONFIRMAR seu CRÉDITO.</p>
+        <p><strong>Saque automático na segunda semana após o depósito ou na primeira semama após o crédito zera!</strong> 
     </div>
 
     <div class="botoes">
@@ -32,22 +59,35 @@
         <button id="abrirBroker">Treinar</button>
     </div>
 
+    <div class="mercado-pago-promo">
+        <h3>Seja nosso parceiro!</h3>
+        <p>Para ter acesso a todas as funcionalidades do mercado pago, a conta que mais rende do Brasil! e garantir seu crédito até parcelado! crie sua conta no <strong>Mercado Pago</strong>, nosso banco parceiro!</p>
+        <button id="criarContaMercadoPago">Criar Conta no Mercado Pago</button>
+    </div>
+
+    <div class="botoes">
+        <button onclick="window.open('https://mpago.la/2dtqhKb', '_blank')">CRÉDITO R$5,00</button>
+        <button onclick="window.open('https://mpago.la/2hLuVLC', '_blank')">CRÉDITO R$10,00</button>
+        <button onclick="window.open('https://mpago.la/1gRhpZp', '_blank')">CRÉDITO R$20,00</button>
+        <button onclick="window.open('https://mpago.la/1sb3ijA', '_blank')">CRÉDITO R$50,00</button>
+    </div>
+
     <h2>Registro do Cliente</h2>
     <div class="tc">
         <table id="registroClientes">
             <thead><tr><th>Nome</th><th>Crédito</th><th>Lucro</th><th>Saldo</th><th>Perca</th><th>Extrato Saque</th><th>Extrato Depósito</th></tr></thead>
             <tbody>
-                <tr><td>Luzia</td><td>0.00</td><td>13.38</td><td>0.00</td><td>12.34</td><td>44.63</td><td>40</td></tr>
-                <tr><td>Eunice</td><td>0.00</td><td>6.93</td><td>0.00</td><td>12.00</td><td>36.43</td><td>12</td></tr>
-                <tr><td>Isayah</td><td>0.00</td><td>13.38</td><td>0.00</td><td>11.94</td><td>39.42</td><td>12</td></tr>
-                <tr><td>Domingo</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>29.13</td><td>10.00</td></tr>
-                <tr><td>Toinha</td><td>0.00</td><td>13.38</td><td>0.00</td><td>12.24</td><td>36.43</td><td>20.00</td></tr>
-                <tr><td>Kelviane</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
-                <tr><td>Zayla</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
-               <tr><td>Clarice</td><td>0.00</td><td>13.38</td><td>0.00</td><td>10.00</td><td>24.92</td><td>20.00</td></tr>
-               <tr><td>Larissa</td><td>0.00</td><td>13.38</td><td>0.00</td><td>14.00</td><td>39.43</td><td>15.00</td></tr>
-                <tr><td>Grazi</td><td>0.00</td><td>13.38</td><td>0.00</td><td>10.00</td><td>13.62</td><td>15.00</td></tr>
-                <tr><td>Felipe</td><td>0.00</td><td>6.93</td><td>0.00</td><td>10.00</td><td>31.85</td><td>10.00</td></tr>
+                <tr><td>Luzia</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>12.34</td><td>44.63</td><td>40</td></tr>
+                <tr><td>Eunice</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>12.00</td><td>36.43</td><td>12</td></tr>
+                <tr><td>Isayah</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>11.94</td><td>39.42</td><td>12</td></tr>
+                <tr><td>Domingo</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>29.13</td><td>10.00</td></tr>
+                <tr><td>Toinha</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>12.24</td><td>36.43</td><td>20.00</td></tr>
+                <tr><td>Kelviane</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
+                <tr><td>Zayla</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
+               <tr><td>Clarice</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>10.00</td><td>24.92</td><td>20.00</td></tr>
+               <tr><td>Larissa</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>14.00</td><td>39.43</td><td>15.00</td></tr>
+                <tr><td>Grazi</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>10.00</td><td>13.62</td><td>15.00</td></tr>
+                <tr><td>Felipe</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>31.85</td><td>10.00</td></tr>
             </tbody>
         </table>
     </div>
@@ -61,7 +101,8 @@
             const botaoCopiarPix = document.getElementById('copiarPix');
             const botaoAbrirChat = document.getElementById('abrirChat');
             const botaoAbrirPDF = document.getElementById('abrirPDF');
-            const botaoAbrirBroker = document.getElementById('abrirBroker'); // Seleciona o novo botão 'Abrir Broker'
+            const botaoAbrirBroker = document.getElementById('abrirBroker');
+            const botaoCriarContaMercadoPago = document.getElementById('criarContaMercadoPago');
 
             const chavePix = "+5577998175899";
             const chatScriptURL = 'https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1';
@@ -69,7 +110,8 @@
             const exibirSaldoTotalElement = document.querySelector('#saldoTotalContainer span');
             
             const pdfURL ="https://vjxbvuyu.manus.space";
-            const brokerURL = "https://broker-qx.pro/sign-up/?lid=1153131"; // URL do broker
+            const brokerURL = "https://broker-qx.pro/sign-up/?lid=1153131";
+            const mercadoPagoSignUpURL = "https://mpago.li/2XUNCvq";
 
             // Função para converter string de moeda para número
             const parseCurrency = (value) => parseFloat(value.replace('R$ ', '').replace(',', '.')) || parseFloat(value) || 0;
@@ -135,7 +177,12 @@
 
             // Listener para o NOVO botão 'Abrir Broker'
             botaoAbrirBroker.addEventListener('click', () => {
-                window.open(brokerURL, '_blank'); // Abre o link do broker em uma nova aba
+                window.open(brokerURL, '_blank');
+            });
+
+            // Listener para o NOVO botão 'Criar Conta no Mercado Pago'
+            botaoCriarContaMercadoPago.addEventListener('click', () => {
+                window.open(mercadoPagoSignUpURL, '_blank');
             });
         });
     </script>
