@@ -3,187 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <p>Atualizem a página apartir das 17:00 hrs</p>
-    <p>07/06/2025</p>
     <title>Casa do Trader</title>
     <style>
-        body { display: flex; flex-direction: column; align-items: center; margin: 10px; }
-        .aviso { background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; text-align: center; }
-        .botoes { display: flex; justify-content: center; margin-bottom: 10px; }
-        .botoes button { padding: 8px 15px; margin: 0 5px; cursor: pointer; }
-        .tc { overflow-x: auto; margin-bottom: 20px; width: 90%; }
-        .tc > table > thead > tr > th { position: sticky; top: 0; z-index: 1; left: auto; }
-        table { border-collapse: collapse; width: auto; }
-        th, td { border: 1px solid black; padding: 8px; min-width: 80px; text-align: left; }
-        #saldoTotalContainer { margin-top: 20px; font-weight: bold; }
-        .mercado-pago-promo {
-            background-color: #ffe000;
-            border: 1px solid #ccad00;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-            border-radius: 8px;
+        body { margin: 0; padding: 20px; background-color: #1a1a1a; color: #e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .gold-text { color: #ffd700; }
+        .white-text { color: #ffffff; }
+        .section-box { background-color: #2a2a2a; border: 1px solid #444; padding: 20px; margin-bottom: 30px; text-align: center; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.6); width: 90%; max-width: 700px; }
+        h1, h2 { color: #ffd700; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); margin-top: 0; margin-bottom: 15px; }
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 1.8em; }
+        .info-bar { color: #e0e0e0; text-align: center; margin-bottom: 15px; }
+        .botoes { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; width: 90%; max-width: 800px; }
+        .botoes button, .promo-button {
+            padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: bold; text-transform: uppercase;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            flex-grow: 1; flex-shrink: 1; /* Permite que os botões cresçam e encolham */
+            min-width: 150px; /* Garante uma largura mínima para os botões */
         }
-        .mercado-pago-promo h3 {
-            color: #333;
-            margin-top: 0;
+        .botoes button.gold-btn { background: linear-gradient(to right, #ffd700, #daa520); border: 1px solid #c0a000; color: #333; }
+        .botoes button.gold-btn:hover { background: linear-gradient(to right, #ffeb3b, #fbc02d); box-shadow: 0 5px 10px rgba(0,0,0,0.6); }
+        .promo-button { background-color: #007bbd; color: white; margin-top: 10px; }
+        .promo-button:hover { background-color: #005a8f; box-shadow: 0 5px 10px rgba(0,0,0,0.6); }
+        .tc { overflow-x: auto; margin-bottom: 20px; width: 90%; max-width: 1000px; background-color: #2a2a2a; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.6); }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #444; padding: 12px 15px; min-width: 100px; text-align: left; color: #e0e0e0; }
+        th { background-color: #333; font-weight: bold; text-transform: uppercase; color: #ffd700; border-bottom: 2px solid #ffd700; position: sticky; top: 0; z-index: 1; }
+        tr:nth-child(even) { background-color: #222; }
+        tr:hover { background-color: #383838; }
+        #saldoTotalContainer { margin-top: 20px; font-weight: bold; font-size: 1.5em; color: #ffd700; background-color: #2a2a2a; padding: 15px 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.6); }
+        #saldoTotalContainer span { color: #ffffff; }
+
+        /* Media Queries para responsividade dos botões */
+        @media (max-width: 768px) { /* Em telas de tablet, 2 botões por linha */
+            .botoes button { flex-basis: calc(50% - 15px); }
         }
-        .mercado-pago-promo button {
-            background-color: #009ee3;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .mercado-pago-promo button:hover {
-            background-color: #007bbd;
+        @media (max-width: 480px) { /* Em telas de celular, 1 botão por linha */
+            .botoes button { flex-basis: 100%; }
+            .section-box, .tc { width: 100%; padding-left: 10px; padding-right: 10px; }
+            th, td { padding: 8px 10px; min-width: unset; }
+            h1, h2 { font-size: 1.5em; }
         }
     </style>
 </head>
 <body>
-    <div class="aviso">
-        <h2>Casa do Trader</h2>
-        <p><strong>Aviso:</strong> Cliente com CRÉDITO ZERADO não participam do lucro.</p>
+    <p class="info-bar">Atualizem a página a partir das 17:00 hrs</p>
+    <p class="info-bar">08/06/2025</p>
+
+    <h1>Casa do Trader</h1>
+
+    <div class="section-box">
+        <p><strong class="white-text">Aviso:</strong> Cliente com CRÉDITO ZERADO não participam do lucro.</p>
         <p>Risco de PERDA de até R$15 ao DIA.</p>
         <p>ENVIE o COMPROVANTE do seu PAGAMENTO para a Letícia, sua gerente pessoal para CONFIRMAR seu CRÉDITO.</p>
-        <p><strong>Saque automático na segunda semana após o depósito ou na primeira semama após o crédito zera!</strong> 
+        <p><strong class="white-text">Saque automático na segunda semana após o depósito ou na primeira semana após o crédito zera!</strong></p>
     </div>
 
     <div class="botoes">
-        <button id="copiarPix">Cópia chave pix celula</button>
-        <button id="abrirChat">Letícia (Gerente)</button>
-        <button id="abrirPDF">Curso</button>
-        <button id="abrirBroker">Treinar</button>
+        <button id="copiarPix" class="gold-btn">Cópia chave pix celular</button>
+        <button id="abrirChat" class="gold-btn">Letícia (Gerente)</button>
+        <button id="abrirPDF" class="gold-btn">Curso</button>
+        <button id="abrirBroker" class="gold-btn">Treinar</button>
     </div>
 
-    <div class="mercado-pago-promo">
-        <h3>Seja nosso parceiro!</h3>
-        <p>Para ter acesso a todas as funcionalidades do mercado pago, a conta que mais rende do Brasil! e garantir seu crédito até parcelado! crie sua conta no <strong>Mercado Pago</strong>, nosso banco parceiro!</p>
-        <button id="criarContaMercadoPago">Criar Conta no Mercado Pago</button>
+    <div class="section-box">
+        <h2 class="gold-text">Seja nosso parceiro!</h2>
+        <p>Para ter acesso a todas as funcionalidades do mercado pago, a conta que mais rende do Brasil! e garantir seu crédito até parcelado! crie sua conta no <strong class="white-text">Mercado Pago</strong>, nosso banco parceiro!</p>
+        <button id="criarContaMercadoPago" class="promo-button">Criar Conta no Mercado Pago</button>
     </div>
+        <p><strong class="gold-text">RECARREGUE SEUS CRÉDITOS</strong></p>
+        <p><strong class="gold-text">envie o comprovante para a Letícia</strong></p>
 
     <div class="botoes">
-        <button onclick="window.open('https://mpago.la/2dtqhKb', '_blank')">CRÉDITO R$5,00</button>
-        <button onclick="window.open('https://mpago.la/2hLuVLC', '_blank')">CRÉDITO R$10,00</button>
-        <button onclick="window.open('https://mpago.la/1gRhpZp', '_blank')">CRÉDITO R$20,00</button>
-        <button onclick="window.open('https://mpago.la/1sb3ijA', '_blank')">CRÉDITO R$50,00</button>
+        <button onclick="window.open('https://mpago.la/2dtqhKb', '_blank')" class="gold-btn">CRÉDITO R$5,00</button>
+        <button onclick="window.open('https://mpago.la/2hLuVLC', '_blank')" class="gold-btn">CRÉDITO R$10,00</button>
+        <button onclick="window.open('https://mpago.la/1gRhpZp', '_blank')" class="gold-btn">CRÉDITO R$20,00</button>
+        <button onclick="window.open('https://mpago.la/1sb3ijA', '_blank')" class="gold-btn">CRÉDITO R$50,00</button>
     </div>
 
-    <h2>Registro do Cliente</h2>
+    <h2 class="gold-text">Registro do Cliente</h2>
     <div class="tc">
         <table id="registroClientes">
             <thead><tr><th>Nome</th><th>Crédito</th><th>Lucro</th><th>Saldo</th><th>Perca</th><th>Extrato Saque</th><th>Extrato Depósito</th></tr></thead>
             <tbody>
-                <tr><td>Luzia</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>12.34</td><td>44.63</td><td>40</td></tr>
-                <tr><td>Eunice</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>12.00</td><td>36.43</td><td>12</td></tr>
-                <tr><td>Isayah</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>11.94</td><td>39.42</td><td>12</td></tr>
-                <tr><td>Domingo</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>29.13</td><td>10.00</td></tr>
-                <tr><td>Toinha</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>12.24</td><td>36.43</td><td>20.00</td></tr>
-                <tr><td>Kelviane</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
-                <tr><td>Zayla</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>16.18</td><td>10.00</td></tr>
-               <tr><td>Clarice</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>10.00</td><td>24.92</td><td>20.00</td></tr>
-               <tr><td>Larissa</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>14.00</td><td>39.43</td><td>15.00</td></tr>
-                <tr><td>Grazi</td><td>X.XX</td><td>13.38</td><td>X.XX</td><td>10.00</td><td>13.62</td><td>15.00</td></tr>
-                <tr><td>Felipe</td><td>X.XX</td><td>6.93</td><td>X.XX</td><td>10.00</td><td>31.85</td><td>10.00</td></tr>
+                <tr><td>Luzia</td><td>X.XX</td><td>00.00</td><td>X.XX</td><td>12.34</td><td>58.01</td><td>40</td></tr>
+                <tr><td>Eunice</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>12.00</td><td>43.36</td><td>12</td></tr>
+                <tr><td>Isayah</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>11.94</td><td>52.80</td><td>12</td></tr>
+                <tr><td>Domingo</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>10.00</td><td>36.06</td><td>10.00</td></tr>
+                <tr><td>Toinha</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>12.24</td><td>49.81</td><td>20.00</td></tr>
+                <tr><td>Kelviane</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>10.00</td><td>23.11</td><td>10.00</td></tr>
+                <tr><td>Zayla</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>10.00</td><td>23.11</td><td>10.00</td></tr>
+                <tr><td>Clarice</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>10.00</td><td>38.30</td><td>20.00</td></tr>
+                <tr><td>Larissa</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>14.00</td><td>52.81</td><td>15.00</td></tr>
+                <tr><td>Grazi</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>10.00</td><td>27.00</td><td>15.00</td></tr>
+                <tr><td>Felipe</td><td>X.XX</td><td>0.00</td><td>X.XX</td><td>10.00</td><td>38.78</td><td>10.00</td></tr>
             </tbody>
         </table>
     </div>
 
-<div id="saldoTotalContainer"><strong>Saldo Total:</strong> <span>0.00</span></div>
+    <div id="saldoTotalContainer"><strong>Saldo Total:</strong> <span>0.00</span></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const tabelaClientesBody = document.getElementById('registroClientes').getElementsByTagName('tbody')[0];
-            const linhasClientes = Array.from(tabelaClientesBody.getElementsByTagName('tr'));
-            const botaoCopiarPix = document.getElementById('copiarPix');
-            const botaoAbrirChat = document.getElementById('abrirChat');
-            const botaoAbrirPDF = document.getElementById('abrirPDF');
-            const botaoAbrirBroker = document.getElementById('abrirBroker');
-            const botaoCriarContaMercadoPago = document.getElementById('criarContaMercadoPago');
+            const getById = id => document.getElementById(id);
+            const querySel = sel => document.querySelector(sel);
+            const tBody = getById('registroClientes').getElementsByTagName('tbody')[0];
+            const rows = Array.from(tBody.getElementsByTagName('tr'));
+            const saldoTotalElement = querySel('#saldoTotalContainer span');
 
-            const chavePix = "+5577998175899";
-            const chatScriptURL = 'https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1';
-            const saldoTotalManual = 166.41;
-            const exibirSaldoTotalElement = document.querySelector('#saldoTotalContainer span');
-            
-            const pdfURL ="https://vjxbvuyu.manus.space";
-            const brokerURL = "https://broker-qx.pro/sign-up/?lid=1153131";
-            const mercadoPagoSignUpURL = "https://mpago.li/2XUNCvq";
+            const pixKey = "+5577998175899";
+            // URL do chat corrigida para a versão original
+            const chatUrl = 'https://cdn.jotfor.ms/agent/embedjs/0196d3c3aab67614915661d0e7e0e56b9f74/embed.js?skipWelcome=1&maximizable=1';
+            const coursePdfUrl ="https://vjxbvuyu.manus.space";
+            const brokerUrl = "https://broker-qx.pro/sign-up/?lid=1153131";
+            const mpSignUpUrl = "https://mpago.li/2XUNCvq";
+            const manualTotal = 51.48;
 
-            // Função para converter string de moeda para número
-            const parseCurrency = (value) => parseFloat(value.replace('R$ ', '').replace(',', '.')) || parseFloat(value) || 0;
+            const parseCur = val => parseFloat(val.replace('R$ ', '').replace(',', '.')) || parseFloat(val) || 0;
+            const formatBRL = val => new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(val);
 
-            // Função para formatar número para moeda BRL
-            const formatBRL = (value) => {
-                return new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(value);
-            };
-
-            // Função inicial para calcular e exibir crédito, lucro e saldo
-            const atualizarCredito = () => {
-                linhasClientes.forEach(linha => {
-                    const deposito = parseCurrency(linha.cells[6].textContent);
-                    const perca = parseCurrency(linha.cells[4].textContent);
-                    const credito = deposito - perca;
-                    const lucro = parseCurrency(linha.cells[2].textContent);
-                    const saldo = credito + lucro;
-
-                    linha.cells[1].textContent = formatBRL(credito);
-                    linha.cells[2].textContent = formatBRL(lucro);
-                    linha.cells[3].textContent = formatBRL(saldo);
-                    linha.cells[4].textContent = formatBRL(perca);
-                    linha.cells[5].textContent = formatBRL(parseCurrency(linha.cells[5].textContent));
-                    linha.cells[6].textContent = formatBRL(deposito);
-                });
-            };
-
-            atualizarCredito();
-
-            // Define o valor do saldo total no elemento correto
-            if (exibirSaldoTotalElement) {
-                exibirSaldoTotalElement.textContent = formatBRL(saldoTotalManual);
-            } else {
-                console.error('Elemento para exibir o saldo total não encontrado.');
-            }
-
-            // Listener para o botão de copiar Pix
-            botaoCopiarPix.addEventListener('click', () => {
-                navigator.clipboard.writeText(chavePix)
-                    .then(() => {
-                        alert('Chave Pix copiada para a área de transferência!');
-                    })
-                    .catch(err => {
-                        console.error('Erro ao copiar a chave Pix: ', err);
-                        alert('Não foi possível copiar a chave Pix.');
-                    });
+            rows.forEach(r => {
+                const dep = parseCur(r.cells[6].textContent);
+                const loss = parseCur(r.cells[4].textContent);
+                const cred = dep - loss;
+                const profit = parseCur(r.cells[2].textContent);
+                const bal = cred + profit;
+                r.cells[1].textContent = formatBRL(cred);
+                r.cells[2].textContent = formatBRL(profit);
+                r.cells[3].textContent = formatBRL(bal);
+                r.cells[4].textContent = formatBRL(loss);
+                r.cells[5].textContent = formatBRL(parseCur(r.cells[5].textContent));
+                r.cells[6].textContent = formatBRL(dep);
             });
+            saldoTotalElement.textContent = formatBRL(manualTotal);
 
-            // Listener para o botão de abrir chat
-            botaoAbrirChat.addEventListener('click', () => {
-                const script = document.createElement('script');
-                script.src = chatScriptURL;
-                document.body.appendChild(script);
+            getById('copiarPix').addEventListener('click', () => {
+                navigator.clipboard.writeText(pixKey).then(() => alert('Chave Pix copiada!')).catch(e => { console.error('Erro ao copiar Pix:', e); alert('Não foi possível copiar Pix.'); });
             });
-
-            // Listener para o botão 'Abrir PDF'
-            botaoAbrirPDF.addEventListener('click', () => {
-                window.open(pdfURL, '_blank');
-            });
-
-            // Listener para o NOVO botão 'Abrir Broker'
-            botaoAbrirBroker.addEventListener('click', () => {
-                window.open(brokerURL, '_blank');
-            });
-
-            // Listener para o NOVO botão 'Criar Conta no Mercado Pago'
-            botaoCriarContaMercadoPago.addEventListener('click', () => {
-                window.open(mercadoPagoSignUpURL, '_blank');
-            });
+            getById('abrirChat').addEventListener('click', () => { const s = document.createElement('script'); s.src = chatUrl; document.body.appendChild(s); });
+            getById('abrirPDF').addEventListener('click', () => window.open(coursePdfUrl, '_blank'));
+            getById('abrirBroker').addEventListener('click', () => window.open(brokerUrl, '_blank'));
+            getById('criarContaMercadoPago').addEventListener('click', () => window.open(mpSignUpUrl, '_blank'));
         });
     </script>
 </body>
