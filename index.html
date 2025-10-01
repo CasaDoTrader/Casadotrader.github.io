@@ -1,1 +1,593 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Login & Cadastro</title><style>body{font-family:sans-serif;background-color:#f0f2f5;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}.container{background-color:#fff;padding:20px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.12);width:300px}h2{text-align:center;color:#1c2738}input[type=text],input[type=password]{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box}button{width:100%;padding:10px;background-color:#1877f2;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:16px;margin-top:10px}.link{display:block;text-align:center;margin-top:15px;font-size:14px}.link a{color:#1877f2;text-decoration:none;cursor:pointer}</style></head><body><div class="container"><div id="loginPanel"><h2>Entrar</h2><form id="loginForm"><input type="text" id="cpfLogin" placeholder="CPF" required><input type="password" id="senhaLogin" placeholder="Senha" required><button type="submit">Login</button></form><p class="link">Não tem uma conta? <a id="showRegister">Cadastre-se</a></p><p id="mensagemErroLogin" style="color:red;text-align:center;margin-top:10px;display:none;">CPF ou Senha incorretos.</p></div><div id="registerPanel" style="display:none;"><h2>Cadastro</h2><form id="cadastroForm"><input type="text" id="nome" placeholder="Nome Completo" required><input type="password" id="senhaCad" placeholder="Senha" required><input type="text" id="cpf" placeholder="CPF" required><button type="submit">Cadastrar</button></form><p class="link">Já tem uma conta? <a id="showLogin">Fazer Login</a></p><p id="mensagemErroCadastro" style="color:green;text-align:center;margin-top:10px;display:none;">Cadastro realizado com sucesso!</p></div></div><script>document.getElementById("showRegister").addEventListener("click",()=>{document.getElementById("loginPanel").style.display="none";document.getElementById("registerPanel").style.display="block"});document.getElementById("showLogin").addEventListener("click",()=>{document.getElementById("registerPanel").style.display="none";document.getElementById("loginPanel").style.display="block"});document.getElementById("cadastroForm").addEventListener("submit",function(e){e.preventDefault();const nome=document.getElementById("nome").value;const senha=document.getElementById("senhaCad").value;const cpf=document.getElementById("cpf").value;localStorage.setItem(cpf,JSON.stringify({nome:nome,senha:senha}));document.getElementById("mensagemErroCadastro").style.display="block";setTimeout(()=>{document.getElementById("mensagemErroCadastro").style.display="none";document.getElementById("registerPanel").style.display="none";document.getElementById("loginPanel").style.display="block";document.getElementById("cadastroForm").reset()},1500)});document.getElementById("loginForm").addEventListener("submit",function(e){e.preventDefault();const cpf=document.getElementById("cpfLogin").value;const senha=document.getElementById("senhaLogin").value;const usuarioSalvo=localStorage.getItem(cpf);const msgErro=document.getElementById("mensagemErroLogin");if(usuarioSalvo){const usuario=JSON.parse(usuarioSalvo);if(usuario.senha===senha){msgErro.style.display="none";window.location.href="painel-jogador.html"}else{msgErro.style.display="block"}}else{msgErro.style.display="block"}})</script></body></html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortaleza - Jogo de Empréstimo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #mapa { 
+            height: 100vh; 
+            width: 100%; 
+        }
+        /* Estilos dos Botões e Popups (Mantidos) */
+        .loan-button, .exchange-button {
+            display: block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-weight: bold; 
+        }
+        .loan-button { background-color: #007bff; }
+        .withdrawal-section { padding: 10px 0; border-top: 1px dashed #ccc; margin-top: 10px; }
+        .withdrawal-section input { width: 100%; padding: 5px; box-sizing: border-box; margin-bottom: 5px; }
+        .withdrawal-button { background-color: #28a745; }
+        .whatsapp-button { 
+            background-color: #25D366; 
+            text-decoration: none; 
+            color: white !important; 
+            margin-top: 15px; 
+            display: block;
+            padding: 8px 12px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: bold;
+            pointer-events: auto; /* Padrão */
+        }
+        /* NOVO: Estilo para desabilitar visualmente o botão do WhatsApp */
+        .whatsapp-button.disabled {
+            background-color: #7f7f7f; /* Cinza para desabilitado */
+            cursor: not-allowed;
+            pointer-events: none; /* Desabilita clique */
+        }
+        .exchange-button.cr-to-pix { background-color: #dc3545; }
+        .exchange-button.pix-to-cr { background-color: #17a2b8; }
+        .loan-button:disabled, .exchange-button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        
+        /* Estilo para o painel de informações do jogador */
+        #game-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 5px;
+            z-index: 1000; 
+            font-family: sans-serif;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.6; 
+            cursor: pointer; 
+        }
+        
+        /* Estilo para esconder os detalhes por padrão */
+        #hidden-details {
+            display: none;
+            border-top: 1px solid #ccc;
+            margin-top: 5px;
+            padding-top: 5px;
+        }
+        
+        /* Estilo para mostrar os detalhes quando a classe 'visible' é adicionada */
+        #hidden-details.visible {
+            display: block;
+        }
+
+        #inventory-display {
+            font-size: 0.8em;
+            line-height: 1.4;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            border-top: 1px solid #ccc;
+            padding-top: 5px;
+        }
+        .income-control {
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .leaflet-popup-content-wrapper {
+             max-width: 200px; 
+        }
+        .validation-button {
+            background-color: #ffc107; /* Amarelo para validação */
+            color: black;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="mapa"></div>
+    
+    <div id="game-status" onclick="toggleVisibility()">
+        Cr$: <span id="player-money-display">0</span>
+        
+        <div id="hidden-details">
+            R$: <span id="player-pix-display">0</span><br>
+            Dívida: Cr$ <span id="player-debt-display">0</span>
+            
+            <div id="inventory-display">
+                <span style="font-weight: bold; display: block; margin-bottom: 5px;">Inventário de Saques:</span>
+                <ul id="withdrawal-list" style="padding-left: 15px; margin: 0;">
+                    </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // =========================================================
+        // === VARIÁVEIS DO JOGO E LÓGICA DE DÍVIDA/CÂMBIO =========
+        // =========================================================
+        let playerMoney = 0;    
+        let playerPix = 0;      
+        // withdrawalHistory armazena objetos: { id: "CODIGO", amount: 10.00, validated: false }
+        let withdrawalHistory = []; 
+        
+        const LOAN_AMOUNT = 300; 
+        const CRUZEIRO_SYMBOL = 'Cr$'; 
+        const PIX_SYMBOL = 'R$'; 
+        let hasLoan = false; 
+        let playerDebt = 0; 
+        
+        const LOAN_INTEREST_RATE = 1.0;     
+        const DEBT_REPAYMENT_RATE = 0.5;    
+        
+        const CR_TRANSACTION_AMOUNT = 50;     
+        const PIX_TRANSACTION_AMOUNT = 0.50;  
+        const EXCHANGE_TAX_CR_TO_PIX = 0.10; 
+        const CRUZEIRO_TO_PIX_RATE = 0.01;   
+        
+        // NOVO: Número do operador para receber a mensagem PIX
+        // *** ATUALIZE ESTE NÚMERO ***
+        const OPERATOR_WHATSAPP_NUMBER = '5585999999999'; 
+        const MIN_WITHDRAWAL_AMOUNT = 1; 
+
+        // NOVO: Função para alternar a visibilidade dos detalhes
+        window.toggleVisibility = function() {
+            const details = document.getElementById('hidden-details');
+            details.classList.toggle('visible');
+        }
+
+        // Função para formatar e atualizar todos os valores na tela
+        function updateMoneyDisplay() {
+            document.getElementById('player-money-display').textContent = 
+                playerMoney.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            
+            document.getElementById('player-pix-display').textContent = 
+                playerPix.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            document.getElementById('player-debt-display').textContent = 
+                playerDebt.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            
+            updateLoanButtonState();
+            updateExchangeButtons(); // Atualiza botões de câmbio também
+            updateInventoryDisplay(); 
+        }
+        
+        // Função para garantir um ID de transação único
+        function generateUniqueTransactionId() {
+            let id;
+            let isUnique = false;
+            while (!isUnique) {
+                id = Math.random().toString(36).substring(2, 10).toUpperCase();
+                if (!withdrawalHistory.some(item => item.id === id)) {
+                    isUnique = true;
+                }
+            }
+            return id;
+        }
+        
+        // Função para atualizar a lista de inventário na tela
+        function updateInventoryDisplay() {
+            const listElement = document.getElementById('withdrawal-list');
+            listElement.innerHTML = ''; 
+            
+            if (withdrawalHistory.length === 0) {
+                listElement.innerHTML = '<li style="list-style: none;">Nenhum saque pendente.</li>';
+                return;
+            }
+
+            withdrawalHistory.forEach(item => {
+                const status = item.validated ? 
+                    '<span style="color: green;"> (Validado)</span>' : 
+                    '<span style="color: red;"> (Pendente)</span>';
+                
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `**R$ ${item.amount.toFixed(2).replace('.', ',')}** (ID: ${item.id})${status}`;
+                listElement.appendChild(listItem);
+            });
+        }
+        
+        // --- LÓGICA DE VALIDAÇÃO (ATUALIZADA) ---
+        
+        // NOVO: Função para atualizar o HREF do botão do WhatsApp com dados
+        function updateWhatsappLink(transaction) { 
+            const whatsappButton = document.getElementById('whatsapp-loterica-button');
+            if (!whatsappButton) return;
+            
+            // Se não houver transação ou não estiver validada, desativa
+            if (!transaction || !transaction.validated) {
+                whatsappButton.classList.add('disabled');
+                whatsappButton.textContent = `FINALIZAR SAQUE (WhatsApp)`;
+                whatsappButton.href = `#`; // Link inativo
+                return;
+            }
+
+            const code = transaction.id;
+            const amountFormatted = transaction.amount.toFixed(2).replace('.', ',');
+
+            // Preenche a mensagem do WhatsApp com o ID e o Valor seguros
+            const message = encodeURIComponent(`Olá, sou o jogador e gostaria de finalizar meu saque.
+        
+*ID de Transação Validado (Lotérica):* ${code} 
+*Valor a Receber (Confirmado):* R$ ${amountFormatted}
+
+*Minha Chave Pix (aqui o jogador digita/cola a chave):*`);
+
+            // Define o link dinâmico com o número e a mensagem pré-preenchida
+            whatsappButton.href = `https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${message}`; 
+            
+            whatsappButton.classList.remove('disabled');
+            whatsappButton.textContent = `FINALIZAR SAQUE R$ ${amountFormatted} (Cód. ${code})`;
+        }
+
+        window.validateWithdrawalCode = function() {
+            const input = document.getElementById('loterica-code-input');
+            const code = input.value.trim().toUpperCase();
+            
+            // Desativa/reseta o botão antes de validar
+            updateWhatsappLink(null); 
+
+            if (!code) {
+                alert("Por favor, digite o código de transação.");
+                return;
+            }
+
+            // Procura o código no histórico
+            const transaction = withdrawalHistory.find(item => item.id === code);
+
+            if (transaction) {
+                if (transaction.validated) {
+                    // Se já foi validado antes, reativa o botão com os dados para envio
+                    updateWhatsappLink(transaction);
+                    alert(`O código ${code} já foi validado. Por favor, utilize o botão abaixo para enviar o código e o valor novamente.`);
+                } else {
+                    // A transação é validada pela primeira vez
+                    transaction.validated = true;
+                    updateMoneyDisplay(); // Atualiza o inventário com status "Validado"
+
+                    // ATUALIZA O LINK DO WHATSAPP COM O OBJETO DA TRANSAÇÃO
+                    updateWhatsappLink(transaction);
+
+                    alert(`Código ${code} validado com sucesso! Clique no botão abaixo para ir ao WhatsApp e enviar o código e sua chave Pix ao operador.`);
+                }
+            } else {
+                alert("ERRO: Código de transação não encontrado ou inválido.");
+            }
+        }
+        
+        // --- LÓGICA DO EMPRÉSTIMO --- (Mantida)
+
+        function updateLoanButtonState() {
+            const button = document.getElementById('loan-button');
+            if (button) {
+                if (hasLoan) {
+                    button.disabled = true;
+                    button.textContent = `Crédito Concedido (Dívida: ${CRUZEIRO_SYMBOL} ${playerDebt.toLocaleString('pt-BR')})`;
+                } else {
+                    button.disabled = false;
+                    button.textContent = `Fazer Empréstimo (${CRUZEIRO_SYMBOL} ${LOAN_AMOUNT})`;
+                }
+            }
+        }
+
+        function payDebt(amount) {
+            if (playerDebt <= 0) { return amount; }
+
+            const repaymentAmount = amount * DEBT_REPAYMENT_RATE;
+            const actualRepayment = Math.min(repaymentAmount, playerDebt);
+
+            playerDebt -= actualRepayment;
+            const netIncome = amount - actualRepayment;
+            
+            if (playerDebt <= 0) {
+                playerDebt = 0;
+                hasLoan = false;
+                alert(`Parabéns! Sua dívida de ${CRUZEIRO_SYMBOL} ${(LOAN_AMOUNT * (1 + LOAN_INTEREST_RATE)).toLocaleString('pt-BR')} foi quitada!`);
+            }
+
+            return netIncome;
+        }
+
+        window.requestLoan = function() {
+            if (hasLoan) {
+                alert("Você já possui uma dívida de " + CRUZEIRO_SYMBOL + " " + playerDebt.toLocaleString('pt-BR') + " pendente.");
+                return;
+            }
+
+            playerMoney += LOAN_AMOUNT; 
+            playerDebt = LOAN_AMOUNT * (1 + LOAN_INTEREST_RATE);
+            hasLoan = true; 
+            
+            updateMoneyDisplay();      
+            
+            alert(`Empréstimo de ${CRUZEIRO_SYMBOL} ${LOAN_AMOUNT} recebido! Dívida total (com 100% de juros): ${CRUZEIRO_SYMBOL} ${playerDebt.toLocaleString('pt-BR')}.`);
+            
+            updateLoanButtonState();
+        }
+
+        // --- LÓGICA DO SAQUE PIX (BCB) --- (Mantida)
+        
+        window.requestWithdrawal = function() {
+            const input = document.getElementById('withdrawal-amount');
+            // Garante que o valor seja float e arredonda para 2 casas
+            const amount = parseFloat(parseFloat(input.value).toFixed(2)); 
+            
+            if (isNaN(amount) || amount < MIN_WITHDRAWAL_AMOUNT) {
+                alert(`Valor inválido. O saque mínimo é R$ ${MIN_WITHDRAWAL_AMOUNT.toFixed(2).replace('.', ',')}.`);
+                return;
+            }
+            
+            if (amount > playerPix) {
+                alert(`Saldo Pix insuficiente. Saldo atual: R$ ${playerPix.toFixed(2).replace('.', ',')}.`);
+                return;
+            }
+
+            // DEDUÇÃO E GERAÇÃO DE ID ÚNICO
+            playerPix -= amount;
+            const transactionId = generateUniqueTransactionId(); 
+            // Adiciona a transação com status 'validated: false' (Pendente)
+            withdrawalHistory.push({ id: transactionId, amount: amount, validated: false }); 
+
+            updateMoneyDisplay();
+            
+            // LIMPA O CAMPO E EXIBE ALERTA
+            input.value = '';
+            
+            alert(`Saque de R$ ${amount.toFixed(2).replace('.', ',')} solicitado. O ID ${transactionId} foi adicionado ao seu Inventário (Pendente). Agora, vá até a Casa Lotérica (Loteria Popular) para validar o código.`);
+        }
+
+        // --- LÓGICA DO CÂMBIO --- (Mantida)
+        
+        function updateExchangeButtons() {
+            const exchangeDisabledByDebt = hasLoan;
+            const crToPixButton = document.getElementById('exchange-cr-to-pix');
+            const pixToCrButton = document.getElementById('exchange-pix-to-cr');
+            
+            if (!crToPixButton || !pixToCrButton) return; 
+            
+            const pixValueCrToPix = CR_TRANSACTION_AMOUNT * CRUZEIRO_TO_PIX_RATE * (1 - EXCHANGE_TAX_CR_TO_PIX);
+            const cruzeiroReceivedPixToCr = PIX_TRANSACTION_AMOUNT / CRUZEIRO_TO_PIX_RATE;
+            const pixCostPixToCr = PIX_TRANSACTION_AMOUNT;
+
+
+            if (crToPixButton) {
+                crToPixButton.disabled = exchangeDisabledByDebt || playerMoney < CR_TRANSACTION_AMOUNT;
+                
+                if (exchangeDisabledByDebt) {
+                    crToPixButton.textContent = 'Troca Bloqueada (Pague a dívida Cr$ ' + playerDebt.toLocaleString('pt-BR') + ')';
+                } else {
+                    crToPixButton.textContent = `Trocar Cr$ ${CR_TRANSACTION_AMOUNT} por R$ ${pixValueCrToPix.toFixed(2).replace('.', ',')} (Taxa de 10%)`;
+                }
+            }
+            
+            if (pixToCrButton) {
+                pixToCrButton.disabled = exchangeDisabledByDebt || playerPix < pixCostPixToCr;
+
+                if (exchangeDisabledByDebt) {
+                    pixToCrButton.textContent = 'Troca Bloqueada (Pague a dívida Cr$ ' + playerDebt.toLocaleString('pt-BR') + ')';
+                } else {
+                    pixToCrButton.textContent = `Trocar R$ ${pixCostPixToCr.toFixed(2).replace('.', ',')} por Cr$ ${cruzeiroReceivedPixToCr} (Sem Taxa)`;
+                }
+            }
+        }
+        
+        window.requestExchange = function(type) {
+            if (hasLoan) {
+                alert("O Câmbio está bloqueado. Você deve quitar sua dívida de Cr$ " + playerDebt.toLocaleString('pt-BR') + " com o Banco Central (BCB) antes de realizar transações de câmbio.");
+                return;
+            }
+
+            if (type === 'cr-to-pix') {
+                if (playerMoney < CR_TRANSACTION_AMOUNT) {
+                    alert(`Saldo insuficiente. Você precisa de pelo menos ${CRUZEIRO_SYMBOL} ${CR_TRANSACTION_AMOUNT} para esta troca.`);
+                    return;
+                }
+                
+                const pixReceived = CR_TRANSACTION_AMOUNT * CRUZEIRO_TO_PIX_RATE * (1 - EXCHANGE_TAX_CR_TO_PIX);
+                
+                playerMoney -= CR_TRANSACTION_AMOUNT;
+                playerPix += pixReceived;
+                
+                alert(`Troca de ${CRUZEIRO_SYMBOL} ${CR_TRANSACTION_AMOUNT} por ${PIX_SYMBOL} ${pixReceived.toFixed(2).replace('.', ',')}. Taxa de 10% aplicada.`);
+
+            } else if (type === 'pix-to-cr') {
+                const pixCostPixToCr = PIX_TRANSACTION_AMOUNT;
+                const cruzeiroReceived = PIX_TRANSACTION_AMOUNT / CRUZEIRO_TO_PIX_RATE;
+                
+                if (playerPix < pixCostPixToCr) {
+                    alert(`Saldo insuficiente. Você precisa de pelo menos ${PIX_SYMBOL} ${pixCostPixToCr.toFixed(2).replace('.', ',')} para esta troca.`);
+                    return;
+                }
+                
+                playerPix -= pixCostPixToCr;
+                playerMoney += cruzeiroReceived;
+                
+                alert(`Troca de ${PIX_SYMBOL} ${pixCostPixToCr.toFixed(2).replace('.', ',')} por ${CRUZEIRO_SYMBOL} ${cruzeiroReceived}. Nenhuma taxa foi aplicada.`);
+            }
+
+            updateMoneyDisplay();
+            updateExchangeButtons(); 
+        }
+
+
+        // --- LÓGICA DE SIMULAÇÃO (TESTE) --- (Mantida)
+
+        window.simulateIncome = function() {
+            const income = 100;
+            
+            let netGain = income;
+            let debtPaid = 0;
+
+            if (hasLoan) {
+                const initialDebt = playerDebt;
+                netGain = payDebt(income); 
+                debtPaid = initialDebt - playerDebt;
+            }
+            
+            playerMoney += netGain;
+
+            let message = `Você ganhou ${CRUZEIRO_SYMBOL} ${income}.`;
+            if (debtPaid > 0) {
+                 message += ` ${CRUZEIRO_SYMBOL} ${debtPaid.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} foram usados para pagar a dívida.`;
+            }
+            message += ` Ganho líquido: ${CRUZEIRO_SYMBOL} ${netGain.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}.`;
+
+            alert(message);
+
+            updateMoneyDisplay();
+        }
+
+
+        // =========================================================
+        // === CONFIGURAÇÃO DO MAPA ================================
+        // =========================================================
+        
+        const FORTALEZA_COORDS = [-3.7319, -38.5267];
+        const ZOOM_LEVEL = 13; 
+        const BCB_COORDS = [-3.7341, -38.5273];
+        const TOURSTAR_COORDS = [-3.7268, -38.4980]; 
+        const LOTERICA_COORDS = [-3.7386571, -38.4852458]; 
+        
+        // ÍCONES
+        const bankIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3673/3673419.png', 
+            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]      
+        });
+
+        const exchangeIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3238/3238479.png', 
+            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]      
+        });
+
+        const lotteryIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3673/3673385.png', 
+            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]      
+        });
+
+        window.onload = function() {
+            
+            const map = L.map('mapa').setView(FORTALEZA_COORDS, ZOOM_LEVEL);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+            
+            map.invalidateSize(); 
+
+            // 4. Marcador do BCB (Empréstimo e Iniciação de Saque)
+            const popupContentBCB = `
+                <b>Banco Central do Brasil (BCB)</b>
+                <hr style="margin: 5px 0;">
+                
+                <span style="font-weight: bold; color: red; display: block; margin-bottom: 5px;">Empréstimo (100% Juros)</span>
+                <button id="loan-button" class="loan-button" onclick="requestLoan()">
+                    Fazer Empréstimo (${CRUZEIRO_SYMBOL} ${LOAN_AMOUNT})
+                </button>
+                
+                <div class="withdrawal-section">
+                    <span style="font-weight: bold; color: #28a745; display: block; margin-bottom: 5px;">Solicitar Saque Pix (Mín: R$ ${MIN_WITHDRAWAL_AMOUNT.toFixed(2).replace('.', ',')})</span>
+                    <p style="font-size: 0.8em; margin: 0 0 5px 0;">*O ID será gerado e enviado ao seu Inventário.</p>
+                    <input type="number" id="withdrawal-amount" placeholder="Valor em R$" min="${MIN_WITHDRAWAL_AMOUNT}" step="0.01">
+                    <button class="loan-button withdrawal-button" onclick="requestWithdrawal()">
+                        Gerar ID de Saque
+                    </button>
+                </div>
+            `;
+
+            L.marker(BCB_COORDS, { icon: bankIcon })
+                .addTo(map)
+                .bindPopup(popupContentBCB); 
+
+            // 5. Marcador da Casa de Câmbio (TourStar)
+            const popupContentExchange = `
+                <b>TourStar Câmbio e Turismo</b><br>
+                Av. da Abolição, Meireles.<br>
+                <hr style="margin: 5px 0;">
+                
+                <button id="exchange-cr-to-pix" class="exchange-button cr-to-pix" onclick="requestExchange('cr-to-pix')">
+                    </button>
+                <button id="exchange-pix-to-cr" class="exchange-button pix-to-cr" onclick="requestExchange('pix-to-cr')">
+                    </button>
+                <span style="display: block; font-size: 0.8em; margin-top: 5px;">*Base: Cr$ ${CR_TRANSACTION_AMOUNT} / R$ ${PIX_TRANSACTION_AMOUNT.toFixed(2).replace('.', ',')}.</span>
+            `;
+
+            const exchangeMarker = L.marker(TOURSTAR_COORDS, { icon: exchangeIcon })
+                .addTo(map)
+                .bindPopup(popupContentExchange);
+            
+            exchangeMarker.on('popupopen', function() {
+                updateExchangeButtons();
+            });
+            
+            // 6. Marcador da Casa Lotérica (Loteria Popular - Validação e Finalização)
+            // O atributo 'href' será definido dinamicamente em validateWithdrawalCode
+            const popupContentLotérica = `
+                <b>Loteria Popular</b><br>
+                R. Pereira de Miranda, Papicu.<br>
+                <hr style="margin: 5px 0;">
+                
+                <p style="font-size: 0.9em;">1. Insira o ID de transação (do seu Inventário) para validar o saque:</p>
+                <input type="text" id="loterica-code-input" placeholder="Ex: A1B2C3D4" style="width: 100%; padding: 5px; box-sizing: border-box; text-transform: uppercase;">
+                <button class="validation-button" onclick="validateWithdrawalCode()">Validar Código</button>
+                
+                <p style="font-size: 0.9em; margin-top: 15px;">2. Após a validação, use o botão para enviar o código, o valor e sua chave Pix:</p>
+
+                <a id="whatsapp-loterica-button" href="#" target="_blank" class="whatsapp-button disabled">
+                    FINALIZAR SAQUE (WhatsApp)
+                </a>
+            `;
+
+            L.marker(LOTERICA_COORDS, { icon: lotteryIcon })
+                .addTo(map)
+                .bindPopup(popupContentLotérica);
+
+            // 7. ADICIONANDO UM BOTÃO DE CONTROLE PARA TESTAR O GANHO
+            const incomeButton = L.control({ position: 'bottomleft' });
+
+            incomeButton.onAdd = function (map) {
+                const div = L.DomUtil.create('div', 'income-control');
+                div.innerHTML = '<button onclick="simulateIncome()" style="padding: 10px; font-size: 16px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">Ganhar Cr$ 100 (Testar Pagamento)</button>';
+                return div;
+            };
+
+            incomeButton.addTo(map);
+
+            // 8. Inicializa o display do dinheiro
+            updateMoneyDisplay();
+            
+            // 9. NOVO: Inicializa o botão do WhatsApp da Lotérica como desativado
+            updateWhatsappLink(null); 
+        };
+            
+    </script>
+</body>
+</html>
