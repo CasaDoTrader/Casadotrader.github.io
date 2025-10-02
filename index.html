@@ -1,593 +1,271 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortaleza - Jogo de Empréstimo</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        body { margin: 0; padding: 0; }
-        #mapa { 
-            height: 100vh; 
-            width: 100%; 
-        }
-        /* Estilos dos Botões e Popups (Mantidos) */
-        .loan-button, .exchange-button {
-            display: block;
-            margin-top: 10px;
-            padding: 8px 12px;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-            font-weight: bold; 
-        }
-        .loan-button { background-color: #007bff; }
-        .withdrawal-section { padding: 10px 0; border-top: 1px dashed #ccc; margin-top: 10px; }
-        .withdrawal-section input { width: 100%; padding: 5px; box-sizing: border-box; margin-bottom: 5px; }
-        .withdrawal-button { background-color: #28a745; }
-        .whatsapp-button { 
-            background-color: #25D366; 
-            text-decoration: none; 
-            color: white !important; 
-            margin-top: 15px; 
-            display: block;
-            padding: 8px 12px;
-            text-align: center;
-            border-radius: 4px;
-            font-weight: bold;
-            pointer-events: auto; /* Padrão */
-        }
-        /* NOVO: Estilo para desabilitar visualmente o botão do WhatsApp */
-        .whatsapp-button.disabled {
-            background-color: #7f7f7f; /* Cinza para desabilitado */
-            cursor: not-allowed;
-            pointer-events: none; /* Desabilita clique */
-        }
-        .exchange-button.cr-to-pix { background-color: #dc3545; }
-        .exchange-button.pix-to-cr { background-color: #17a2b8; }
-        .loan-button:disabled, .exchange-button:disabled { background-color: #6c757d; cursor: not-allowed; }
-        
-        /* Estilo para o painel de informações do jogador */
-        #game-status {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 5px;
-            z-index: 1000; 
-            font-family: sans-serif;
-            font-size: 1.1em;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            line-height: 1.6; 
-            cursor: pointer; 
-        }
-        
-        /* Estilo para esconder os detalhes por padrão */
-        #hidden-details {
-            display: none;
-            border-top: 1px solid #ccc;
-            margin-top: 5px;
-            padding-top: 5px;
-        }
-        
-        /* Estilo para mostrar os detalhes quando a classe 'visible' é adicionada */
-        #hidden-details.visible {
-            display: block;
-        }
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Fortaleza - O Jogo</title><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /><style>body{margin:0;padding:0}#mapa{height:100vh;width:100%}.loan-button,.exchange-button,.validation-button,.sell-button,.harvest-button{display:block;margin-top:5px;padding:8px 12px;color:#fff;border:none;border-radius:4px;cursor:pointer;width:100%;text-align:center;font-weight:700}.loan-button{background-color:#007bff}.withdrawal-section{padding:10px 0;border-top:1px dashed #ccc;margin-top:10px}.withdrawal-section input{width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px}.withdrawal-button{background-color:#28a745}.whatsapp-button{background-color:#25D366;text-decoration:none;color:#fff!important;margin-top:15px;display:block;padding:8px 12px;text-align:center;border-radius:4px;font-weight:700;pointer-events:auto}.whatsapp-button.disabled{background-color:#7f7f7f;cursor:not-allowed;pointer-events:none}.exchange-button.cr-to-pix{background-color:#dc3545}.exchange-button.pix-to-cr{background-color:#17a2b8}.loan-button:disabled,.exchange-button:disabled{background-color:#6c757d;cursor:not-allowed}.inventory-content{font-family:sans-serif;line-height:1.4}.inventory-list{font-size:.9em;line-height:1.3;margin-top:5px;max-height:100px;overflow-y:auto;padding-left:15px;border-top:1px solid #eee;padding-top:5px}.leaflet-popup-content-wrapper{max-width:200px}.validation-button{background-color:#ffc107;color:#000}.sell-button{background-color:#dc3545}.harvest-button{background-color:#17a2b8}.timer-display{font-weight:700;color:#007bff;margin:5px 0}.timer-display.ready{color:#28a745}.money-cr{color:#007bff}.money-pix{color:#28a745}.debt{color:#dc3545}</style></head><body><div id="mapa"></div><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
+// === VARIÁVEIS DO JOGO ===
+// MUDANÇA: Inicia com 100 sementes. Dívida/Empréstimo/Dinheiro inicial mantidos em 0.
+let playerMoney = 0.00, playerPix = 0.00, playerDebt = 0.00;
+let withdrawalHistory = [];
+let playerInventory = { riceSeeds: 100, harvestedRice: 0, plantedSeeds: 0 };
+let hasLoan = false, playerFarmOwned = true; // MUDANÇA: playerFarmOwned = true (Fazenda Grátis)
+let farmPlots = 1;
+const MAX_PLOTS = 5, PLOT_COST = 100.00; 
+const LOAN_AMOUNT = 300.00; // Mantido, mas a função de empréstimo foi removida do mapa
+const DEBT_REPAYMENT_RATE = 0.25; // Mantido para o caso de dívida ser adicionada via console/hack
+const CRUZEIRO_SYMBOL = 'Cr$', PIX_SYMBOL = 'R$';
+const CR_TRANSACTION_AMOUNT = 50.00, PIX_TRANSACTION_AMOUNT = 0.50, EXCHANGE_TAX_CR_TO_PIX = 0.10, CRUZEIRO_TO_PIX_RATE = 0.01;
+const OPERATOR_WHATSAPP_NUMBER = '5585999522997', MIN_WITHDRAWAL_AMOUNT = 1;
+const HARVEST_TIME_SECONDS = 60;
+const RICE_SEED_PRICE = 1.00;
+const RICE_SEED_PACK_SIZE = 100;
+const RICE_SELL_PRICE = 0.01;
+let harvestReady = true; 
+let remainingTime = 0; 
+let farmMarker, homeMarker, map; 
 
-        #inventory-display {
-            font-size: 0.8em;
-            line-height: 1.4;
-            margin-top: 10px;
-            max-height: 150px;
-            overflow-y: auto;
-            border-top: 1px solid #ccc;
-            padding-top: 5px;
-        }
-        .income-control {
-            background: white;
-            padding: 5px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .leaflet-popup-content-wrapper {
-             max-width: 200px; 
-        }
-        .validation-button {
-            background-color: #ffc107; /* Amarelo para validação */
-            color: black;
-            font-weight: bold;
-            display: block;
-            margin-top: 5px;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div id="mapa"></div>
-    
-    <div id="game-status" onclick="toggleVisibility()">
-        Cr$: <span id="player-money-display">0</span>
-        
-        <div id="hidden-details">
-            R$: <span id="player-pix-display">0</span><br>
-            Dívida: Cr$ <span id="player-debt-display">0</span>
-            
-            <div id="inventory-display">
-                <span style="font-weight: bold; display: block; margin-bottom: 5px;">Inventário de Saques:</span>
-                <ul id="withdrawal-list" style="padding-left: 15px; margin: 0;">
-                    </ul>
-            </div>
-        </div>
-    </div>
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // =========================================================
-        // === VARIÁVEIS DO JOGO E LÓGICA DE DÍVIDA/CÂMBIO =========
-        // =========================================================
-        let playerMoney = 0;    
-        let playerPix = 0;      
-        // withdrawalHistory armazena objetos: { id: "CODIGO", amount: 10.00, validated: false }
-        let withdrawalHistory = []; 
-        
-        const LOAN_AMOUNT = 300; 
-        const CRUZEIRO_SYMBOL = 'Cr$'; 
-        const PIX_SYMBOL = 'R$'; 
-        let hasLoan = false; 
-        let playerDebt = 0; 
-        
-        const LOAN_INTEREST_RATE = 1.0;     
-        const DEBT_REPAYMENT_RATE = 0.5;    
-        
-        const CR_TRANSACTION_AMOUNT = 50;     
-        const PIX_TRANSACTION_AMOUNT = 0.50;  
-        const EXCHANGE_TAX_CR_TO_PIX = 0.10; 
-        const CRUZEIRO_TO_PIX_RATE = 0.01;   
-        
-        // NOVO: Número do operador para receber a mensagem PIX
-        // *** ATUALIZE ESTE NÚMERO ***
-        const OPERATOR_WHATSAPP_NUMBER = '5585999522997'; 
-        const MIN_WITHDRAWAL_AMOUNT = 1; 
+// === FUNÇÕES DE DISPLAY E UTILIDADE ===
+function formatCurrency(value) {return value.toFixed(2).replace('.', ',');}
+function updateMoneyDisplay() {
+    updateExchangeButtons(); 
+    if(farmMarker&&farmMarker.getPopup().isOpen()){farmMarker.setPopupContent(getFarmPopupContent());attachFarmEventListeners();}
+    if(homeMarker&&homeMarker.getPopup().isOpen()){homeMarker.setPopupContent(getHomePopupContent());}
+    updateHomeMarkerState();
+}
+function generateUniqueTransactionId(){
+    let id;
+    while(true){id=Math.random().toString(36).substring(2,10).toUpperCase();if(!withdrawalHistory.some(item=>item.id===id))return id;}
+}
+function getInventoryContent() {
+    let listContent = ''; let hasContent = false;
+    if (playerInventory.riceSeeds > 0) {listContent += `<li style="color:#008000;">**${playerInventory.riceSeeds}x** Semente de Arroz</li>`;hasContent = true;}
+    if (playerInventory.harvestedRice > 0) {listContent += `<li style="color:#dc3545;">**${playerInventory.harvestedRice}x** Arroz Colhido</li>`;hasContent = true;}
+    if (playerInventory.plantedSeeds > 0) {listContent += `<li style="color:#f7922d;">**${playerInventory.plantedSeeds}** Espaço(s) Plantado(s)</li>`;hasContent = true;}
+    withdrawalHistory.forEach(item => {
+        const status = item.validated ? '<span style="color:green;"> (Validado)</span>' : '<span style="color:red;"> (Pendente)</span>';
+        listContent += `<li>Saque: **R$ ${formatCurrency(item.amount)}** (ID: ${item.id})${status}</li>`;hasContent = true;
+    });
+    if (!hasContent) listContent = '<li style="list-style:none;font-style:italic;color:#6c757d;padding-left:0;">Inventário vazio.</li>';
+    return `<div class="inventory-content"><span style="font-size:1.1em;display:block;margin-bottom:5px;">**STATUS DO JOGADOR**</span>Cr$: <span class="money-cr">${formatCurrency(playerMoney)}</span> (Cruzeiro)<br>R$: <span class="money-pix">${formatCurrency(playerPix)}</span> (PIX)<br>Dívida: Cr$ <span class="debt">${formatCurrency(playerDebt)}</span><div style="margin-top:10px;font-weight:bold;">Inventário de Itens/Saques:</div><ul class="inventory-list">${listContent}</ul></div>`;
+}
+function getHomePopupContent() {return `<b>Casa do Jogador</b><hr style="margin:5px 0;">${getInventoryContent()}`;}
+function startHarvestTimer() {
+    if (playerInventory.plantedSeeds === 0) return;
+    harvestReady = false;remainingTime = HARVEST_TIME_SECONDS;updateMoneyDisplay(); 
+    const timerInterval = setInterval(() => {
+        remainingTime--;updateMoneyDisplay(); 
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            harvestReady = true;remainingTime = 0;updateMoneyDisplay(); 
+            if (farmMarker && farmMarker.getPopup().isOpen()) {alert('Colheita Pronta! Seu arroz amadureceu.');}
+        }
+    }, 1000);
+}
 
-        // NOVO: Função para alternar a visibilidade dos detalhes
-        window.toggleVisibility = function() {
-            const details = document.getElementById('hidden-details');
-            details.classList.toggle('visible');
-        }
+// === LÓGICA FINANCEIRA ===
+function payDebt(amount){
+    if(playerDebt<=0)return amount;
+    const repayment=amount*DEBT_REPAYMENT_RATE;
+    const actualRepayment=Math.min(repayment,playerDebt);
+    playerDebt = Math.max(0, playerDebt - actualRepayment); 
+    const netIncome=amount-actualRepayment;
+    if(playerDebt<=0){hasLoan=false;alert(`Parabéns! Sua dívida foi quitada!`);}
+    return netIncome;
+}
+window.requestWithdrawal = function(){
+    const input=document.getElementById('withdrawal-amount');const amount=parseFloat(parseFloat(input.value).toFixed(2));
+    if(isNaN(amount)||amount<MIN_WITHDRAWAL_AMOUNT){alert(`Valor inválido. O saque mínimo é R$ ${formatCurrency(MIN_WITHDRAWAL_AMOUNT)}.`);return;}
+    if(amount>playerPix){alert(`Saldo Pix insuficiente. Saldo atual: R$ ${formatCurrency(playerPix)}.`);return;}
+    playerPix-=amount;const id=generateUniqueTransactionId();
+    withdrawalHistory.push({id:id,amount:amount,validated:false});
+    updateMoneyDisplay();input.value='';
+    alert(`Saque de R$ ${formatCurrency(amount)} solicitado. ID ${id} adicionado. Vá até a Lotérica para validar.`);
+}
+function updateExchangeButtons(){
+    const debtBlock=hasLoan;const crToPix=document.getElementById('exchange-cr-to-pix');const pixToCr=document.getElementById('exchange-pix-to-cr');
+    if(!crToPix||!pixToCr)return;
+    const pixVal=(CR_TRANSACTION_AMOUNT*CRUZEIRO_TO_PIX_RATE*(1-EXCHANGE_TAX_CR_TO_PIX));
+    const crRec=(PIX_TRANSACTION_AMOUNT/CRUZEIRO_TO_PIX_RATE);
+    crToPix.disabled=debtBlock||playerMoney<CR_TRANSACTION_AMOUNT;
+    pixToCr.disabled=debtBlock||playerPix<PIX_TRANSACTION_AMOUNT;
+    if(debtBlock){crToPix.textContent=pixToCr.textContent='Troca Bloqueada (Pague a dívida)';}
+    else{
+        crToPix.textContent=`Trocar Cr$ ${formatCurrency(CR_TRANSACTION_AMOUNT)} por R$ ${formatCurrency(pixVal)} (10% Taxa)`;
+        pixToCr.textContent=`Trocar R$ ${formatCurrency(PIX_TRANSACTION_AMOUNT)} por Cr$ ${formatCurrency(crRec)} (Sem Taxa)`;
+    }
+}
+window.requestExchange = function(type) {
+    if(hasLoan){alert("O Câmbio está bloqueado. Quite sua dívida.");return;}
+    if(type==='cr-to-pix'){
+        if(playerMoney<CR_TRANSACTION_AMOUNT){alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(CR_TRANSACTION_AMOUNT)}.`);return;}
+        const pixRec=CR_TRANSACTION_AMOUNT*CRUZEIRO_TO_PIX_RATE*(1-EXCHANGE_TAX_CR_TO_PIX);
+        playerMoney-=CR_TRANSACTION_AMOUNT;playerPix+=pixRec;
+        alert(`Troca de ${CRUZEIRO_SYMBOL} ${formatCurrency(CR_TRANSACTION_AMOUNT)} por ${PIX_SYMBOL} ${formatCurrency(pixRec)}.`);
+    }else if(type==='pix-to-cr'){
+        if(playerPix<PIX_TRANSACTION_AMOUNT){alert(`Saldo insuficiente. Você precisa de ${PIX_SYMBOL} ${formatCurrency(PIX_TRANSACTION_AMOUNT)}.`);return;}
+        const crRec=PIX_TRANSACTION_AMOUNT/CRUZEIRO_TO_PIX_RATE;
+        playerPix-=PIX_TRANSACTION_AMOUNT;
+        playerMoney+=crRec;
+        alert(`Troca de ${PIX_SYMBOL} ${formatCurrency(PIX_TRANSACTION_AMOUNT)} por ${CRUZEIRO_SYMBOL} ${formatCurrency(crRec)}.`);
+    }
+    updateMoneyDisplay();
+}
 
-        // Função para formatar e atualizar todos os valores na tela
-        function updateMoneyDisplay() {
-            document.getElementById('player-money-display').textContent = 
-                playerMoney.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-            
-            document.getElementById('player-pix-display').textContent = 
-                playerPix.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// === LÓGICA DE FAZENDA E ITENS ===
+window.buyRiceSeeds = function() {
+    if (playerMoney < RICE_SEED_PRICE) {alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE)}.`);return;}
+    playerMoney -= RICE_SEED_PRICE; 
+    playerInventory.riceSeeds += RICE_SEED_PACK_SIZE; 
+    alert(`Comprou um pacote com ${RICE_SEED_PACK_SIZE} Sementes de Arroz por ${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE)}.`);
+    updateMoneyDisplay();
+}
+window.sellRice = function() {
+    const price = RICE_SELL_PRICE;
+    if (playerInventory.harvestedRice <= 0) {alert(`Você não tem Arroz colhido para vender.`);return;}
+    const totalSale = playerInventory.harvestedRice * price;
+    const soldCount = playerInventory.harvestedRice;
+    const netIncome = payDebt(totalSale);
+    playerMoney += netIncome;
+    playerInventory.harvestedRice = 0; 
+    let message = `Vendeu ${soldCount} Arroz Colhido por ${CRUZEIRO_SYMBOL} ${formatCurrency(totalSale)}.`;
+    if (hasLoan) {
+        const paidDebt = totalSale - netIncome;
+        message += ` ${CRUZEIRO_SYMBOL} ${formatCurrency(paidDebt)} foram usados para abater a dívida. Ganho líquido: ${CRUZEIRO_SYMBOL} ${formatCurrency(netIncome)}.`;
+    }
+    alert(message);
+    updateMoneyDisplay();
+}
+// FUNÇÃO buyFarm REMOVIDA
+window.buyPlot = function() {
+    if (farmPlots >= MAX_PLOTS) { alert(`Máximo de ${MAX_PLOTS} espaços atingido.`); return; }
+    if (playerMoney < PLOT_COST) { alert(`Custo: ${CRUZEIRO_SYMBOL} ${formatCurrency(PLOT_COST)}. Saldo insuficiente.`); return; }
+    playerMoney -= PLOT_COST; farmPlots += 1;
+    updateMoneyDisplay();
+    alert(`Você comprou mais um espaço de plantio! Total: ${farmPlots}.`);
+}
+window.plantSeed = function() {
+    if (!harvestReady) { alert("Aguarde a colheita anterior amadurecer!"); return; }
+    if (playerInventory.plantedSeeds >= farmPlots) { alert(`Todos os ${farmPlots} espaços estão ocupados. Você precisa colher primeiro.`); return; }
+    if (playerInventory.riceSeeds <= 0) { alert("Você não tem sementes de arroz para plantar. Compre na Agro Cearense."); return; }
+    
+    playerInventory.riceSeeds -= 1;
+    playerInventory.plantedSeeds += 1;
+    
+    startHarvestTimer(); 
+    alert("1 semente de arroz plantada com sucesso! O cronômetro de crescimento iniciou.");
+    updateMoneyDisplay();
+}
+window.harvest = function() {
+    if (playerInventory.plantedSeeds <= 0) { alert("Não há nada plantado para colher."); return; }
+    if (!harvestReady) { alert(`Aguarde ${remainingTime} segundos para colher.`); return; }
 
-            document.getElementById('player-debt-display').textContent = 
-                playerDebt.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-            
-            updateLoanButtonState();
-            updateExchangeButtons(); // Atualiza botões de câmbio também
-            updateInventoryDisplay(); 
-        }
-        
-        // Função para garantir um ID de transação único
-        function generateUniqueTransactionId() {
-            let id;
-            let isUnique = false;
-            while (!isUnique) {
-                id = Math.random().toString(36).substring(2, 10).toUpperCase();
-                if (!withdrawalHistory.some(item => item.id === id)) {
-                    isUnique = true;
-                }
-            }
-            return id;
-        }
-        
-        // Função para atualizar a lista de inventário na tela
-        function updateInventoryDisplay() {
-            const listElement = document.getElementById('withdrawal-list');
-            listElement.innerHTML = ''; 
-            
-            if (withdrawalHistory.length === 0) {
-                listElement.innerHTML = '<li style="list-style: none;">Nenhum saque pendente.</li>';
-                return;
-            }
+    const harvestedPlots = playerInventory.plantedSeeds;
+    const yieldPerPlot = Math.floor(Math.random() * (10 - 5 + 1)) + 5; 
+    const totalRice = harvestedPlots * yieldPerPlot; 
+    playerInventory.harvestedRice += totalRice;
+    playerInventory.plantedSeeds = 0;
+    
+    harvestReady = true; 
+    remainingTime = 0;
 
-            withdrawalHistory.forEach(item => {
-                const status = item.validated ? 
-                    '<span style="color: green;"> (Validado)</span>' : 
-                    '<span style="color: red;"> (Pendente)</span>';
-                
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `**R$ ${item.amount.toFixed(2).replace('.', ',')}** (ID: ${item.id})${status}`;
-                listElement.appendChild(listItem);
-            });
-        }
-        
-        // --- LÓGICA DE VALIDAÇÃO (ATUALIZADA) ---
-        
-        // NOVO: Função para atualizar o HREF do botão do WhatsApp com dados
-        function updateWhatsappLink(transaction) { 
-            const whatsappButton = document.getElementById('whatsapp-loterica-button');
-            if (!whatsappButton) return;
-            
-            // Se não houver transação ou não estiver validada, desativa
-            if (!transaction || !transaction.validated) {
-                whatsappButton.classList.add('disabled');
-                whatsappButton.textContent = `FINALIZAR SAQUE (WhatsApp)`;
-                whatsappButton.href = `#`; // Link inativo
-                return;
-            }
-
-            const code = transaction.id;
-            const amountFormatted = transaction.amount.toFixed(2).replace('.', ',');
-
-            // Preenche a mensagem do WhatsApp com o ID e o Valor seguros
-            const message = encodeURIComponent(`Olá, sou o jogador e gostaria de finalizar meu saque.
-        
-*ID de Transação Validado (Lotérica):* ${code} 
-*Valor a Receber (Confirmado):* R$ ${amountFormatted}
-
-*Minha Chave Pix (aqui o jogador digita/cola a chave):*`);
-
-            // Define o link dinâmico com o número e a mensagem pré-preenchida
-            whatsappButton.href = `https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${message}`; 
-            
-            whatsappButton.classList.remove('disabled');
-            whatsappButton.textContent = `FINALIZAR SAQUE R$ ${amountFormatted} (Cód. ${code})`;
-        }
-
-        window.validateWithdrawalCode = function() {
-            const input = document.getElementById('loterica-code-input');
-            const code = input.value.trim().toUpperCase();
-            
-            // Desativa/reseta o botão antes de validar
-            updateWhatsappLink(null); 
-
-            if (!code) {
-                alert("Por favor, digite o código de transação.");
-                return;
-            }
-
-            // Procura o código no histórico
-            const transaction = withdrawalHistory.find(item => item.id === code);
-
-            if (transaction) {
-                if (transaction.validated) {
-                    // Se já foi validado antes, reativa o botão com os dados para envio
-                    updateWhatsappLink(transaction);
-                    alert(`O código ${code} já foi validado. Por favor, utilize o botão abaixo para enviar o código e o valor novamente.`);
-                } else {
-                    // A transação é validada pela primeira vez
-                    transaction.validated = true;
-                    updateMoneyDisplay(); // Atualiza o inventário com status "Validado"
-
-                    // ATUALIZA O LINK DO WHATSAPP COM O OBJETO DA TRANSAÇÃO
-                    updateWhatsappLink(transaction);
-
-                    alert(`Código ${code} validado com sucesso! Clique no botão abaixo para ir ao WhatsApp e enviar o código e sua chave Pix ao operador.`);
-                }
-            } else {
-                alert("ERRO: Código de transação não encontrado ou inválido.");
-            }
-        }
-        
-        // --- LÓGICA DO EMPRÉSTIMO --- (Mantida)
-
-        function updateLoanButtonState() {
-            const button = document.getElementById('loan-button');
-            if (button) {
-                if (hasLoan) {
-                    button.disabled = true;
-                    button.textContent = `Crédito Concedido (Dívida: ${CRUZEIRO_SYMBOL} ${playerDebt.toLocaleString('pt-BR')})`;
-                } else {
-                    button.disabled = false;
-                    button.textContent = `Fazer Empréstimo (${CRUZEIRO_SYMBOL} ${LOAN_AMOUNT})`;
-                }
-            }
-        }
-
-        function payDebt(amount) {
-            if (playerDebt <= 0) { return amount; }
-
-            const repaymentAmount = amount * DEBT_REPAYMENT_RATE;
-            const actualRepayment = Math.min(repaymentAmount, playerDebt);
-
-            playerDebt -= actualRepayment;
-            const netIncome = amount - actualRepayment;
-            
-            if (playerDebt <= 0) {
-                playerDebt = 0;
-                hasLoan = false;
-                alert(`Parabéns! Sua dívida de ${CRUZEIRO_SYMBOL} ${(LOAN_AMOUNT * (1 + LOAN_INTEREST_RATE)).toLocaleString('pt-BR')} foi quitada!`);
-            }
-
-            return netIncome;
-        }
-
-        window.requestLoan = function() {
-            if (hasLoan) {
-                alert("Você já possui uma dívida de " + CRUZEIRO_SYMBOL + " " + playerDebt.toLocaleString('pt-BR') + " pendente.");
-                return;
-            }
-
-            playerMoney += LOAN_AMOUNT; 
-            playerDebt = LOAN_AMOUNT * (1 + LOAN_INTEREST_RATE);
-            hasLoan = true; 
-            
-            updateMoneyDisplay();      
-            
-            alert(`Empréstimo de ${CRUZEIRO_SYMBOL} ${LOAN_AMOUNT} recebido! Dívida total (com 100% de juros): ${CRUZEIRO_SYMBOL} ${playerDebt.toLocaleString('pt-BR')}.`);
-            
-            updateLoanButtonState();
-        }
-
-        // --- LÓGICA DO SAQUE PIX (BCB) --- (Mantida)
-        
-        window.requestWithdrawal = function() {
-            const input = document.getElementById('withdrawal-amount');
-            // Garante que o valor seja float e arredonda para 2 casas
-            const amount = parseFloat(parseFloat(input.value).toFixed(2)); 
-            
-            if (isNaN(amount) || amount < MIN_WITHDRAWAL_AMOUNT) {
-                alert(`Valor inválido. O saque mínimo é R$ ${MIN_WITHDRAWAL_AMOUNT.toFixed(2).replace('.', ',')}.`);
-                return;
-            }
-            
-            if (amount > playerPix) {
-                alert(`Saldo Pix insuficiente. Saldo atual: R$ ${playerPix.toFixed(2).replace('.', ',')}.`);
-                return;
-            }
-
-            // DEDUÇÃO E GERAÇÃO DE ID ÚNICO
-            playerPix -= amount;
-            const transactionId = generateUniqueTransactionId(); 
-            // Adiciona a transação com status 'validated: false' (Pendente)
-            withdrawalHistory.push({ id: transactionId, amount: amount, validated: false }); 
-
-            updateMoneyDisplay();
-            
-            // LIMPA O CAMPO E EXIBE ALERTA
-            input.value = '';
-            
-            alert(`Saque de R$ ${amount.toFixed(2).replace('.', ',')} solicitado. O ID ${transactionId} foi adicionado ao seu Inventário (Pendente). Agora, vá até a Casa Lotérica (Loteria Popular) para validar o código.`);
-        }
-
-        // --- LÓGICA DO CÂMBIO --- (Mantida)
-        
-        function updateExchangeButtons() {
-            const exchangeDisabledByDebt = hasLoan;
-            const crToPixButton = document.getElementById('exchange-cr-to-pix');
-            const pixToCrButton = document.getElementById('exchange-pix-to-cr');
-            
-            if (!crToPixButton || !pixToCrButton) return; 
-            
-            const pixValueCrToPix = CR_TRANSACTION_AMOUNT * CRUZEIRO_TO_PIX_RATE * (1 - EXCHANGE_TAX_CR_TO_PIX);
-            const cruzeiroReceivedPixToCr = PIX_TRANSACTION_AMOUNT / CRUZEIRO_TO_PIX_RATE;
-            const pixCostPixToCr = PIX_TRANSACTION_AMOUNT;
-
-
-            if (crToPixButton) {
-                crToPixButton.disabled = exchangeDisabledByDebt || playerMoney < CR_TRANSACTION_AMOUNT;
-                
-                if (exchangeDisabledByDebt) {
-                    crToPixButton.textContent = 'Troca Bloqueada (Pague a dívida Cr$ ' + playerDebt.toLocaleString('pt-BR') + ')';
-                } else {
-                    crToPixButton.textContent = `Trocar Cr$ ${CR_TRANSACTION_AMOUNT} por R$ ${pixValueCrToPix.toFixed(2).replace('.', ',')} (Taxa de 10%)`;
-                }
-            }
-            
-            if (pixToCrButton) {
-                pixToCrButton.disabled = exchangeDisabledByDebt || playerPix < pixCostPixToCr;
-
-                if (exchangeDisabledByDebt) {
-                    pixToCrButton.textContent = 'Troca Bloqueada (Pague a dívida Cr$ ' + playerDebt.toLocaleString('pt-BR') + ')';
-                } else {
-                    pixToCrButton.textContent = `Trocar R$ ${pixCostPixToCr.toFixed(2).replace('.', ',')} por Cr$ ${cruzeiroReceivedPixToCr} (Sem Taxa)`;
-                }
-            }
-        }
-        
-        window.requestExchange = function(type) {
-            if (hasLoan) {
-                alert("O Câmbio está bloqueado. Você deve quitar sua dívida de Cr$ " + playerDebt.toLocaleString('pt-BR') + " com o Banco Central (BCB) antes de realizar transações de câmbio.");
-                return;
-            }
-
-            if (type === 'cr-to-pix') {
-                if (playerMoney < CR_TRANSACTION_AMOUNT) {
-                    alert(`Saldo insuficiente. Você precisa de pelo menos ${CRUZEIRO_SYMBOL} ${CR_TRANSACTION_AMOUNT} para esta troca.`);
-                    return;
-                }
-                
-                const pixReceived = CR_TRANSACTION_AMOUNT * CRUZEIRO_TO_PIX_RATE * (1 - EXCHANGE_TAX_CR_TO_PIX);
-                
-                playerMoney -= CR_TRANSACTION_AMOUNT;
-                playerPix += pixReceived;
-                
-                alert(`Troca de ${CRUZEIRO_SYMBOL} ${CR_TRANSACTION_AMOUNT} por ${PIX_SYMBOL} ${pixReceived.toFixed(2).replace('.', ',')}. Taxa de 10% aplicada.`);
-
-            } else if (type === 'pix-to-cr') {
-                const pixCostPixToCr = PIX_TRANSACTION_AMOUNT;
-                const cruzeiroReceived = PIX_TRANSACTION_AMOUNT / CRUZEIRO_TO_PIX_RATE;
-                
-                if (playerPix < pixCostPixToCr) {
-                    alert(`Saldo insuficiente. Você precisa de pelo menos ${PIX_SYMBOL} ${pixCostPixToCr.toFixed(2).replace('.', ',')} para esta troca.`);
-                    return;
-                }
-                
-                playerPix -= pixCostPixToCr;
-                playerMoney += cruzeiroReceived;
-                
-                alert(`Troca de ${PIX_SYMBOL} ${pixCostPixToCr.toFixed(2).replace('.', ',')} por ${CRUZEIRO_SYMBOL} ${cruzeiroReceived}. Nenhuma taxa foi aplicada.`);
-            }
-
-            updateMoneyDisplay();
-            updateExchangeButtons(); 
-        }
-
-
-        // --- LÓGICA DE SIMULAÇÃO (TESTE) --- (Mantida)
-
-        window.simulateIncome = function() {
-            const income = 100;
-            
-            let netGain = income;
-            let debtPaid = 0;
-
-            if (hasLoan) {
-                const initialDebt = playerDebt;
-                netGain = payDebt(income); 
-                debtPaid = initialDebt - playerDebt;
-            }
-            
-            playerMoney += netGain;
-
-            let message = `Você ganhou ${CRUZEIRO_SYMBOL} ${income}.`;
-            if (debtPaid > 0) {
-                 message += ` ${CRUZEIRO_SYMBOL} ${debtPaid.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} foram usados para pagar a dívida.`;
-            }
-            message += ` Ganho líquido: ${CRUZEIRO_SYMBOL} ${netGain.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}.`;
-
-            alert(message);
-
-            updateMoneyDisplay();
-        }
-
-
-        // =========================================================
-        // === CONFIGURAÇÃO DO MAPA ================================
-        // =========================================================
-        
-        const FORTALEZA_COORDS = [-3.7319, -38.5267];
-        const ZOOM_LEVEL = 13; 
-        const BCB_COORDS = [-3.7341, -38.5273];
-        const TOURSTAR_COORDS = [-3.7268, -38.4980]; 
-        const LOTERICA_COORDS = [-3.7386571, -38.4852458]; 
-        
-        // ÍCONES
-        const bankIcon = L.icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3673/3673419.png', 
-            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]      
-        });
-
-        const exchangeIcon = L.icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3238/3238479.png', 
-            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]      
-        });
-
-        const lotteryIcon = L.icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3673/3673385.png', 
-            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]      
-        });
-
-        window.onload = function() {
-            
-            const map = L.map('mapa').setView(FORTALEZA_COORDS, ZOOM_LEVEL);
-
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            }).addTo(map);
-            
-            map.invalidateSize(); 
-
-            // 4. Marcador do BCB (Empréstimo e Iniciação de Saque)
-            const popupContentBCB = `
-                <b>Banco Central do Brasil (BCB)</b>
-                <hr style="margin: 5px 0;">
-                
-                <span style="font-weight: bold; color: red; display: block; margin-bottom: 5px;">Empréstimo (100% Juros)</span>
-                <button id="loan-button" class="loan-button" onclick="requestLoan()">
-                    Fazer Empréstimo (${CRUZEIRO_SYMBOL} ${LOAN_AMOUNT})
-                </button>
-                
-                <div class="withdrawal-section">
-                    <span style="font-weight: bold; color: #28a745; display: block; margin-bottom: 5px;">Solicitar Saque Pix (Mín: R$ ${MIN_WITHDRAWAL_AMOUNT.toFixed(2).replace('.', ',')})</span>
-                    <p style="font-size: 0.8em; margin: 0 0 5px 0;">*O ID será gerado e enviado ao seu Inventário.</p>
-                    <input type="number" id="withdrawal-amount" placeholder="Valor em R$" min="${MIN_WITHDRAWAL_AMOUNT}" step="0.01">
-                    <button class="loan-button withdrawal-button" onclick="requestWithdrawal()">
-                        Gerar ID de Saque
-                    </button>
-                </div>
-            `;
-
-            L.marker(BCB_COORDS, { icon: bankIcon })
-                .addTo(map)
-                .bindPopup(popupContentBCB); 
-
-            // 5. Marcador da Casa de Câmbio (TourStar)
-            const popupContentExchange = `
-                <b>TourStar Câmbio e Turismo</b><br>
-                Av. da Abolição, Meireles.<br>
-                <hr style="margin: 5px 0;">
-                
-                <button id="exchange-cr-to-pix" class="exchange-button cr-to-pix" onclick="requestExchange('cr-to-pix')">
-                    </button>
-                <button id="exchange-pix-to-cr" class="exchange-button pix-to-cr" onclick="requestExchange('pix-to-cr')">
-                    </button>
-                <span style="display: block; font-size: 0.8em; margin-top: 5px;">*Base: Cr$ ${CR_TRANSACTION_AMOUNT} / R$ ${PIX_TRANSACTION_AMOUNT.toFixed(2).replace('.', ',')}.</span>
-            `;
-
-            const exchangeMarker = L.marker(TOURSTAR_COORDS, { icon: exchangeIcon })
-                .addTo(map)
-                .bindPopup(popupContentExchange);
-            
-            exchangeMarker.on('popupopen', function() {
-                updateExchangeButtons();
-            });
-            
-            // 6. Marcador da Casa Lotérica (Loteria Popular - Validação e Finalização)
-            // O atributo 'href' será definido dinamicamente em validateWithdrawalCode
-            const popupContentLotérica = `
-                <b>Loteria Popular</b><br>
-                R. Pereira de Miranda, Papicu.<br>
-                <hr style="margin: 5px 0;">
-                
-                <p style="font-size: 0.9em;">1. Insira o ID de transação (do seu Inventário) para validar o saque:</p>
-                <input type="text" id="loterica-code-input" placeholder="Ex: A1B2C3D4" style="width: 100%; padding: 5px; box-sizing: border-box; text-transform: uppercase;">
-                <button class="validation-button" onclick="validateWithdrawalCode()">Validar Código</button>
-                
-                <p style="font-size: 0.9em; margin-top: 15px;">2. Após a validação, use o botão para enviar o código, o valor e sua chave Pix:</p>
-
-                <a id="whatsapp-loterica-button" href="#" target="_blank" class="whatsapp-button disabled">
-                    FINALIZAR SAQUE (WhatsApp)
-                </a>
-            `;
-
-            L.marker(LOTERICA_COORDS, { icon: lotteryIcon })
-                .addTo(map)
-                .bindPopup(popupContentLotérica);
-
-            // 7. ADICIONANDO UM BOTÃO DE CONTROLE PARA TESTAR O GANHO
-            const incomeButton = L.control({ position: 'bottomleft' });
-
-            incomeButton.onAdd = function (map) {
-                const div = L.DomUtil.create('div', 'income-control');
-                div.innerHTML = '<button onclick="simulateIncome()" style="padding: 10px; font-size: 16px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">Ganhar Cr$ 100 (Testar Pagamento)</button>';
-                return div;
-            };
-
-            incomeButton.addTo(map);
-
-            // 8. Inicializa o display do dinheiro
-            updateMoneyDisplay();
-            
-            // 9. NOVO: Inicializa o botão do WhatsApp da Lotérica como desativado
-            updateWhatsappLink(null); 
-        };
-            
-    </script>
-</body>
-</html>
+    alert(`Colheita concluída! Você colheu ${totalRice} Arroz Colhido (${yieldPerPlot} por espaço) de ${harvestedPlots} espaço(s).`);
+    updateMoneyDisplay();
+}
+// === FUNÇÕES PARA A LOTÉRICA ===
+function updateWhatsappLink(transaction) {
+    const button = document.getElementById('whatsapp-loterica-button');
+    if (!button) return;
+    if (!transaction || !transaction.validated) {
+        button.classList.add('disabled');button.textContent = `FINALIZAR SAQUE (WhatsApp)`;button.href = `#`;return;
+    }
+    const code = transaction.id;const amount = formatCurrency(transaction.amount);
+    const message = encodeURIComponent(`Olá, sou o jogador e gostaria de finalizar meu saque.\n\n*ID de Transação Validado (Lotérica):* ${code}\n*Valor a Receber (Confirmado):* R$ ${amount}\n\n*Minha Chave Pix (aqui o jogador digita/cola a chave):*`);
+    button.href = `https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${message}`;
+    button.classList.remove('disabled');button.textContent = `FINALIZAR SAQUE R$ ${amount} (Cód. ${code})`;
+}
+window.validateWithdrawalCode = function() {
+    const input = document.getElementById('loterica-code-input');const code = input.value.trim().toUpperCase();
+    updateWhatsappLink(null);
+    if (!code) {alert("Por favor, digite o código.");return;}
+    const transaction = withdrawalHistory.find(item => item.id === code);
+    if (transaction) {
+        if (transaction.validated) {
+            updateWhatsappLink(transaction);alert(`O código ${code} já foi validado. Finalize a transação pelo WhatsApp.`);
+        } else {
+            transaction.validated = true;updateMoneyDisplay();updateWhatsappLink(transaction);
+            alert(`Código ${code} validado com sucesso! Use o botão do WhatsApp para enviar seus dados Pix ao operador.`);
+        }
+    } else {alert("ERRO: Código de transação não encontrado.");}
+}
+// === CONFIGURAÇÃO DO MAPA E MARCADORES ===
+const FORTALEZA_COORDS = [-3.7319, -38.5267];
+const BCB_COORDS = [-3.7341, -38.5273];
+const TOURSTAR_COORDS = [-3.7268, -38.4980];
+const LOTERICA_COORDS = [-3.7386571, -38.4852458];
+const AGRO_CEARENSE_COORDS = [-3.7993489, -38.5071345];
+const FAZENDA_COORDS = [-3.8115, -38.563];
+// MUDANÇA: Casa um pouco mais distante da fazenda
+const CASA_COORDS = [-3.8200, -38.5700]; 
+const HORTIFRUTI_COORDS = [-3.753, -38.568];
+const iconBase = 'https://cdn-icons-png.flaticon.com/512/';
+const bankIcon = L.icon({iconUrl: iconBase + '3673/3673419.png', iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]});
+const exchangeIcon = L.icon({iconUrl: iconBase + '3238/3238479.png', iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]});
+const lotteryIcon = L.icon({iconUrl: iconBase + '3673/3673385.png', iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]});
+const seedIcon = L.icon({iconUrl: iconBase + '3067/3067167.png', iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]});
+const farmIcon = L.icon({iconUrl: iconBase + '2857/2857508.png', iconSize: [45, 45], iconAnchor: [22, 45], popupAnchor: [0, -40]});
+const marketIcon = L.icon({iconUrl: iconBase + '3075/3075841.png', iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]});
+// MUDANÇA: Ícone de Casa mais genérico
+const homeIcon = L.icon({iconUrl: iconBase + '9404/9404760.png', iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -30]});
+function updateHomeMarkerState() {
+    // A casa está sempre no mapa porque playerFarmOwned é true
+    if (!homeMarker && map) {
+        homeMarker = L.marker(CASA_COORDS, { icon: homeIcon }).addTo(map).bindPopup(getHomePopupContent());
+        homeMarker.on('popupopen', function() {homeMarker.getPopup().setContent(getHomePopupContent());});
+    }
+}
+function getFarmPopupContent() {
+    const farmName = 'Fazenda de Arroz (Sua Propriedade)';
+    // Lógica de compra da fazenda removida.
+    let plotsText = `Espaços Ocupados: **${playerInventory.plantedSeeds} / ${farmPlots}**`;
+    plotsText += `<span style="color:${playerInventory.plantedSeeds < farmPlots ? '#28a745' : 'red'}; display:block;">(Total de Espaços: ${farmPlots}/${MAX_PLOTS})</span>`;
+    let expansionButton = (farmPlots < MAX_PLOTS) ?
+        `<button class="loan-button withdrawal-button" id="buy-plot-button" style="background-color:#f7922d;">COMPRAR + ESPAÇO (${CRUZEIRO_SYMBOL} ${formatCurrency(PLOT_COST)})</button>` :
+        `<button class="loan-button" disabled style="background-color:#6c757d;">CAPACIDADE MÁXIMA</button>`;
+    let timerDisplay = '';
+    let harvestDisabled = !harvestReady || playerInventory.plantedSeeds === 0;
+    if (playerInventory.plantedSeeds > 0 && !harvestReady) {timerDisplay = `<p class="timer-display">Tempo para Colher: ${remainingTime}s</p>`;} 
+    else if (playerInventory.plantedSeeds > 0 && harvestReady) {timerDisplay = `<p class="timer-display ready">PRONTO PARA COLHEITA!</p>`;}
+    let plantDisabled = !harvestReady || playerInventory.riceSeeds === 0 || playerInventory.plantedSeeds >= farmPlots;
+    let farmingButtons = `<button class="loan-button" id="plant-seed-button" style="background-color:${plantDisabled ? '#6c757d' : '#008000'};" ${plantDisabled ? 'disabled' : ''}>PLANTAR SEMENTE DE ARROZ (${playerInventory.riceSeeds} no estoque)</button><button class="loan-button harvest-button" id="harvest-button" style="background-color:${harvestDisabled ? '#6c757d' : '#17a2b8'};" ${harvestDisabled ? 'disabled' : ''}>COLHER ARROZ (${playerInventory.plantedSeeds} plantado(s))</button>`;
+    return `<b>${farmName}</b><hr style="margin:5px 0;"><p style="font-size:1.1em;font-weight:700;margin:5px 0;color:#008000;">${plotsText}</p>${timerDisplay}${farmingButtons}${expansionButton}`;
+}
+function attachFarmEventListeners() {
+    const buyPlotBtn = document.getElementById('buy-plot-button');const plantSeedBtn = document.getElementById('plant-seed-button');const harvestBtn = document.getElementById('harvest-button');
+    // buyFarmBtn removido
+    if (buyPlotBtn) buyPlotBtn.onclick = window.buyPlot;
+    if (plantSeedBtn) plantSeedBtn.onclick = window.plantSeed;
+    if (harvestBtn) harvestBtn.onclick = window.harvest;
+}
+window.onload = function() {
+    map = L.map('mapa').setView(FORTALEZA_COORDS, 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);map.invalidateSize(); 
+    // 1. BCB (Apenas Saque)
+    // MUDANÇA: Conteúdo do BCB alterado para remover a função de Empréstimo.
+    L.marker(BCB_COORDS, { icon: bankIcon }).addTo(map).bindPopup(`<b>Banco Central do Brasil (BCB)</b><hr style="margin:5px 0;"><div class="withdrawal-section" style="border:none;margin-top:0;"><span style="font-weight:700;color:#28a745;display:block;margin-bottom:5px;">Solicitar Saque Pix</span><input type="number" id="withdrawal-amount" placeholder="Valor em R$" min="1" step="0.01"><button class="loan-button withdrawal-button" onclick="requestWithdrawal()">Gerar ID de Saque</button></div>`); 
+    // 2. Câmbio (Troca Cr$/R$)
+    const exchangeMarker = L.marker(TOURSTAR_COORDS, { icon: exchangeIcon }).addTo(map).bindPopup(`<b>TourStar Câmbio</b><hr style="margin:5px 0;"><button id="exchange-cr-to-pix" class="exchange-button cr-to-pix" onclick="requestExchange('cr-to-pix')"></button><button id="exchange-pix-to-cr" class="exchange-button pix-to-cr" onclick="requestExchange('pix-to-cr')"></button>`);
+    exchangeMarker.on('popupopen', updateExchangeButtons);
+    // 3. Lotérica (Validação de Saque)
+    L.marker(LOTERICA_COORDS, { icon: lotteryIcon }).addTo(map).bindPopup(`<b>Loteria Popular</b><hr style="margin:5px 0;"><p style="font-size:.9em;">1. Insira o ID para validar:</p><input type="text" id="loterica-code-input" placeholder="Ex: A1B2C3D4" style="width:100%;padding:5px;box-sizing:border-box;text-transform:uppercase;"><button class="validation-button" onclick="validateWithdrawalCode()">Validar Código</button><p style="font-size:.9em;margin-top:15px;">2. Após a validação, finalize:</p><a id="whatsapp-loterica-button" href="#" target="_blank" class="whatsapp-button disabled">FINALIZAR SAQUE (WhatsApp)</a>`);
+    // 4. Loja de Sementes (Compra)
+    const agroPopupContent = `<b>Agro Cearense - Sementes</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:green;">Avaliação: 4.9/5.0</p><button class="loan-button withdrawal-button" id="buy-seed-button" style="background-color:#008000;">Comprar Pacote c/ ${RICE_SEED_PACK_SIZE} Sementes (${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE)})</button>`;
+    const agroMarker = L.marker(AGRO_CEARENSE_COORDS, { icon: seedIcon }).addTo(map).bindPopup(agroPopupContent);
+    agroMarker.on('popupopen', function () {const buyButton = document.getElementById('buy-seed-button');buyButton.onclick = window.buyRiceSeeds;});
+    // 5. Hortifruti (Venda de Arroz)
+    const hortifrutiMarker = L.marker(HORTIFRUTI_COORDS, { icon: marketIcon }).addTo(map).bindPopup(`<b>Hortifruti do Carlinhos</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:#dc3545;">Venda: Cr$ ${formatCurrency(RICE_SELL_PRICE)} por Arroz Colhido</p><button id="sell-rice-button" class="loan-button sell-button">VENDER TODO O ARROZ</button>`);
+    hortifrutiMarker.on('popupopen', function () {const sellButton = document.getElementById('sell-rice-button');sellButton.onclick = window.sellRice;});
+    // 6. Fazenda de Arroz (Plantio/Colheita)
+    farmMarker = L.marker(FAZENDA_COORDS, { icon: farmIcon }).addTo(map).bindPopup(getFarmPopupContent());
+    farmMarker.on('popupopen', function() {farmMarker.getPopup().setContent(getFarmPopupContent());attachFarmEventListeners();});
+    // Inicialização
+    updateMoneyDisplay();
+    updateWhatsappLink(null); 
+};
+// updateLoanButtonState REMOVIDO pois a função de Empréstimo foi removida do mapa
+</script></body></html>
