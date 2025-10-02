@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortaleza - O Jogo</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>body{margin:0;padding:0}#mapa{height:100vh;width:100%}.action-button,.whatsapp-button{display:block;margin-top:5px;padding:8px 12px;color:#fff;border:none;border-radius:4px;cursor:pointer;width:100%;text-align:center;font-weight:700}.action-button{background-color:#007bff}.withdrawal-section{padding:10px 0;border-top:1px dashed #ccc;margin-top:10px}.withdrawal-section input{width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px}.withdrawal-button{background-color:#28a745}.whatsapp-button{background-color:#25D366;text-decoration:none;color:#fff!important;margin-top:15px;display:block;pointer-events:auto}.whatsapp-button.disabled{background-color:#7f7f7f;cursor:not-allowed;pointer-events:none}.exchange-button.cr-to-pix{background-color:#dc3545}.exchange-button.pix-to-cr{background-color:#17a2b8}.action-button:disabled,.exchange-button:disabled{background-color:#6c757d;cursor:not-allowed}.inventory-content{font-family:sans-serif;line-height:1.4}.inventory-list{font-size:.9em;line-height:1.3;margin-top:5px;max-height:100px;overflow-y:auto;padding-left:15px;border-top:1px solid #eee;padding-top:5px}.leaflet-popup-content-wrapper{max-width:200px}.validation-button{background-color:#ffc107;color:#000}.sell-button{background-color:#dc3545}.harvest-button{background-color:#17a2b8}.timer-display{font-weight:700;color:#007bff;margin:5px 0}.timer-display.ready{color:#28a745}.money-cr{color:#007bff}.money-pix{color:#28a745}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortaleza - O Jogo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>body{margin:0;padding:0}#mapa{height:100vh;width:100%}.action-button,.whatsapp-button{display:block;margin-top:5px;padding:8px 12px;color:#fff;border:none;border-radius:4px;cursor:pointer;width:100%;text-align:center;font-weight:700}.action-button{background-color:#007bff}.withdrawal-section{padding:10px 0;border-top:1px dashed #ccc;margin-top:10px}.withdrawal-section input{width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px}.withdrawal-button{background-color:#28a745}.whatsapp-button{background-color:#25D366;text-decoration:none;color:#fff!important;margin-top:15px;display:block;pointer-events:auto}.whatsapp-button.disabled{background-color:#7f7f7f;cursor:not-allowed;pointer-events:none}.exchange-button.cr-to-pix{background-color:#dc3545}.exchange-button.pix-to-cr{background-color:#17a2b8}.action-button:disabled,.exchange-button:disabled{background-color:#6c757d;cursor:not-allowed}.inventory-content{font-family:sans-serif;line-height:1.4}.inventory-list{font-size:.9em;line-height:1.3;margin-top:5px;max-height:100px;overflow-y:auto;padding-left:15px;border-top:1px solid #eee;padding-top:5px}.leaflet-popup-content-wrapper{max-width:200px}.validation-button{background-color:#ffc107;color:#000}.sell-button{background-color:#dc3545}.harvest-button{background-color:#17a2b8}.timer-display{font-weight:700;color:#007bff;margin:5px 0}.timer-display.ready{color:#28a745}.money-cr{color:#007bff}.money-pix{color:#28a745}</style>
 </head>
 <body>
-    <div id="mapa"></div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
+    <div id="mapa"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
     // VARIAVEIS INICIAIS (VALORES PADRÃO)
     let playerMoney = 0.00,
         playerPix = 0.00,
@@ -20,24 +20,21 @@
             harvestedRice: 0,
             plantedSeeds: 0
         },
-        farmPlots = 1,
+        farmPlots = 1, // Espaços de plantio fixos
         harvestReady = true,
         remainingTime = 0,
         farmMarker, homeMarker, map, harvestTimerInterval;
 
-    const MAX_PLOTS = 5,
-        PLOT_COST = 100.00,
-        CRUZEIRO_SYMBOL = "Cr$",
+    // --- VARIÁVEIS DE CONFIGURAÇÃO ATUALIZADAS ---
+    const CRUZEIRO_SYMBOL = "Cr$",
         PIX_SYMBOL = "R$",
-        CR_TRANSACTION_AMOUNT = 50.00,
-        PIX_TRANSACTION_AMOUNT = 0.50,
-        EXCHANGE_TAX_CR_TO_PIX = 0.10,
-        CRUZEIRO_TO_PIX_RATE = 0.01,
+        // REMOVIDA: EXCHANGE_TAX_CR_TO_PIX = 0.10,
+        CRUZEIRO_TO_PIX_RATE = 0.01, // 1 Cr$ = 0.01 R$
         OPERATOR_WHATSAPP_NUMBER = "5585999522997",
-        MIN_WITHDRAWAL_AMOUNT = 1,
+        MIN_WITHDRAWAL_AMOUNT = 0.01,
+        MIN_CR_TO_PIX_EXCHANGE = 1.00, // NOVO: Mínimo de 1 Cruzeiro para troca.
         HARVEST_TIME_SECONDS = 60,
-        RICE_SEED_PRICE = 1.00,
-        RICE_SEED_PACK_SIZE = 100,
+        RICE_SEED_PRICE_UNIT = 0.01,
         RICE_SELL_PRICE = 0.01;
 
     // --- FUNÇÕES DE SAVE/LOAD (localStorage) ---
@@ -93,12 +90,11 @@
     }
 
     function updateMoneyDisplay() {
-        updateExchangeButtons();
         farmMarker && farmMarker.getPopup().isOpen() && (farmMarker.setPopupContent(getFarmPopupContent()), attachFarmEventListeners());
         homeMarker && homeMarker.getPopup().isOpen() && homeMarker.setPopupContent(getHomePopupContent());
         updateHomeMarkerState();
         
-        // NOVO: Salva o jogo toda vez que o display é atualizado
+        // Salva o jogo toda vez que o display é atualizado
         saveGame(); 
     }
 
@@ -126,7 +122,7 @@
         if (0 !== playerInventory.plantedSeeds) {
             harvestReady = !1;
             if (!resume) {
-                 remainingTime = HARVEST_TIME_SECONDS;
+                remainingTime = HARVEST_TIME_SECONDS;
             }
             updateMoneyDisplay();
             
@@ -149,6 +145,8 @@
     }
     
     // Funções do jogo
+
+    // FUNÇÃO DE SAQUE
     window.requestWithdrawal = function() {
         const e = document.getElementById("withdrawal-amount"),
             t = parseFloat(parseFloat(e.value).toFixed(2));
@@ -163,46 +161,83 @@
         }), updateMoneyDisplay(), e.value = "", alert(`Saque de R$ ${formatCurrency(t)} solicitado. ID ${n} adicionado. Vá até a Lotérica para validar.`)
     };
 
-    function updateExchangeButtons() {
-        const e = document.getElementById("exchange-cr-to-pix"),
-            t = document.getElementById("exchange-pix-to-cr");
-        if (e && t) {
-            const n = CR_TRANSACTION_AMOUNT * CRUZEIRO_TO_PIX_RATE * (1 - EXCHANGE_TAX_CR_TO_PIX),
-                o = PIX_TRANSACTION_AMOUNT / CRUZEIRO_TO_PIX_RATE;
-            e.disabled = playerMoney < CR_TRANSACTION_AMOUNT, t.disabled = playerPix < PIX_TRANSACTION_AMOUNT, e.textContent = `Trocar Cr$ ${formatCurrency(CR_TRANSACTION_AMOUNT)} por R$ ${formatCurrency(n)} (10% Taxa)`, t.textContent = `Trocar R$ ${formatCurrency(PIX_TRANSACTION_AMOUNT)} por Cr$ ${formatCurrency(o)} (Sem Taxa)`
-        }
-    }
+    // FUNÇÃO DE TROCA ATUALIZADA (REMOVIDA A TAXA E APLICADO O MÍNIMO DE 1 CR$)
+    window.requestExchange = function(type) {
+        if ("cr-to-pix" === type) {
+            const inputElement = document.getElementById("input-cr-to-pix");
+            const amountToExchange = parseFloat(parseFloat(inputElement.value).toFixed(2));
 
-    window.requestExchange = function(e) {
-        if ("cr-to-pix" === e) {
-            if (playerMoney < CR_TRANSACTION_AMOUNT) return void alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(CR_TRANSACTION_AMOUNT)}.`);
-            const t = CR_TRANSACTION_AMOUNT * CRUZEIRO_TO_PIX_RATE * (1 - EXCHANGE_TAX_CR_TO_PIX);
-            playerMoney -= CR_TRANSACTION_AMOUNT, playerPix += t, alert(`Troca de ${CRUZEIRO_SYMBOL} ${formatCurrency(CR_TRANSACTION_AMOUNT)} por ${PIX_SYMBOL} ${formatCurrency(t)}.`);
-        } else if ("pix-to-cr" === e) {
-            if (playerPix < PIX_TRANSACTION_AMOUNT) return void alert(`Saldo insuficiente. Você precisa de ${PIX_SYMBOL} ${formatCurrency(PIX_TRANSACTION_AMOUNT)}.`);
-            const t = PIX_TRANSACTION_AMOUNT / CRUZEIRO_TO_PIX_RATE;
-            playerPix -= PIX_TRANSACTION_AMOUNT, playerMoney += t, alert(`Troca de ${PIX_SYMBOL} ${formatCurrency(PIX_TRANSACTION_AMOUNT)} por ${CRUZEIRO_SYMBOL} ${formatCurrency(t)}.`);
+            if (isNaN(amountToExchange) || amountToExchange < MIN_CR_TO_PIX_EXCHANGE) {
+                return alert(`Por favor, insira um valor válido de Cr$ para trocar (mínimo Cr$ ${formatCurrency(MIN_CR_TO_PIX_EXCHANGE)}).`);
+            }
+            
+            if (playerMoney < amountToExchange) {
+                return alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(amountToExchange)}.`);
+            }
+
+            // Cálculo da troca: Valor * Taxa de Câmbio (SEM TAXA DE IMPOSTO)
+            const pixReceived = amountToExchange * CRUZEIRO_TO_PIX_RATE;
+            
+            playerMoney -= amountToExchange;
+            playerPix += pixReceived;
+            
+            alert(`Troca de ${CRUZEIRO_SYMBOL} ${formatCurrency(amountToExchange)} por ${PIX_SYMBOL} ${formatCurrency(pixReceived)}.`);
+            inputElement.value = ''; // Limpa o campo
+            
+        } else if ("pix-to-cr" === type) {
+            const inputElement = document.getElementById("input-pix-to-cr");
+            const amountToExchange = parseFloat(parseFloat(inputElement.value).toFixed(2));
+
+            if (isNaN(amountToExchange) || amountToExchange <= 0.01) {
+                return alert("Por favor, insira um valor válido de R$ PIX para trocar.");
+            }
+            
+            if (playerPix < amountToExchange) {
+                return alert(`Saldo insuficiente. Você precisa de ${PIX_SYMBOL} ${formatCurrency(amountToExchange)}.`);
+            }
+
+            // Cálculo da troca: Valor / Taxa de Câmbio
+            const crReceived = amountToExchange / CRUZEIRO_TO_PIX_RATE;
+            
+            playerPix -= amountToExchange;
+            playerMoney += crReceived;
+            
+            alert(`Troca de ${PIX_SYMBOL} ${formatCurrency(amountToExchange)} por ${CRUZEIRO_SYMBOL} ${formatCurrency(crReceived)}.`);
+            inputElement.value = ''; // Limpa o campo
         }
         updateMoneyDisplay();
     };
 
+    // FUNÇÃO DE COMPRA DE SEMENTES
     window.buyRiceSeeds = function() {
-        if (playerMoney < RICE_SEED_PRICE) return void alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE)}.`);
-        playerMoney -= RICE_SEED_PRICE, playerInventory.riceSeeds += RICE_SEED_PACK_SIZE, alert(`Comprou um pacote com ${RICE_SEED_PACK_SIZE} Sementes de Arroz por ${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE)}.`), updateMoneyDisplay()
+        const quantityInput = document.getElementById("seed-quantity-input");
+        const quantity = parseInt(quantityInput.value, 10);
+
+        if (isNaN(quantity) || quantity <= 0) {
+            return void alert("Por favor, digite uma quantidade válida de sementes.");
+        }
+
+        const cost = quantity * RICE_SEED_PRICE_UNIT;
+
+        if (playerMoney < cost) {
+            return void alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(cost)} para comprar ${quantity} sementes.`);
+        }
+
+        playerMoney -= cost;
+        playerInventory.riceSeeds += quantity;
+        quantityInput.value = ""; 
+
+        alert(`Comprou ${quantity} Sementes de Arroz por ${CRUZEIRO_SYMBOL} ${formatCurrency(cost)}.`);
+        updateMoneyDisplay();
     };
 
+
     window.sellRice = function() {
-        const e = .01;
+        const e = RICE_SELL_PRICE;
         if (playerInventory.harvestedRice <= 0) return void alert("Você não tem Arroz colhido para vender.");
         const t = playerInventory.harvestedRice * e,
             n = playerInventory.harvestedRice;
         playerMoney += t, playerInventory.harvestedRice = 0, alert(`Vendeu ${n} Arroz Colhido por ${CRUZEIRO_SYMBOL} ${formatCurrency(t)}.`), updateMoneyDisplay()
-    };
-
-    window.buyPlot = function() {
-        if (farmPlots >= MAX_PLOTS) return void alert(`Máximo de ${MAX_PLOTS} espaços atingido.`);
-        if (playerMoney < PLOT_COST) return void alert(`Custo: ${CRUZEIRO_SYMBOL} ${formatCurrency(PLOT_COST)}. Saldo insuficiente.`);
-        playerMoney -= PLOT_COST, farmPlots += 1, updateMoneyDisplay(), alert(`Você comprou mais um espaço de plantio! Total: ${farmPlots}.`)
     };
 
     window.plantSeed = function() {
@@ -301,21 +336,21 @@
     }
 
     function getFarmPopupContent() {
-        let e = `Espaços Ocupados: **${playerInventory.plantedSeeds} / ${farmPlots}**`;
-        e += `<span style="color:${playerInventory.plantedSeeds<farmPlots?"#28a745":"red"}; display:block;">(Total de Espaços: ${farmPlots}/${MAX_PLOTS})</span>`;
-        let t = farmPlots < MAX_PLOTS ? `<button class="action-button withdrawal-button" id="buy-plot-button" style="background-color:#f7922d;">COMPRAR + ESPAÇO (${CRUZEIRO_SYMBOL} ${formatCurrency(PLOT_COST)})</button>` : '<button class="action-button" disabled style="background-color:#6c757d;">CAPACIDADE MÁXIMA</button>',
-            n = "";
+        let e = `Espaços Ocupados: **${playerInventory.plantedSeeds} / ${farmPlots}**`; 
+        e += `<span style="color:${playerInventory.plantedSeeds<farmPlots?"#28a745":"red"}; display:block;">(Total de Espaços: ${farmPlots})</span>`;
+        
+        let n = "";
         playerInventory.plantedSeeds > 0 && !harvestReady ? n = `<p class="timer-display">Tempo para Colher: ${remainingTime}s</p>` : playerInventory.plantedSeeds > 0 && harvestReady && (n = '<p class="timer-display ready">PRONTO PARA COLHEITA!</p>');
         let o = !harvestReady || playerInventory.plantedSeeds <= 0,
             a = !harvestReady || 0 === playerInventory.riceSeeds || playerInventory.plantedSeeds >= farmPlots;
-        return `<b>Fazenda de Arroz (Sua Propriedade)</b><hr style="margin:5px 0;"><p style="font-size:1.1em;font-weight:700;margin:5px 0;color:#008000;">${e}</p>${n}<button class="action-button" id="plant-seed-button" style="background-color:${a?"#6c757d":"#008000"};" ${a?"disabled":""}>PLANTAR SEMENTE DE ARROZ (${playerInventory.riceSeeds} no estoque)</button><button class="action-button harvest-button" id="harvest-button" style="background-color:${o?"#6c757d":"#17a2b8"};" ${o?"disabled":""}>COLHER ARROZ (${playerInventory.plantedSeeds} plantado(s))</button>${t}`
+        
+        return `<b>Fazenda de Arroz (Sua Propriedade)</b><hr style="margin:5px 0;"><p style="font-size:1.1em;font-weight:700;margin:5px 0;color:#008000;">${e}</p>${n}<button class="action-button" id="plant-seed-button" style="background-color:${a?"#6c757d":"#008000"};" ${a?"disabled":""}>PLANTAR SEMENTE DE ARROZ (${playerInventory.riceSeeds} no estoque)</button><button class="action-button harvest-button" id="harvest-button" style="background-color:${o?"#6c757d":"#17a2b8"};" ${o?"disabled":""}>COLHER ARROZ (${playerInventory.plantedSeeds} plantado(s))</button>`
     }
 
     function attachFarmEventListeners() {
-        const e = document.getElementById("buy-plot-button"),
-            t = document.getElementById("plant-seed-button"),
+        const t = document.getElementById("plant-seed-button"),
             n = document.getElementById("harvest-button");
-        e && (e.onclick = window.buyPlot), t && (t.onclick = window.plantSeed), n && (n.onclick = window.harvest)
+        t && (t.onclick = window.plantSeed), n && (n.onclick = window.harvest)
     }
 
     // Opcional: Salva o jogo se o jogador tentar fechar a página
@@ -328,33 +363,66 @@
         map = L.map("mapa").setView(FORTALEZA_COORDS, 13), L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 19,
             attribution: "&copy; OpenStreetMap"
-        }).addTo(map), map.invalidateSize(), L.marker(BCB_COORDS, {
+        }).addTo(map), map.invalidateSize();
+        
+        // BANCO CENTRAL (BCB)
+        L.marker(BCB_COORDS, {
             icon: bankIcon
-        }).addTo(map).bindPopup('<b>Banco Central do Brasil (BCB)</b><hr style="margin:5px 0;"><div class="withdrawal-section" style="border:none;margin-top:0;"><span style="font-weight:700;color:#28a745;display:block;margin-bottom:5px;">Solicitar Saque Pix</span><input type="number" id="withdrawal-amount" placeholder="Valor em R$" min="1" step="0.01"><button class="action-button withdrawal-button" onclick="requestWithdrawal()">Gerar ID de Saque</button></div>');
+        }).addTo(map).bindPopup('<b>Banco Central do Brasil (BCB)</b><hr style="margin:5px 0;"><div class="withdrawal-section" style="border:none;margin-top:0;"><span style="font-weight:700;color:#28a745;display:block;margin-bottom:5px;">Solicitar Saque Pix (Mín: R$ 0,01)</span><input type="number" id="withdrawal-amount" placeholder="Valor em R$" min="0.01" step="0.01"><button class="action-button withdrawal-button" onclick="requestWithdrawal()">Gerar ID de Saque</button></div>');
+        
+        // TOURSTAR CÂMBIO - CONTEÚDO ATUALIZADO
         const e = L.marker(TOURSTAR_COORDS, {
             icon: exchangeIcon
-        }).addTo(map).bindPopup('<b>TourStar Câmbio</b><hr style="margin:5px 0;"><button id="exchange-cr-to-pix" class="action-button exchange-button cr-to-pix" onclick="requestExchange(\'cr-to-pix\')"></button><button id="exchange-pix-to-cr" class="action-button exchange-button pix-to-cr" onclick="requestExchange(\'pix-to-cr\')"></button>');
-        e.on("popupopen", updateExchangeButtons), L.marker(LOTERICA_COORDS, {
+        }).addTo(map).bindPopup(`
+            <b>TourStar Câmbio</b>
+            <hr style="margin:5px 0;">
+            
+            <div style="margin-bottom:10px; padding: 5px; border: 1px solid #dc3545; border-radius: 4px;">
+                <span style="font-weight:700; color:#dc3545;">Cr$ -> R$ PIX (Câmbio: ${CRUZEIRO_SYMBOL} 1 = ${PIX_SYMBOL} ${formatCurrency(CRUZEIRO_TO_PIX_RATE)})</span>
+                <span style="font-size:0.9em; display:block; color:#dc3545;">(Mínimo: ${CRUZEIRO_SYMBOL} ${formatCurrency(MIN_CR_TO_PIX_EXCHANGE)} | Sem Taxa)</span>
+                <input type="number" id="input-cr-to-pix" placeholder="Valor em Cruzeiros (Cr$)" min="${MIN_CR_TO_PIX_EXCHANGE}" step="0.01" style="width:100%;padding:5px;box-sizing:border-box;margin-top:5px;">
+                <button id="exchange-cr-to-pix" class="action-button exchange-button cr-to-pix" onclick="requestExchange('cr-to-pix')">TROCAR</button>
+            </div>
+            
+            <div style="padding: 5px; border: 1px solid #17a2b8; border-radius: 4px;">
+                <span style="font-weight:700; color:#17a2b8;">R$ PIX -> Cr$ (Câmbio: ${PIX_SYMBOL} 1 = ${CRUZEIRO_SYMBOL} ${formatCurrency(1 / CRUZEIRO_TO_PIX_RATE)})</span>
+                <span style="font-size:0.9em; display:block; color:#17a2b8;">(Sem Taxa)</span>
+                <input type="number" id="input-pix-to-cr" placeholder="Valor em PIX (R$)" min="0.01" step="0.01" style="width:100%;padding:5px;box-sizing:border-box;margin-top:5px;">
+                <button id="exchange-pix-to-cr" class="action-button exchange-button pix-to-cr" onclick="requestExchange('pix-to-cr')">TROCAR</button>
+            </div>
+        `);
+        
+        // LOTERIA POPULAR
+        L.marker(LOTERICA_COORDS, {
             icon: lotteryIcon
         }).addTo(map).bindPopup('<b>Loteria Popular</b><hr style="margin:5px 0;"><p style="font-size:.9em;">1. Insira o ID para validar:</p><input type="text" id="loterica-code-input" placeholder="Ex: A1B2C3D4" style="width:100%;padding:5px;box-sizing:border-box;text-transform:uppercase;"><button class="action-button validation-button" onclick="validateWithdrawalCode()">Validar Código</button><p style="font-size:.9em;margin-top:15px;">2. Após a validação, finalize:</p><a id="whatsapp-loterica-button" href="#" target="_blank" class="whatsapp-button disabled">FINALIZAR SAQUE (WhatsApp)</a>');
-        const t = `<b>Agro Cearense - Sementes</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:green;">Avaliação: 4.9/5.0</p><button class="action-button withdrawal-button" id="buy-seed-button" style="background-color:#008000;">Comprar Pacote c/ ${RICE_SEED_PACK_SIZE} Sementes (${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE)})</button>`,
+        
+        // AGRO CEARENSE
+        const t = `<b>Agro Cearense - Sementes</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:green;">Preço Unitário: Cr$ ${formatCurrency(RICE_SEED_PRICE_UNIT)}</p>
+                    <input type="number" id="seed-quantity-input" placeholder="Qtd. de Sementes" min="1" step="1" style="width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px;">
+                    <button class="action-button withdrawal-button" id="buy-seed-button" style="background-color:#008000;">COMPRAR SEMENTES</button>`,
             n = L.marker(AGRO_CEARENSE_COORDS, {
                 icon: seedIcon
             }).addTo(map).bindPopup(t);
         n.on("popupopen", function() {
             document.getElementById("buy-seed-button").onclick = window.buyRiceSeeds
         });
+        
+        // HORTIFRUTI
         const o = L.marker(HORTIFRUTI_COORDS, {
             icon: marketIcon
         }).addTo(map).bindPopup(`<b>Hortifruti do Carlinhos</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:#dc3545;">Venda: Cr$ ${formatCurrency(RICE_SELL_PRICE)} por Arroz Colhido</p><button id="sell-rice-button" class="action-button sell-button">VENDER TODO O ARROZ</button>`);
         o.on("popupopen", function() {
             document.getElementById("sell-rice-button").onclick = window.sellRice
-        }), farmMarker = L.marker(FAZENDA_COORDS, {
+        }), 
+        
+        // FAZENDA
+        farmMarker = L.marker(FAZENDA_COORDS, {
             icon: farmIcon
         }).addTo(map).bindPopup(getFarmPopupContent()), farmMarker.on("popupopen", function() {
             farmMarker.getPopup().setContent(getFarmPopupContent()), attachFarmEventListeners()
         }), updateMoneyDisplay(), updateWhatsappLink(null)
     };
-    </script>
+    </script>
 </body>
 </html>
