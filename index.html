@@ -5,423 +5,487 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortaleza - O Jogo</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>body{margin:0;padding:0}#mapa{height:100vh;width:100%}.action-button,.whatsapp-button{display:block;margin-top:5px;padding:8px 12px;color:#fff;border:none;border-radius:4px;cursor:pointer;width:100%;text-align:center;font-weight:700}.action-button{background-color:#007bff}.withdrawal-section{padding:10px 0;border-top:1px dashed #ccc;margin-top:10px}.withdrawal-section input{width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px}.withdrawal-button{background-color:#28a745}.whatsapp-button{background-color:#25D366;text-decoration:none;color:#fff!important;margin-top:15px;display:block;pointer-events:auto}.whatsapp-button.disabled{background-color:#7f7f7f;cursor:not-allowed;pointer-events:none}.exchange-button.cr-to-pix{background-color:#dc3545}.exchange-button.pix-to-cr{background-color:#17a2b8}.action-button:disabled,.exchange-button:disabled{background-color:#6c757d;cursor:not-allowed}.inventory-content{font-family:sans-serif;line-height:1.4}.inventory-list{font-size:.9em;line-height:1.3;margin-top:5px;max-height:100px;overflow-y:auto;padding-left:15px;border-top:1px solid #eee;padding-top:5px}.leaflet-popup-content-wrapper{max-width:200px}.validation-button{background-color:#ffc107;color:#000}.sell-button{background-color:#dc3545}.harvest-button{background-color:#17a2b8}.timer-display{font-weight:700;color:#007bff;margin:5px 0}.timer-display.ready{color:#28a745}.money-cr{color:#007bff}.money-pix{color:#28a745}</style>
+    <style>
+        /* CSS OTIMIZADO E MINIFICADO */
+        body{margin:0;padding:0}#mapa{height:100vh;width:100%}.action-button,.whatsapp-button{display:block;margin-top:5px;padding:8px 12px;color:#fff;border:none;border-radius:4px;cursor:pointer;width:100%;text-align:center;font-weight:700}.action-button{background-color:#007bff}.withdrawal-section{padding:10px 0;border-top:1px dashed #ccc;margin-top:10px}.withdrawal-section input{width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px}.withdrawal-button{background-color:#28a745}.whatsapp-button{background-color:#25D366;text-decoration:none;color:#fff!important;margin-top:15px;display:block;pointer-events:auto}.whatsapp-button.disabled{background-color:#7f7f7f;cursor:not-allowed;pointer-events:none}.exchange-button.cr-to-pix{background-color:#dc3545}.exchange-button.pix-to-cr{background-color:#17a2b8}.action-button:disabled,.exchange-button:disabled{background-color:#6c757d;cursor:not-allowed}.inventory-content{font-family:sans-serif;line-height:1.4}.inventory-list{font-size:.9em;line-height:1.3;margin-top:5px;max-height:100px;overflow-y:auto;padding-left:15px;border-top:1px solid #eee;padding-top:5px}
+        #page-modal{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#f8f9fa;z-index:10000;display:none;overflow-y:auto;padding:20px;box-sizing:border-box;font-family:sans-serif;color:#333}#page-header{font-size:1.5em;font-weight:700;color:#007bff;margin-bottom:15px;border-bottom:2px solid #ccc;padding-bottom:10px}#page-content{padding-bottom:70px}#back-to-map-button{position:fixed;bottom:0;left:0;width:100%;padding:15px;background-color:#6c757d;color:white;border:none;font-size:1.1em;font-weight:700;cursor:pointer;box-shadow:0 -2px 5px rgba(0,0,0,0.1)}.operator-panel{padding:15px;border:1px solid #007bff;border-radius:5px;margin-top:15px;background-color:#e9f5ff}.transaction-item{padding:10px;border-bottom:1px dashed #ccc;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}.transaction-item:last-child{border-bottom:none}.money-cr{color:#007bff}.money-pix{color:#28a745}.timer-display{font-weight:700;color:#007bff;margin:5px 0}.timer-display.ready{color:#28a745}.deposit-link-section{margin-top:15px;padding-top:10px;border-top:1px dashed #ccc;}
+    </style>
 </head>
 <body>
     <div id="mapa"></div>
+    <div id="page-modal">
+        <div id="page-header"></div>
+        <div id="page-content"></div>
+        <button id="back-to-map-button">← Voltar para o Mapa</button>
+    </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-    // VARIAVEIS INICIAIS (VALORES PADRÃO)
-    let playerMoney = 0.00,
-        playerPix = 0.00,
-        withdrawalHistory = [],
-        playerInventory = {
-            riceSeeds: 100,
-            harvestedRice: 0,
-            plantedSeeds: 0
-        },
-        farmPlots = 1, // Espaços de plantio fixos
-        harvestReady = true,
-        remainingTime = 0,
-        farmMarker, homeMarker, map, harvestTimerInterval;
+    // --- VARIÁVEIS DE CONFIGURAÇÃO DO JOGO ---
+    const CRUZEIRO_SYMBOL="Cr$",PIX_SYMBOL="R$",CRUZEIRO_TO_PIX_RATE=0.01,PIX_TO_CRUZEIRO_TAX_RATE=0.20,OPERATOR_WHATSAPP_NUMBER="5585999522997",HARVEST_TIME_SECONDS=60;
+    
+    // NOVOS LIMITES MÍNIMOS
+    const MIN_DEPOSIT_AMOUNT = 1.00; // Depósito mínimo de R$ 1,00
+    const MIN_WITHDRAWAL_AMOUNT = 2.00; // Saque mínimo de R$ 2,00
+    
+    const RICE_SEED_PRICE_UNIT=0.01,RICE_SELL_PRICE=0.01;
+    const TOMATO_SEED_PRICE_UNIT=0.01,TOMATO_SELL_PRICE=0.01; // Semente em R$ (PIX). Venda em R$ (PIX).
+    const DEPOSIT_PIX_KEY="CPF 607.785.943-51 (Felipe Galdino)"; // CHAVE PIX DO DEPOSITO
+    
+    // CÂMBIO: 1 R$ PIX equivale a 100 Cr$
+    const CR_TO_PIX_EXCHANGE_RATE = CRUZEIRO_TO_PIX_RATE; // 0.01
+    // TAXA REMOVIDA
+    
+    // --- VARIAVEIS DE ESTADO (VALORES PADRÃO) ---
+    let playerMoney=0.00,playerPix=0.00,withdrawalHistory=[],depositHistory=[],
+    playerInventory={riceSeeds:1,harvestedRice:0,plantedSeeds:0,tomatoSeeds:0,harvestedTomato:0,plantedCrop:null}, // plantedCrop: 'rice' ou 'tomato'
+    farmPlots=1,harvestReady=true,remainingTime=0,farmMarker,homeMarker,map,harvestTimerInterval,operatorPassword="123",playerName="Jogador Anônimo";
 
-    // --- VARIÁVEIS DE CONFIGURAÇÃO ATUALIZADAS ---
-    const CRUZEIRO_SYMBOL = "Cr$",
-        PIX_SYMBOL = "R$",
-        // REMOVIDA: EXCHANGE_TAX_CR_TO_PIX = 0.10,
-        CRUZEIRO_TO_PIX_RATE = 0.01, // 1 Cr$ = 0.01 R$
-        OPERATOR_WHATSAPP_NUMBER = "5585999522997",
-        MIN_WITHDRAWAL_AMOUNT = 0.01,
-        MIN_CR_TO_PIX_EXCHANGE = 1.00, // NOVO: Mínimo de 1 Cruzeiro para troca.
-        HARVEST_TIME_SECONDS = 60,
-        RICE_SEED_PRICE_UNIT = 0.01,
-        RICE_SELL_PRICE = 0.01;
+    // --- FUNÇÕES DE SAVE/LOAD ---
+    function saveGame(){const gameState={money:playerMoney,pix:playerPix,inventory:playerInventory,plots:farmPlots,history:withdrawalHistory,depHistory:depositHistory,ready:harvestReady,time:remainingTime,password:operatorPassword,name:playerName};localStorage.setItem('fortalezaGameSave',JSON.stringify(gameState))}
 
-    // --- FUNÇÕES DE SAVE/LOAD (localStorage) ---
-    function saveGame() {
-        const gameState = {
-            money: playerMoney,
-            pix: playerPix,
-            inventory: playerInventory,
-            plots: farmPlots,
-            history: withdrawalHistory,
-            ready: harvestReady,
-            time: remainingTime
-        };
-        localStorage.setItem('fortalezaGameSave', JSON.stringify(gameState));
-    }
-
-    function loadGame() {
-        const savedState = localStorage.getItem('fortalezaGameSave');
-        if (savedState) {
-            try {
-                const gameState = JSON.parse(savedState);
-                playerMoney = gameState.money || 0.00;
-                playerPix = gameState.pix || 0.00;
-                playerInventory = gameState.inventory || {
-                    riceSeeds: 100,
-                    harvestedRice: 0,
-                    plantedSeeds: 0
-                };
-                farmPlots = gameState.plots || 1;
-                withdrawalHistory = gameState.history || [];
-                harvestReady = gameState.ready || true;
-                remainingTime = gameState.time || 0;
-                
-                // Se houver tempo restante, reinicia o timer
-                if (remainingTime > 0 && playerInventory.plantedSeeds > 0) {
-                    startHarvestTimer(true); // Passa 'true' para não resetar o tempo
-                }
-                return true;
-            } catch (e) {
-                // Se falhar (save corrompido), remove o save e inicia do zero para evitar tela branca
-                console.error("Save corrompido detectado e removido.", e);
-                localStorage.removeItem('fortalezaGameSave');
-                return false;
-            }
-        }
-        return false;
-    }
+    function loadGame(){const savedState=localStorage.getItem('fortalezaGameSave');if(savedState){try{const gameState=JSON.parse(savedState);playerMoney=gameState.money||0.00;playerPix=gameState.pix||0.00;playerInventory=gameState.inventory||{riceSeeds:1,harvestedRice:0,plantedSeeds:0,tomatoSeeds:0,harvestedTomato:0,plantedCrop:null};farmPlots=gameState.plots||1;withdrawalHistory=gameState.history||[];depositHistory=gameState.depHistory||[];harvestReady=gameState.ready||true;remainingTime=gameState.time||0;operatorPassword=gameState.password||"123";playerName=gameState.name||"Jogador Anônimo";if(remainingTime>0&&playerInventory.plantedSeeds>0){startHarvestTimer(true)}return true}catch(e){localStorage.removeItem('fortalezaGameSave');return false}}return false}
     // --- FIM FUNÇÕES DE SAVE/LOAD ---
 
+    // --- FUNÇÕES DE MODAL/PÁGINA ---
+    const pageModal=document.getElementById('page-modal'),pageHeader=document.getElementById('page-header'),pageContent=document.getElementById('page-content'),backButton=document.getElementById('back-to-map-button');
 
-    function formatCurrency(e) {
-        return e.toFixed(2).replace(".", ",")
-    }
+    function showPageModal(title,content,attachListeners=null){pageHeader.innerHTML=title;pageContent.innerHTML=content;pageModal.style.display='block';map.dragging.disable();map.doubleClickZoom.disable();map.scrollWheelZoom.disable();map.keyboard.disable();backButton.onclick=hidePageModal;if(attachListeners){attachListeners()}}
+    function hidePageModal(){pageModal.style.display='none';map.dragging.enable();map.doubleClickZoom.enable();map.scrollWheelZoom.enable();map.keyboard.enable();updateMoneyDisplay()}
+    // --- FIM FUNÇÕES DE MODAL/PÁGINA ---
 
-    function updateMoneyDisplay() {
-        farmMarker && farmMarker.getPopup().isOpen() && (farmMarker.setPopupContent(getFarmPopupContent()), attachFarmEventListeners());
-        homeMarker && homeMarker.getPopup().isOpen() && homeMarker.setPopupContent(getHomePopupContent());
-        updateHomeMarkerState();
+    function formatCurrency(e){return e.toFixed(2).replace(".",",")}
+    function updateMoneyDisplay(){updateHomeMarkerState();saveGame()}
+    function generateUniqueTransactionId(){let id;do{id=Math.random().toString(36).substring(2,10).toUpperCase()}while(withdrawalHistory.some(t=>t.id===id)||depositHistory.some(t=>t.id===id));return id}
+
+    // --- FUNÇÃO DE NOME DO JOGADOR ---
+    window.setPlayerName=function(){const input=document.getElementById('player-name-input');const newName=input.value.trim();if(newName){playerName=newName;alert(`Nome atualizado para: ${playerName}`);showPageModal(`Casa de ${playerName}`,getInventoryContent(),attachHomeListeners)}else{alert("Por favor, digite um nome válido.")}}
+
+    function getInventoryContent(){
+        let items="",hasItems=false;
+        if(playerInventory.riceSeeds>0){items+=`<li style="color:#008000;">**${playerInventory.riceSeeds}x** Semente de Arroz</li>`;hasItems=true}
+        if(playerInventory.harvestedRice>0){items+=`<li style="color:#008000;">**${playerInventory.harvestedRice}x** Arroz Colhido</li>`;hasItems=true}
+        // Novo item
+        if(playerInventory.tomatoSeeds>0){items+=`<li style="color:#dc3545;">**${playerInventory.tomatoSeeds}x** Semente de Tomate</li>`;hasItems=true}
+        if(playerInventory.harvestedTomato>0){items+=`<li style="color:#dc3545;">**${playerInventory.harvestedTomato}x** Tomate Colhido</li>`;hasItems=true}
+
+        if(playerInventory.plantedSeeds>0){items+=`<li style="color:#f7922d;">**${playerInventory.plantedSeeds}** Espaço(s) Plantado(s) (${playerInventory.plantedCrop === 'rice' ? 'Arroz' : 'Tomate'})</li>`;hasItems=true}
         
-        // Salva o jogo toda vez que o display é atualizado
-        saveGame(); 
-    }
+        withdrawalHistory.forEach(t=>{const status=t.validated?'<span style="color:green;"> (Pago)</span>':'<span style="color:red;"> (Pendente Op.)</span>';items+=`<li style="color:red;">Saque: **R$ ${formatCurrency(t.amount)}** (ID: ${t.id})${status}</li>`});
+        depositHistory.forEach(t=>{const status=t.validated?'<span style="color:green;"> (Creditado)</span>':'<span style="color:blue;"> (Aguardando Op.)</span>';items+=`<li style="color:blue;">Depósito: **R$ ${formatCurrency(t.amount)}** (ID: ${t.id})${status}</li>`});
 
-    function generateUniqueTransactionId() {
-        let e;
-        for (;;) {
-            if (e = Math.random().toString(36).substring(2, 10).toUpperCase(), !withdrawalHistory.some(t => t.id === e)) return e
-        }
-    }
-
-    function getInventoryContent() {
-        let e = "",
-            t = !1;
-        return playerInventory.riceSeeds > 0 && (e += `<li style="color:#008000;">**${playerInventory.riceSeeds}x** Semente de Arroz</li>`, t = !0), playerInventory.harvestedRice > 0 && (e += `<li style="color:#dc3545;">**${playerInventory.harvestedRice}x** Arroz Colhido</li>`, t = !0), playerInventory.plantedSeeds > 0 && (e += `<li style="color:#f7922d;">**${playerInventory.plantedSeeds}** Espaço(s) Plantado(s)</li>`, t = !0), withdrawalHistory.forEach(t => {
-            const n = t.validated ? '<span style="color:green;"> (Validado)</span>' : '<span style="color:red;"> (Pendente)</span>';
-            e += `<li>Saque: **R$ ${formatCurrency(t.amount)}** (ID: ${t.id})${n}</li>`
-        }), t || (e = '<li style="list-style:none;font-style:italic;color:#6c757d;padding-left:0;">Inventário vazio.</li>'), `<div class="inventory-content"><span style="font-size:1.1em;display:block;margin-bottom:5px;">SALDO</span>Cr$: <span class="money-cr">${formatCurrency(playerMoney)}</span> (Cruzeiro)<br>R$: <span class="money-pix">${formatCurrency(playerPix)}</span> (PIX)<div style="margin-top:10px;font-weight:bold;">Itens:</div><ul class="inventory-list">${e}</ul></div>`
-    }
-
-    function getHomePopupContent() {
-        return `<b>Casa do Jogador</b><hr style="margin:5px 0;">${getInventoryContent()}`
-    }
-
-    function startHarvestTimer(resume = false) {
-        if (0 !== playerInventory.plantedSeeds) {
-            harvestReady = !1;
-            if (!resume) {
-                remainingTime = HARVEST_TIME_SECONDS;
-            }
-            updateMoneyDisplay();
-            
-            if (harvestTimerInterval) {
-                clearInterval(harvestTimerInterval);
-            }
-            
-            harvestTimerInterval = setInterval(() => {
-                remainingTime--;
-                updateMoneyDisplay();
-                if (remainingTime <= 0) {
-                    clearInterval(harvestTimerInterval);
-                    harvestReady = !0;
-                    remainingTime = 0;
-                    updateMoneyDisplay();
-                    farmMarker && farmMarker.getPopup().isOpen() && alert("Colheita Pronta! Seu arroz amadureceu.")
-                }
-            }, 1e3)
-        }
+        if(!hasItems&&withdrawalHistory.length===0&&depositHistory.length===0){items='<li style="list-style:none;font-style:italic;color:#6c757d;padding-left:0;">Inventário vazio.</li>'}
+        
+        return `<div class="inventory-content"><span style="font-size:1.1em;display:block;margin-bottom:5px;">SALDO</span>${CRUZEIRO_SYMBOL}: <span class="money-cr">${formatCurrency(playerMoney)}</span> (Cruzeiro)<br>${PIX_SYMBOL}: <span class="money-pix">${formatCurrency(playerPix)}</span> (PIX)<div style="margin-top:10px;font-weight:bold;">Itens & Transações:</div><ul class="inventory-list">${items}</ul></div>
+            <div style="border-top: 1px dashed #ccc; padding-top: 15px; margin-top: 15px;">
+                <span style="font-weight:700; display:block; margin-bottom: 5px;">Configurar Nome:</span>
+                <input type="text" id="player-name-input" placeholder="Seu Nome de Jogador" value="${playerName==="Jogador Anônimo"?"":playerName}" style="width:100%; padding: 5px; box-sizing: border-box; margin-bottom: 5px;">
+                <button class="action-button" id="set-name-button" style="background-color:#007bff; width: 100%;">Salvar Nome</button>
+            </div>`;
     }
     
-    // Funções do jogo
+    function attachHomeListeners(){document.getElementById("set-name-button").onclick=window.setPlayerName}
 
-    // FUNÇÃO DE SAQUE
-    window.requestWithdrawal = function() {
-        const e = document.getElementById("withdrawal-amount"),
-            t = parseFloat(parseFloat(e.value).toFixed(2));
-        if (isNaN(t) || t < MIN_WITHDRAWAL_AMOUNT) return void alert(`Valor inválido. O saque mínimo é R$ ${formatCurrency(MIN_WITHDRAWAL_AMOUNT)}.`);
-        if (t > playerPix) return void alert(`Saldo Pix insuficiente. Saldo atual: R$ ${formatCurrency(playerPix)}.`);
-        playerPix -= t;
-        const n = generateUniqueTransactionId();
-        withdrawalHistory.push({
-            id: n,
-            amount: t,
-            validated: !1
-        }), updateMoneyDisplay(), e.value = "", alert(`Saque de R$ ${formatCurrency(t)} solicitado. ID ${n} adicionado. Vá até a Lotérica para validar.`)
-    };
-
-    // FUNÇÃO DE TROCA ATUALIZADA (REMOVIDA A TAXA E APLICADO O MÍNIMO DE 1 CR$)
-    window.requestExchange = function(type) {
-        if ("cr-to-pix" === type) {
-            const inputElement = document.getElementById("input-cr-to-pix");
-            const amountToExchange = parseFloat(parseFloat(inputElement.value).toFixed(2));
-
-            if (isNaN(amountToExchange) || amountToExchange < MIN_CR_TO_PIX_EXCHANGE) {
-                return alert(`Por favor, insira um valor válido de Cr$ para trocar (mínimo Cr$ ${formatCurrency(MIN_CR_TO_PIX_EXCHANGE)}).`);
-            }
-            
-            if (playerMoney < amountToExchange) {
-                return alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(amountToExchange)}.`);
-            }
-
-            // Cálculo da troca: Valor * Taxa de Câmbio (SEM TAXA DE IMPOSTO)
-            const pixReceived = amountToExchange * CRUZEIRO_TO_PIX_RATE;
-            
-            playerMoney -= amountToExchange;
-            playerPix += pixReceived;
-            
-            alert(`Troca de ${CRUZEIRO_SYMBOL} ${formatCurrency(amountToExchange)} por ${PIX_SYMBOL} ${formatCurrency(pixReceived)}.`);
-            inputElement.value = ''; // Limpa o campo
-            
-        } else if ("pix-to-cr" === type) {
-            const inputElement = document.getElementById("input-pix-to-cr");
-            const amountToExchange = parseFloat(parseFloat(inputElement.value).toFixed(2));
-
-            if (isNaN(amountToExchange) || amountToExchange <= 0.01) {
-                return alert("Por favor, insira um valor válido de R$ PIX para trocar.");
-            }
-            
-            if (playerPix < amountToExchange) {
-                return alert(`Saldo insuficiente. Você precisa de ${PIX_SYMBOL} ${formatCurrency(amountToExchange)}.`);
-            }
-
-            // Cálculo da troca: Valor / Taxa de Câmbio
-            const crReceived = amountToExchange / CRUZEIRO_TO_PIX_RATE;
-            
-            playerPix -= amountToExchange;
-            playerMoney += crReceived;
-            
-            alert(`Troca de ${PIX_SYMBOL} ${formatCurrency(amountToExchange)} por ${CRUZEIRO_SYMBOL} ${formatCurrency(crReceived)}.`);
-            inputElement.value = ''; // Limpa o campo
+    // CORREÇÃO DO CRONÔMETRO: Função para atualizar o conteúdo do Modal da Fazenda (mantendo o timer rodando)
+    function updateFarmModalContent(){
+        if(pageModal.style.display === 'block' && pageHeader.innerHTML.includes('Fazenda de Arroz')){
+            pageContent.innerHTML = getFarmContent();
+            attachFarmListeners();
         }
+    }
+
+    function startHarvestTimer(resume=false){
+        if(playerInventory.plantedSeeds===0)return;
+        harvestReady=false;if(!resume)remainingTime=HARVEST_TIME_SECONDS;
         updateMoneyDisplay();
-    };
-
-    // FUNÇÃO DE COMPRA DE SEMENTES
-    window.buyRiceSeeds = function() {
-        const quantityInput = document.getElementById("seed-quantity-input");
-        const quantity = parseInt(quantityInput.value, 10);
-
-        if (isNaN(quantity) || quantity <= 0) {
-            return void alert("Por favor, digite uma quantidade válida de sementes.");
-        }
-
-        const cost = quantity * RICE_SEED_PRICE_UNIT;
-
-        if (playerMoney < cost) {
-            return void alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(cost)} para comprar ${quantity} sementes.`);
-        }
-
-        playerMoney -= cost;
-        playerInventory.riceSeeds += quantity;
-        quantityInput.value = ""; 
-
-        alert(`Comprou ${quantity} Sementes de Arroz por ${CRUZEIRO_SYMBOL} ${formatCurrency(cost)}.`);
-        updateMoneyDisplay();
-    };
-
-
-    window.sellRice = function() {
-        const e = RICE_SELL_PRICE;
-        if (playerInventory.harvestedRice <= 0) return void alert("Você não tem Arroz colhido para vender.");
-        const t = playerInventory.harvestedRice * e,
-            n = playerInventory.harvestedRice;
-        playerMoney += t, playerInventory.harvestedRice = 0, alert(`Vendeu ${n} Arroz Colhido por ${CRUZEIRO_SYMBOL} ${formatCurrency(t)}.`), updateMoneyDisplay()
-    };
-
-    window.plantSeed = function() {
-        if (!harvestReady) return void alert("Aguarde a colheita anterior amadurecer!");
-        if (playerInventory.plantedSeeds >= farmPlots) return void alert(`Todos os ${farmPlots} espaços estão ocupados. Você precisa colher primeiro.`);
-        if (playerInventory.riceSeeds <= 0) return void alert("Você não tem sementes de arroz para plantar. Compre na Agro Cearense.");
-        playerInventory.riceSeeds -= 1, playerInventory.plantedSeeds += 1, startHarvestTimer(), alert("1 semente de arroz plantada com sucesso! O cronômetro de crescimento iniciou."), updateMoneyDisplay()
-    };
-
-    window.harvest = function() {
-        if (playerInventory.plantedSeeds <= 0) return void alert("Não há nada plantado para colher.");
-        if (!harvestReady) return void alert(`Aguarde ${remainingTime} segundos para colher.`);
-        const e = playerInventory.plantedSeeds,
-            t = Math.floor(5 * Math.random()) + 5,
-            n = e * t;
-        playerInventory.harvestedRice += n, playerInventory.plantedSeeds = 0, harvestReady = !0, remainingTime = 0, alert(`Colheita concluída! Você colheu ${n} Arroz Colhido (${t} por espaço) de ${e} espaço(s).`), updateMoneyDisplay()
-    };
-
-    function updateWhatsappLink(e) {
-        const t = document.getElementById("whatsapp-loterica-button");
-        if (t) {
-            if (!e || !e.validated) return t.classList.add("disabled"), t.textContent = "FINALIZAR SAQUE (WhatsApp)", void(t.href = "#");
-            const n = e.id,
-                o = formatCurrency(e.amount),
-                a = encodeURIComponent(`Olá, sou o jogador e gostaria de finalizar meu saque.\n\n*ID de Transação Validado (Lotérica):* ${n}\n*Valor a Receber (Confirmado):* R$ ${o}\n\n*Minha Chave Pix (aqui o jogador digita/cola a chave):*`);
-            t.href = `https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${a}`, t.classList.remove("disabled"), t.textContent = `FINALIZAR SAQUE R$ ${o} (Cód. ${n})`
-        }
+        if(harvestTimerInterval)clearInterval(harvestTimerInterval);
+        harvestTimerInterval=setInterval(()=>{
+            remainingTime--;
+            updateFarmModalContent(); // Atualiza o modal da fazenda a cada segundo
+            if(remainingTime<=0){
+                clearInterval(harvestTimerInterval);
+                harvestReady=true;
+                remainingTime=0;
+                updateFarmModalContent(); // Atualiza o modal para pronto
+            }
+            saveGame(); // Salva a cada segundo
+        },1000)
     }
+    
+    // --- FUNÇÕES DE AÇÃO DO JOGO (BCB) ---
 
-    window.validateWithdrawalCode = function() {
-        const e = document.getElementById("loterica-code-input"),
-            t = e.value.trim().toUpperCase();
-        if (updateWhatsappLink(null), !t) return void alert("Por favor, digite o código.");
-        const n = withdrawalHistory.find(e => e.id === t);
-        n ? n.validated ? (updateWhatsappLink(n), alert(`O código ${t} já foi validado. Finalize a transação pelo WhatsApp.`)) : (n.validated = !0, updateMoneyDisplay(), updateWhatsappLink(n), alert(`Código ${t} validado com sucesso! Use o botão do WhatsApp para enviar seus dados Pix ao operador.`)) : alert("ERRO: Código de transação não encontrado.")
-    };
-
-    const FORTALEZA_COORDS = [-3.7319, -38.5267],
-        BCB_COORDS = [-3.7341, -38.5273],
-        TOURSTAR_COORDS = [-3.7268, -38.498],
-        LOTERICA_COORDS = [-3.7386571, -38.4852458],
-        AGRO_CEARENSE_COORDS = [-3.7993489, -38.5071345],
-        FAZENDA_COORDS = [-3.8115, -38.563],
-        CASA_COORDS = [-3.82, -38.57],
-        HORTIFRUTI_COORDS = [-3.753, -38.568],
-        iconBase = "https://cdn-icons-png.flaticon.com/512/",
-        bankIcon = L.icon({
-            iconUrl: iconBase + "3673/3673419.png",
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -30]
-        }),
-        exchangeIcon = L.icon({
-            iconUrl: iconBase + "3238/3238479.png",
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -30]
-        }),
-        lotteryIcon = L.icon({
-            iconUrl: iconBase + "3673/3673385.png",
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -30]
-        }),
-        seedIcon = L.icon({
-            iconUrl: iconBase + "3067/3067167.png",
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -30]
-        }),
-        farmIcon = L.icon({
-            iconUrl: iconBase + "2857/2857508.png",
-            iconSize: [45, 45],
-            iconAnchor: [22, 45],
-            popupAnchor: [0, -40]
-        }),
-        marketIcon = L.icon({
-            iconUrl: iconBase + "3075/3075841.png",
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -30]
-        }),
-        homeIcon = L.icon({
-            iconUrl: iconBase + "9404/9404760.png",
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -30]
-        });
-
-    function updateHomeMarkerState() {
-        !homeMarker && map && (homeMarker = L.marker(CASA_COORDS, {
-            icon: homeIcon
-        }).addTo(map).bindPopup(getHomePopupContent()), homeMarker.on("popupopen", function() {
-            homeMarker.getPopup().setContent(getHomePopupContent())
-        }))
-    }
-
-    function getFarmPopupContent() {
-        let e = `Espaços Ocupados: **${playerInventory.plantedSeeds} / ${farmPlots}**`; 
-        e += `<span style="color:${playerInventory.plantedSeeds<farmPlots?"#28a745":"red"}; display:block;">(Total de Espaços: ${farmPlots})</span>`;
+    // Saque (Pix para o jogador)
+    window.requestWithdrawal=function(){
+        const input=document.getElementById("withdrawal-amount");const amount=parseFloat(parseFloat(input.value).toFixed(2));
+        if(isNaN(amount)||amount<MIN_WITHDRAWAL_AMOUNT){return alert(`Valor inválido. O saque mínimo é R$ ${formatCurrency(MIN_WITHDRAWAL_AMOUNT)}.`)}
+        if(amount>playerPix){return alert(`Saldo Pix insuficiente. Saldo atual: R$ ${formatCurrency(playerPix)}.`)}
         
-        let n = "";
-        playerInventory.plantedSeeds > 0 && !harvestReady ? n = `<p class="timer-display">Tempo para Colher: ${remainingTime}s</p>` : playerInventory.plantedSeeds > 0 && harvestReady && (n = '<p class="timer-display ready">PRONTO PARA COLHEITA!</p>');
-        let o = !harvestReady || playerInventory.plantedSeeds <= 0,
-            a = !harvestReady || 0 === playerInventory.riceSeeds || playerInventory.plantedSeeds >= farmPlots;
+        playerPix-=amount;
+        const id=generateUniqueTransactionId();
+        withdrawalHistory.push({id,amount,validated:false}); 
         
-        return `<b>Fazenda de Arroz (Sua Propriedade)</b><hr style="margin:5px 0;"><p style="font-size:1.1em;font-weight:700;margin:5px 0;color:#008000;">${e}</p>${n}<button class="action-button" id="plant-seed-button" style="background-color:${a?"#6c757d":"#008000"};" ${a?"disabled":""}>PLANTAR SEMENTE DE ARROZ (${playerInventory.riceSeeds} no estoque)</button><button class="action-button harvest-button" id="harvest-button" style="background-color:${o?"#6c757d":"#17a2b8"};" ${o?"disabled":""}>COLHER ARROZ (${playerInventory.plantedSeeds} plantado(s))</button>`
+        const encodedMessage=encodeURIComponent(`Saque R$ ${formatCurrency(amount)} solicitado. ID: ${id}.\nMinha chave Pix (aqui o jogador digita/cola a chave):`);
+        const whatsappLink=`https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${encodedMessage}`;
+        
+        alert(`Saque de R$ ${formatCurrency(amount)} registrado (ID ${id}). Finalize o PIX com o operador pelo WhatsApp.`);
+        window.open(whatsappLink, '_blank'); // Abre o WhatsApp para o PIX
+        showPageModal("Banco Central do Brasil (BCB)",getBankContent(),attachBankListeners);
+    };
+
+    // Depósito (Pix do jogador para o jogo)
+    window.requestDeposit=function(){
+        const input=document.getElementById("deposit-amount");const amount=parseFloat(parseFloat(input.value).toFixed(2));
+        if(isNaN(amount)||amount<MIN_DEPOSIT_AMOUNT){return alert(`Valor inválido. O depósito mínimo é R$ ${formatCurrency(MIN_DEPOSIT_AMOUNT)}.`)}
+        
+        const id=generateUniqueTransactionId();
+        depositHistory.push({id,amount,validated:false});
+        
+        // Armazena o ID e o valor temporariamente para o botão WhatsApp
+        localStorage.setItem('pendingDepositId', id);
+        localStorage.setItem('pendingDepositAmount', amount);
+        
+        alert(`Depósito de R$ ${formatCurrency(amount)} registrado (ID ${id}). Realize o PIX para a chave informada e use o botão WhatsApp para enviar o comprovante.`);
+        showPageModal("Banco Central do Brasil (BCB)",getBankContent(id, amount),attachBankListeners);
+    };
+
+    // FUNÇÃO DE CÂMBIO INVERTIDA E SEM TAXA: CRUZEIRO -> PIX
+    window.requestExchange=function(){
+        const inputElement=document.getElementById("input-cr-to-pix"); // ID do input alterado
+        const amountToExchange=parseFloat(parseFloat(inputElement.value).toFixed(2));
+
+        if(isNaN(amountToExchange)||amountToExchange<=0.01){return alert("Por favor, insira um valor válido de Cr$ para trocar.")}
+        if(playerMoney<amountToExchange){return alert(`Saldo insuficiente. Você precisa de ${CRUZEIRO_SYMBOL} ${formatCurrency(amountToExchange)}.`)}
+        
+        // CÁLCULO INVERTIDO E SEM TAXA: Cr$ para R$ PIX
+        const pixReceived=amountToExchange*CR_TO_PIX_EXCHANGE_RATE;
+        
+        playerMoney-=amountToExchange; // Debita Cruzeiro
+        playerPix+=pixReceived; // Credita PIX
+        
+        alert(`Troca de ${CRUZEIRO_SYMBOL} ${formatCurrency(amountToExchange)} por ${PIX_SYMBOL} ${formatCurrency(pixReceived)} realizada com sucesso.`);
+        inputElement.value='';
+        showPageModal("TourStar Câmbio",getTourStarContent(),attachTourStarListeners)
+    };
+    
+    // Compra de Sementes
+    window.buySeed=function(cropType){
+        const quantityInput=document.getElementById("seed-quantity-input");const quantity=parseInt(quantityInput.value,10);if(isNaN(quantity)||quantity<=0){return alert("Por favor, digite uma quantidade válida de sementes.")}
+        
+        let priceUnit, cost, currencySymbol, currentBalance, seedName;
+
+        if (cropType === 'rice') {
+            priceUnit = RICE_SEED_PRICE_UNIT;
+            cost = quantity * priceUnit;
+            currencySymbol = CRUZEIRO_SYMBOL;
+            currentBalance = playerMoney; 
+            seedName = 'Arroz';
+        } else { // Tomate usa PIX
+            priceUnit = TOMATO_SEED_PRICE_UNIT;
+            cost = quantity * priceUnit;
+            currencySymbol = PIX_SYMBOL;
+            currentBalance = playerPix; 
+            seedName = 'Tomate';
+        }
+        
+        if(currentBalance<cost){return alert(`Saldo insuficiente. Você precisa de ${currencySymbol} ${formatCurrency(cost)}.`)}
+        
+        // Debita e adiciona ao inventário
+        if(cropType === 'rice'){
+            playerMoney-=cost;
+            playerInventory.riceSeeds+=quantity;
+        }else{
+            playerPix-=cost;
+            playerInventory.tomatoSeeds+=quantity;
+        }
+
+        quantityInput.value="";
+        alert(`Comprou ${quantity} Sementes de ${seedName} por ${currencySymbol} ${formatCurrency(cost)}.`);
+        showPageModal("Agro Cearense - Sementes",getAgroCearenseContent(),attachAgroCearenseListeners)
+    };
+    
+    // Venda de Colheita
+    window.sellHarvest=function(){
+        let totalAmountCr = 0;
+        let totalAmountPix = 0;
+
+        const riceSold = playerInventory.harvestedRice;
+        const tomatoSold = playerInventory.harvestedTomato;
+        
+        if(riceSold <= 0 && tomatoSold <= 0) return alert("Você não tem nada colhido para vender.");
+        
+        // Venda de Arroz (em Cruzeiro)
+        totalAmountCr += riceSold * RICE_SELL_PRICE;
+        playerMoney += totalAmountCr;
+        playerInventory.harvestedRice=0;
+        
+        // Venda de Tomate (em PIX/Real)
+        totalAmountPix += tomatoSold * TOMATO_SELL_PRICE;
+        playerPix += totalAmountPix;
+        playerInventory.harvestedTomato=0;
+
+        alert(`Vendeu ${riceSold} Arroz por ${CRUZEIRO_SYMBOL} ${formatCurrency(totalAmountCr)} e ${tomatoSold} Tomate por ${PIX_SYMBOL} ${formatCurrency(totalAmountPix)}.`);
+        showPageModal("Hortifruti do Carlinhos",getHortifrutiContent(),attachHortifrutiListeners)
+    };
+
+    // Plantar Semente
+    window.plantSeed=function(cropType){
+        if(!harvestReady)return alert("Aguarde a colheita anterior amadurecer!");
+        if(playerInventory.plantedSeeds>=farmPlots)return alert(`Todos os ${farmPlots} espaços estão ocupados.`);
+
+        const seedName = cropType === 'rice' ? 'Arroz' : 'Tomate';
+        const seedCount = cropType === 'rice' ? playerInventory.riceSeeds : playerInventory.tomatoSeeds;
+        
+        if(seedCount<=0)return alert(`Você não tem sementes de ${seedName} para plantar.`);
+        
+        if(cropType === 'rice'){playerInventory.riceSeeds-=1}else{playerInventory.tomatoSeeds-=1}
+        
+        playerInventory.plantedSeeds+=1;
+        playerInventory.plantedCrop=cropType; // Marca o que foi plantado
+        startHarvestTimer();
+        alert(`1 semente de ${seedName} plantada com sucesso! O cronômetro de crescimento iniciou.`);
+        showPageModal("Fazenda de Arroz (Sua Propriedade)",getFarmContent(),attachFarmListeners)
+    };
+
+    // Colheita 
+    window.harvest=function(){
+        if(playerInventory.plantedSeeds<=0)return alert("Não há nada plantado para colher.");
+        if(!harvestReady)return alert(`Aguarde ${remainingTime} segundos para colher.`);
+        
+        const planted=playerInventory.plantedSeeds;
+        let totalHarvest = 0;
+        let yieldPerPlot = 0;
+        let cropName = '';
+
+        if(playerInventory.plantedCrop === 'rice'){
+            // Arroz: 5 a 10 frutos
+            yieldPerPlot = Math.floor(Math.random() * 6) + 5; // 5 + 0..5 = 5 a 10
+            totalHarvest = planted*yieldPerPlot;
+            playerInventory.harvestedRice+=totalHarvest;
+            cropName = 'Arroz Colhido';
+        }else if(playerInventory.plantedCrop === 'tomato'){
+            // Tomate: 1 a 5 frutos
+            yieldPerPlot = Math.floor(Math.random() * 5) + 1; // 1 + 0..4 = 1 a 5
+            totalHarvest = planted*yieldPerPlot;
+            playerInventory.harvestedTomato+=totalHarvest;
+            cropName = 'Tomate Colhido';
+        }
+
+        playerInventory.plantedSeeds=0;
+        playerInventory.plantedCrop=null;
+        harvestReady=true;
+        remainingTime=0;
+        alert(`Colheita concluída! Você colheu ${totalHarvest} ${cropName} (${yieldPerPlot} por espaço) de ${planted} espaço(s).`);
+        showPageModal("Fazenda de Arroz (Sua Propriedade)",getFarmContent(),attachFarmListeners)
+    };
+
+    // --- FUNÇÕES DE OPERADOR (PREFEITURA) ---
+    window.confirmWithdrawal=function(id){const index=withdrawalHistory.findIndex(t=>t.id===id);if(index>-1){withdrawalHistory[index].validated = true; withdrawalHistory.splice(index,1); alert(`Saque ID ${id} confirmado e removido.`);showPageModal("Prefeitura (Painel do Operador)",getPrefContent(true),attachPrefListeners)}else{alert("ERRO: Transação de Saque não encontrada.")}};
+    
+    window.confirmDeposit=function(id){
+        const index=depositHistory.findIndex(t=>t.id===id);
+        if(index>-1){
+            const amount=depositHistory[index].amount;
+            depositHistory[index].validated = true;
+            playerPix+=amount;
+            depositHistory.splice(index,1);
+            alert(`Depósito ID ${id} de R$ ${formatCurrency(amount)} creditado para o jogador e removido.`);
+            showPageModal("Prefeitura (Painel do Operador)",getPrefContent(true),attachPrefListeners);
+        }else{alert("ERRO: Transação de Depósito não encontrada.")}
+    };
+    
+    window.changeOperatorPassword=function(){const newPass=prompt("Digite a nova senha de operador:");if(newPass&&newPass.trim()!==""){operatorPassword=newPass.trim();saveGame();alert("Senha do operador alterada com sucesso!");showPageModal("Prefeitura (Painel do Operador)",getPrefContent(true),attachPrefListeners)}else{alert("A senha não pode ser vazia.")}};
+    window.checkOperatorAccess=function(){const enteredPass=document.getElementById("operator-password").value;if(enteredPass===operatorPassword){showPageModal("Prefeitura (Painel do Operador)",getPrefContent(true),attachPrefListeners)}else{alert("Acesso Negado: Senha incorreta.")}};
+    
+    // --- FUNÇÕES DE CONTEÚDO E LISTENERS ---
+
+    function getBankContent(){
+        const pendingId = localStorage.getItem('pendingDepositId');
+        const pendingAmount = localStorage.getItem('pendingDepositAmount');
+
+        let depositLinkHtml = "";
+        const defaultWhatsappLink = `https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, preciso de ajuda com um PIX de depósito ou saque.")}`;
+
+        if (pendingId && pendingAmount) {
+            const encodedMessage = encodeURIComponent(`Comprovante de Depósito PIX de R$ ${formatCurrency(parseFloat(pendingAmount))}. ID: ${pendingId}.\nPor favor, credite meu saldo no jogo.`);
+            const whatsappLink = `https://wa.me/${OPERATOR_WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            
+            depositLinkHtml = `<div class="deposit-link-section" style="background-color:#e0f7ff; padding:15px; border-radius:5px;">
+                <p style="font-weight:700; color:#007bff; margin-top:0;">DEPÓSITO REGISTRADO (ID: ${pendingId})</p>
+                <p style="font-size:0.9em; margin: 5px 0;">1. Faça o PIX para a chave: **${DEPOSIT_PIX_KEY}**</p>
+                <p style="font-size:0.9em; margin: 5px 0 10px;">2. Clique abaixo para enviar o comprovante ao operador:</p>
+                <a id="whatsapp-deposit-button" href="${whatsappLink}" target="_blank" class="whatsapp-button" onclick="localStorage.removeItem('pendingDepositId'); localStorage.removeItem('pendingDepositAmount');" style="margin-top:5px;">ENVIAR COMPROVANTE DE DEPÓSITO</a>
+            </div>`;
+        }
+
+
+        return `<div class="withdrawal-section" style="border:none;margin-top:0;">
+            <span style="font-weight:700;color:#dc3545;display:block;margin-bottom:10px;font-size:1.1em;">1. Saque PIX (Jogo para Jogador - Mín: R$ ${formatCurrency(MIN_WITHDRAWAL_AMOUNT)})</span>
+            <input type="number" id="withdrawal-amount" placeholder="Valor do Saque em R$" min="${MIN_WITHDRAWAL_AMOUNT}" step="0.01">
+            <button class="action-button withdrawal-button" id="request-withdrawal-button" style="background-color:#dc3545;">Solicitar Saque</button>
+            <div style="border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 15px;">
+                <span style="font-weight:700;color:#007bff;display:block;margin-bottom:10px;font-size:1.1em;">2. Depósito PIX (Jogador para Jogo - Mín: R$ ${formatCurrency(MIN_DEPOSIT_AMOUNT)})</span>
+                <input type="number" id="deposit-amount" placeholder="Valor do Depósito em R$" min="${MIN_DEPOSIT_AMOUNT}" step="0.01">
+                <button class="action-button withdrawal-button" id="request-deposit-button" style="background-color:#007bff;">Registrar Depósito</button>
+            </div>
+            ${depositLinkHtml}
+            <div style="border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 15px;">
+                <a href="${defaultWhatsappLink}" target="_blank" class="whatsapp-button">FALAR COM O OPERADOR (WhatsApp)</a>
+            </div>
+        </div>`;
+    }
+    function attachBankListeners(){
+        document.getElementById("request-withdrawal-button").onclick=window.requestWithdrawal;
+        document.getElementById("request-deposit-button").onclick=window.requestDeposit;
     }
 
-    function attachFarmEventListeners() {
-        const t = document.getElementById("plant-seed-button"),
-            n = document.getElementById("harvest-button");
-        t && (t.onclick = window.plantSeed), n && (n.onclick = window.harvest)
+    function getTourStarContent(){
+        const pixRateDisplay = 1/CR_TO_PIX_EXCHANGE_RATE;
+        return `<div style="padding: 5px; border: 1px solid #17a2b8; border-radius: 4px;">
+            <span style="font-weight:700; color:#17a2b8;">CR$ -> R$ PIX</span>
+            <span style="font-size:0.9em; display:block; color:#17a2b8;">(Câmbio: ${CRUZEIRO_SYMBOL} ${formatCurrency(pixRateDisplay)} = ${PIX_SYMBOL} 1.00)</span>
+            <span style="font-size:0.9em; display:block; color:#28a745;">(Taxa: 0% - Conversão Direta)</span>
+            <input type="number" id="input-cr-to-pix" placeholder="Valor em Cruzeiro (Cr$)" min="0.01" step="0.01" style="width:100%;padding:5px;box-sizing:border-box;margin-top:5px;">
+            <button id="exchange-cr-to-pix" class="action-button exchange-button pix-to-cr">TROCAR</button>
+        </div>`
+    }
+    function attachTourStarListeners(){
+        document.getElementById("exchange-cr-to-pix").onclick=window.requestExchange
+    }
+    
+    function getAgroCearenseContent(){
+        return `
+            <input type="number" id="seed-quantity-input" placeholder="Qtd. de Sementes" min="1" step="1" style="width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px;">
+            
+            <div style="border:1px solid #008000; padding:10px; margin-bottom:10px; border-radius:4px;">
+                <p style="margin:0;font-weight:700;color:green;">ARROZ - Preço Unitário: ${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SEED_PRICE_UNIT)}</p>
+                <button class="action-button withdrawal-button" id="buy-rice-seed-button" data-crop="rice" style="background-color:#008000;">COMPRAR SEMENTES DE ARROZ (${playerInventory.riceSeeds})</button>
+            </div>
+            
+            <div style="border:1px solid #dc3545; padding:10px; border-radius:4px;">
+                <p style="margin:0;font-weight:700;color:#dc3545;">TOMATE - Preço Unitário: ${PIX_SYMBOL} ${formatCurrency(TOMATO_SEED_PRICE_UNIT)}</p>
+                <button class="action-button withdrawal-button" id="buy-tomato-seed-button" data-crop="tomato" style="background-color:#dc3545;">COMPRAR SEMENTES DE TOMATE (${playerInventory.tomatoSeeds})</button>
+            </div>
+        `;
+    }
+    function attachAgroCearenseListeners(){
+        document.getElementById("buy-rice-seed-button").onclick=()=>window.buySeed('rice');
+        document.getElementById("buy-tomato-seed-button").onclick=()=>window.buySeed('tomato');
     }
 
-    // Opcional: Salva o jogo se o jogador tentar fechar a página
-    window.addEventListener('beforeunload', saveGame);
+    function getHortifrutiContent(){
+        return `<p style="margin:5px 0;font-weight:700;color:#008000;">Venda Arroz: ${CRUZEIRO_SYMBOL} ${formatCurrency(RICE_SELL_PRICE)}</p>
+            <p style="margin:5px 0;font-weight:700;color:#28a745;">Venda Tomate: ${PIX_SYMBOL} ${formatCurrency(TOMATO_SELL_PRICE)}</p>
+            <p style="font-size:1.1em;font-weight:700;margin:10px 0;">Em Estoque: ${playerInventory.harvestedRice} Arroz | ${playerInventory.harvestedTomato} Tomate</p>
+            <button id="sell-rice-button" class="action-button sell-button" ${playerInventory.harvestedRice<=0&&playerInventory.harvestedTomato<=0?"disabled":""}>VENDER TODA A COLHEITA</button>
+        `;
+    }
+    function attachHortifrutiListeners(){document.getElementById("sell-rice-button").onclick=window.sellHarvest}
 
-    window.onload = function() {
-        // Carrega o jogo salvo (ou inicia novo se falhar)
+    function getFarmContent(){
+        const plotsText=`Espaços Ocupados: **${playerInventory.plantedSeeds}/${farmPlots}**`;
+        const plotsStatus=`<span style="color:${playerInventory.plantedSeeds<farmPlots?"#28a745":"red"}; display:block;">(Total de Espaços: ${farmPlots})</span>`;
+        
+        let timerDisplay="";
+        if(playerInventory.plantedSeeds>0){
+            const cropName = playerInventory.plantedCrop === 'rice' ? 'Arroz' : 'Tomate';
+            timerDisplay = harvestReady ? `<p class="timer-display ready">PRONTO PARA COLHEITA! (${cropName})</p>` : `<p class="timer-display">Tempo para Colher (${cropName}): ${remainingTime}s</p>`;
+        }
+
+        const canHarvest=harvestReady&&playerInventory.plantedSeeds>0;
+        const canPlantRice=harvestReady&&playerInventory.riceSeeds>0&&playerInventory.plantedSeeds<farmPlots;
+        const canPlantTomato=harvestReady&&playerInventory.tomatoSeeds>0&&playerInventory.plantedSeeds<farmPlots;
+        
+        const harvestStyle=canHarvest?"#17a2b8":"#6c757d";
+
+        let plantingOptions = '';
+        if(playerInventory.plantedSeeds === 0) { // Mostra opções se o campo estiver vazio
+            plantingOptions += `<button class="action-button" id="plant-rice-button" style="background-color:${canPlantRice?"#008000":"#6c757d"};" ${canPlantRice?"":"disabled"}>PLANTAR ARROZ (${playerInventory.riceSeeds})</button>`;
+            plantingOptions += `<button class="action-button" id="plant-tomato-button" style="background-color:${canPlantTomato?"#dc3545":"#6c757d"};" ${canPlantTomato?"":"disabled"}>PLANTAR TOMATE (${playerInventory.tomatoSeeds})</button>`;
+        }
+        
+        return `<p style="font-size:1.1em;font-weight:700;margin:5px 0;color:#008000;">${plotsText}${plotsStatus}</p>${timerDisplay}
+            ${plantingOptions}
+            <button class="action-button harvest-button" id="harvest-button" style="background-color:${harvestStyle};" ${canHarvest?"":"disabled"}>COLHER (${playerInventory.plantedSeeds} plantado(s))</button>`;
+    }
+    function attachFarmListeners(){
+        if(document.getElementById("plant-rice-button")){document.getElementById("plant-rice-button").onclick=()=>window.plantSeed('rice')}
+        if(document.getElementById("plant-tomato-button")){document.getElementById("plant-tomato-button").onclick=()=>window.plantSeed('tomato')}
+        document.getElementById("harvest-button").onclick=window.harvest
+    }
+
+    function getPrefContent(authenticated=false){
+        if(!authenticated){return `<p>Acesso Restrito: Apenas para operadores.</p><input type="password" id="operator-password" placeholder="Senha do Operador"><button class="action-button validation-button" id="check-access-button">Acessar Painel</button>`}
+        
+        let depListHtml = "";
+        const pendingDeposits = depositHistory.filter(t => !t.validated);
+        if (pendingDeposits.length > 0) {
+            depListHtml = pendingDeposits.map(t => 
+                `<div class="transaction-item" style="border-color:blue;background-color:#e0f7ff;">
+                    <span>**DEPÓSITO R$ ${formatCurrency(t.amount)}** (ID: ${t.id})</span>
+                    <button class="action-button withdrawal-button" style="width:100px;margin:0;" onclick="confirmDeposit('${t.id}')">Creditar</button>
+                </div>`
+            ).join('');
+        } else {
+            depListHtml = '<p style="font-style:italic;color:#6c757d;">Nenhum depósito pendente.</p>';
+        }
+
+        let witListHtml = "";
+        const pendingWithdrawals = withdrawalHistory.filter(t => !t.validated);
+        if (pendingWithdrawals.length > 0) {
+            witListHtml = pendingWithdrawals.map(t => 
+                `<div class="transaction-item" style="border-color:red;background-color:#ffe0e0;">
+                    <span>**SAQUE R$ ${formatCurrency(t.amount)}** (ID: ${t.id})</span>
+                    <button class="action-button sell-button" style="width:100px;margin:0;" onclick="confirmWithdrawal('${t.id}')">Confirmar</button>
+                </div>`
+            ).join('');
+        } else {
+            witListHtml = '<p style="font-style:italic;color:#6c757d;">Nenhum saque pendente de confirmação.</p>';
+        }
+
+        return `
+            <div class="operator-panel">
+                <h3 style="margin-top:0; color:blue;">Depósitos Pendentes (PIX Recebido)</h3>
+                ${depListHtml}
+            </div>
+            <div class="operator-panel">
+                <h3 style="margin-top:0; color:red;">Saques Pendentes (PIX Enviado)</h3>
+                ${witListHtml}
+            </div>
+            <div class="operator-panel" style="margin-top:20px; border-color:#dc3545; background-color:#fff0f0;">
+                <h3 style="margin-top:0; color:#dc3545;">Configurações</h3>
+                <p>Senha Atual do Operador: **${operatorPassword.length} caracteres**</p>
+                <button class="action-button exchange-button cr-to-pix" id="change-pass-button">Trocar Senha</button>
+            </div>`;
+    }
+    function attachPrefListeners(){if(document.getElementById("check-access-button")){document.getElementById("check-access-button").onclick=window.checkOperatorAccess}if(document.getElementById("change-pass-button")){document.getElementById("change-pass-button").onclick=window.changeOperatorPassword}}
+
+    // --- CONFIGURAÇÕES DE MAPA E ÍCONES ---
+    const FORTALEZA_COORDS=[-3.7319,-38.5267],BCB_COORDS=[-3.7341,-38.5273],TOURSTAR_COORDS=[-3.7268,-38.498],AGRO_CEARENSE_COORDS=[-3.7993489,-38.5071345],FAZENDA_COORDS=[-3.8115,-38.563],CASA_COORDS=[-3.82,-38.57],HORTIFRUTI_COORDS=[-3.753,-38.568],PREFEITURA_COORDS=[-3.725,-38.52],iconBase="https://cdn-icons-png.flaticon.com/512/",createIcon=(url,size=38)=>L.icon({iconUrl:iconBase+url,iconSize:[size,size],iconAnchor:[size/2,size],popupAnchor:[0,-size+8]});
+    const bankIcon=createIcon("3673/3673419.png"),exchangeIcon=createIcon("3238/3238479.png"),seedIcon=createIcon("3067/3067167.png"),farmIcon=createIcon("2857/2857508.png",45),marketIcon=createIcon("3075/3075841.png"),homeIcon=createIcon("9404/9404760.png"),prefIcon=createIcon("3367/3367123.png");
+
+    function updateHomeMarkerState(){if(!homeMarker&&map){homeMarker=L.marker(CASA_COORDS,{icon:homeIcon}).addTo(map);homeMarker.on("click",function(){showPageModal(`Casa de ${playerName}`,getInventoryContent(),attachHomeListeners)})}}
+
+    window.addEventListener('beforeunload',saveGame);
+
+    window.onload=function(){
         loadGame();
+        map=L.map("mapa").setView(FORTALEZA_COORDS,13);
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap"}).addTo(map);map.invalidateSize();
         
-        map = L.map("mapa").setView(FORTALEZA_COORDS, 13), L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: "&copy; OpenStreetMap"
-        }).addTo(map), map.invalidateSize();
+        // Marcadores de Localização
+        L.marker(BCB_COORDS,{icon:bankIcon}).addTo(map).on('click',function(){showPageModal("Banco Central do Brasil (BCB)",getBankContent(),attachBankListeners)});
+        L.marker(TOURSTAR_COORDS,{icon:exchangeIcon}).addTo(map).on('click',function(){showPageModal("TourStar Câmbio",getTourStarContent(),attachTourStarListeners)});
+        L.marker(AGRO_CEARENSE_COORDS,{icon:seedIcon}).addTo(map).on('click',function(){showPageModal("Agro Cearense - Sementes",getAgroCearenseContent(),attachAgroCearenseListeners)});
+        L.marker(HORTIFRUTI_COORDS,{icon:marketIcon}).addTo(map).on('click',function(){showPageModal("Hortifruti do Carlinhos",getHortifrutiContent(),attachHortifrutiListeners)});
+        L.marker(PREFEITURA_COORDS,{icon:prefIcon}).addTo(map).on('click',function(){showPageModal("Prefeitura (Acesso Restrito)",getPrefContent(false),attachPrefListeners)});
+        farmMarker=L.marker(FAZENDA_COORDS,{icon:farmIcon}).addTo(map);
         
-        // BANCO CENTRAL (BCB)
-        L.marker(BCB_COORDS, {
-            icon: bankIcon
-        }).addTo(map).bindPopup('<b>Banco Central do Brasil (BCB)</b><hr style="margin:5px 0;"><div class="withdrawal-section" style="border:none;margin-top:0;"><span style="font-weight:700;color:#28a745;display:block;margin-bottom:5px;">Solicitar Saque Pix (Mín: R$ 0,01)</span><input type="number" id="withdrawal-amount" placeholder="Valor em R$" min="0.01" step="0.01"><button class="action-button withdrawal-button" onclick="requestWithdrawal()">Gerar ID de Saque</button></div>');
-        
-        // TOURSTAR CÂMBIO - CONTEÚDO ATUALIZADO
-        const e = L.marker(TOURSTAR_COORDS, {
-            icon: exchangeIcon
-        }).addTo(map).bindPopup(`
-            <b>TourStar Câmbio</b>
-            <hr style="margin:5px 0;">
-            
-            <div style="margin-bottom:10px; padding: 5px; border: 1px solid #dc3545; border-radius: 4px;">
-                <span style="font-weight:700; color:#dc3545;">Cr$ -> R$ PIX (Câmbio: ${CRUZEIRO_SYMBOL} 1 = ${PIX_SYMBOL} ${formatCurrency(CRUZEIRO_TO_PIX_RATE)})</span>
-                <span style="font-size:0.9em; display:block; color:#dc3545;">(Mínimo: ${CRUZEIRO_SYMBOL} ${formatCurrency(MIN_CR_TO_PIX_EXCHANGE)} | Sem Taxa)</span>
-                <input type="number" id="input-cr-to-pix" placeholder="Valor em Cruzeiros (Cr$)" min="${MIN_CR_TO_PIX_EXCHANGE}" step="0.01" style="width:100%;padding:5px;box-sizing:border-box;margin-top:5px;">
-                <button id="exchange-cr-to-pix" class="action-button exchange-button cr-to-pix" onclick="requestExchange('cr-to-pix')">TROCAR</button>
-            </div>
-            
-            <div style="padding: 5px; border: 1px solid #17a2b8; border-radius: 4px;">
-                <span style="font-weight:700; color:#17a2b8;">R$ PIX -> Cr$ (Câmbio: ${PIX_SYMBOL} 1 = ${CRUZEIRO_SYMBOL} ${formatCurrency(1 / CRUZEIRO_TO_PIX_RATE)})</span>
-                <span style="font-size:0.9em; display:block; color:#17a2b8;">(Sem Taxa)</span>
-                <input type="number" id="input-pix-to-cr" placeholder="Valor em PIX (R$)" min="0.01" step="0.01" style="width:100%;padding:5px;box-sizing:border-box;margin-top:5px;">
-                <button id="exchange-pix-to-cr" class="action-button exchange-button pix-to-cr" onclick="requestExchange('pix-to-cr')">TROCAR</button>
-            </div>
-        `);
-        
-        // LOTERIA POPULAR
-        L.marker(LOTERICA_COORDS, {
-            icon: lotteryIcon
-        }).addTo(map).bindPopup('<b>Loteria Popular</b><hr style="margin:5px 0;"><p style="font-size:.9em;">1. Insira o ID para validar:</p><input type="text" id="loterica-code-input" placeholder="Ex: A1B2C3D4" style="width:100%;padding:5px;box-sizing:border-box;text-transform:uppercase;"><button class="action-button validation-button" onclick="validateWithdrawalCode()">Validar Código</button><p style="font-size:.9em;margin-top:15px;">2. Após a validação, finalize:</p><a id="whatsapp-loterica-button" href="#" target="_blank" class="whatsapp-button disabled">FINALIZAR SAQUE (WhatsApp)</a>');
-        
-        // AGRO CEARENSE
-        const t = `<b>Agro Cearense - Sementes</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:green;">Preço Unitário: Cr$ ${formatCurrency(RICE_SEED_PRICE_UNIT)}</p>
-                    <input type="number" id="seed-quantity-input" placeholder="Qtd. de Sementes" min="1" step="1" style="width:100%;padding:5px;box-sizing:border-box;margin-bottom:5px;">
-                    <button class="action-button withdrawal-button" id="buy-seed-button" style="background-color:#008000;">COMPRAR SEMENTES</button>`,
-            n = L.marker(AGRO_CEARENSE_COORDS, {
-                icon: seedIcon
-            }).addTo(map).bindPopup(t);
-        n.on("popupopen", function() {
-            document.getElementById("buy-seed-button").onclick = window.buyRiceSeeds
+        // Correção do Cronômetro: Abre o modal e verifica se o timer precisa ser atualizado em seguida
+        farmMarker.on('click',function(){
+            showPageModal("Fazenda de Arroz (Sua Propriedade)",getFarmContent(),attachFarmListeners);
+            updateFarmModalContent(); 
         });
         
-        // HORTIFRUTI
-        const o = L.marker(HORTIFRUTI_COORDS, {
-            icon: marketIcon
-        }).addTo(map).bindPopup(`<b>Hortifruti do Carlinhos</b><hr style="margin:5px 0;"><p style="margin:5px 0;font-weight:700;color:#dc3545;">Venda: Cr$ ${formatCurrency(RICE_SELL_PRICE)} por Arroz Colhido</p><button id="sell-rice-button" class="action-button sell-button">VENDER TODO O ARROZ</button>`);
-        o.on("popupopen", function() {
-            document.getElementById("sell-rice-button").onclick = window.sellRice
-        }), 
-        
-        // FAZENDA
-        farmMarker = L.marker(FAZENDA_COORDS, {
-            icon: farmIcon
-        }).addTo(map).bindPopup(getFarmPopupContent()), farmMarker.on("popupopen", function() {
-            farmMarker.getPopup().setContent(getFarmPopupContent()), attachFarmEventListeners()
-        }), updateMoneyDisplay(), updateWhatsappLink(null)
+        updateMoneyDisplay()
     };
     </script>
 </body>
