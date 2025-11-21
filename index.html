@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Casa do Trader</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Casa do Trader (Atomic)</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-<style>:root{--bg:#0a0a1f;--card:rgba(20,20,40,.95);--cyan:#00f2ff;--gold:#FFD700;--pink:#ff00ff;--green:#00ff88;--red:#ff2d55;--text:#e0e0ff}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Rajdhani,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:grid;place-items:center;background-image:radial-gradient(circle at 20% 80%,rgba(0,242,255,.08)0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,215,0,.08)0%,transparent 50%)}.card{max-width:390px;width:90%;background:var(--card);border-radius:20px;padding:28px 20px;border:1px solid rgba(255,215,0,.25);box-shadow:0 15px 40px rgba(255,215,0,.2),0 0 30px rgba(0,242,255,.15);position:relative;overflow:hidden}.card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--gold),var(--pink))}.logo{font-size:56px;font-weight:900;background:linear-gradient(45deg,var(--cyan),var(--gold),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}.title{font-size:28px;color:#fff;margin:8px 0 20px;letter-spacing:1px}.price{font-size:42px;color:var(--gold);text-shadow:0 0 15px rgba(255,215,0,.6);margin:16px 0;font-weight:800}.off{color:var(--green);font-size:20px;font-weight:700}.btn{display:block;width:100%;padding:16px;border-radius:14px;font-weight:800;font-size:18px;margin:14px 0;border:none;cursor:pointer;transition:.3s}.buy{background:#25d366;color:#fff;box-shadow:0 8px 20px rgba(37,211,100,.5)}.buy:hover{transform:scale(1.04)}.gold{background:var(--gold);color:#000}.green{background:var(--green);color:#000}.red{background:var(--red);color:#fff;font-size:14px;padding:8px}.input{width:100%;padding:14px;margin:10px 0;border-radius:12px;background:rgba(42,42,45,.9);border:1px solid rgba(255,215,0,.3);color:#fff;font-size:16px;outline:none;text-align:center}.orbit{width:90px;height:90px;margin:24px auto;position:relative}.e{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 20px currentColor;animation:orbit 2.8s linear infinite,color 4s infinite}@keyframes orbit{0%{transform:rotate(0deg) translateX(45px)}100%{transform:rotate(360deg) translateX(45px)}}@keyframes color{0%,100%{background:var(--cyan)}25%{background:var(--pink)}50%{background:var(--green)}75%{background:var(--gold)}}table{width:100%;margin-top:12px;font-size:14px;border-collapse:collapse}th,td{padding:8px;text-align:left}th{background:rgba(42,42,45,.8)}tr:nth-child(even){background:rgba(34,34,34,.5)}.hidden{display:none}.msg{color:var(--green);margin:10px 0;min-height:24px;font-size:15px}.err{color:var(--red)}small a{color:var(--gold);text-decoration:none}small a:hover{text-decoration:underline}</style>
+<style>
+:root{--bg:#0a0a1f;--card:rgba(20,20,40,.95);--cyan:#00f2ff;--gold:#FFD700;--pink:#ff00ff;--green:#00ff88;--red:#ff2d55;--text:#e0e0ff}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Rajdhani,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:grid;place-items:center;background-image:radial-gradient(circle at 20% 80%,rgba(0,242,255,.08)0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,215,0,.08)0%,transparent 50%)}
+.card{max-width:390px;width:90%;background:var(--card);border-radius:20px;padding:28px 20px;border:1px solid rgba(255,215,0,.25);box-shadow:0 15px 40px rgba(255,215,0,.2),0 0 30px rgba(0,242,255,.15);position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--gold),var(--pink))}
+.logo{font-size:56px;font-weight:900;background:linear-gradient(45deg,var(--cyan),var(--gold),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.title{font-size:28px;color:#fff;margin:8px 0 20px;letter-spacing:1px}
+.price{font-size:42px;color:var(--gold);text-shadow:0 0 15px rgba(255,215,0,.6);margin:16px 0;font-weight:800}
+.off{color:var(--green);font-size:20px;font-weight:700}
+.btn{display:block;width:100%;padding:16px;border-radius:14px;font-weight:800;font-size:18px;margin:14px 0;border:none;cursor:pointer;transition:.3s}
+.buy{background:#25d366;color:#fff;box-shadow:0 8px 20px rgba(37,211,100,.5)}.buy:hover{transform:scale(1.04)}.gold{background:var(--gold);color:#000}.green{background:var(--green);color:#000}.red{background:var(--red);color:#fff;font-size:14px;padding:8px}
+.input{width:100%;padding:14px;margin:10px 0;border-radius:12px;background:rgba(42,42,45,.9);border:1px solid rgba(255,215,0,.3);color:#fff;font-size:16px;outline:none;text-align:center}
+.orbit{width:90px;height:90px;margin:24px auto;position:relative}.e{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 20px currentColor;animation:orbit 2.8s linear infinite,color 4s infinite}
+@keyframes orbit{0%{transform:rotate(0deg) translateX(45px)}100%{transform:rotate(360deg) translateX(45px)}}
+@keyframes color{0%,100%{background:var(--cyan)}25%{background:var(--pink)}50%{background:var(--green)}75%{background:var(--gold)}}
+table{width:100%;margin-top:12px;font-size:14px;border-collapse:collapse}th,td{padding:8px;text-align:left}th{background:rgba(42,42,45,.8)}tr:nth-child(even){background:rgba(34,34,34,.5)}.hidden{display:none}.msg{color:var(--green);margin:10px 0;min-height:24px;font-size:15px}.err{color:var(--red)}small a{color:var(--gold);text-decoration:none}small a:hover{text-decoration:underline}
+</style>
 </head>
 <body>
 
@@ -15,155 +31,441 @@
   <div class="orbit"><div class="e"></div><div class="e" style="animation-delay:-0.9s"></div><div class="e" style="animation-delay:-1.8s"></div></div>
   <input id="nome" class="input" placeholder="Digite seu nome" autofocus>
   <input id="senhaCli" type="password" class="input" placeholder="Sua senha (opcional)">
-  <button class="btn buy" onclick="entrar()">ENTRAR NA REDE</button>
+  <button class="btn buy" id="btnEntrar">ENTRAR NA REDE</button>
   <div class="msg err" id="msg"></div>
   <p style="margin:20px 0;line-height:1.6">1 Átomo = 100 Elétrons<br><span class="off">50% DE DESCONTO</span></p>
   <div class="price">R$ 100,00</div>
   <a href="https://wa.me/558599522997?text=Quero%201%20%C3%81tomo%20ATOMIC%20por%20R$100%20(50%25%20OFF)%20%F0%9F%94%A5%F0%9F%92%A5" target="_blank" class="btn buy">COMPRAR AGORA COM O PIX</a>
   <p style="margin:20px 0;font-size:15px">Venda Mínima Entre Clientes <b>R$ 2,00</b>/elétron<br>Taxa de: <b>10%</b></p>
-  <small><a href="#" onclick="admin()">ÁREA RESTRITA</a></small>
+  <small><a href="#" id="linkAdmin">ÁREA RESTRITA</a></small>
 </div>
 
-<div id="adminLogin" class="card hidden"><h2 style="color:var(--gold)">Área Admin</h2><input id="admUser" class="input" value="adm"><input id="admPass" type="password" class="input" placeholder="Senha"><button class="btn green" onclick="loginAdm()">ENTRAR</button><div id="admMsg" class="msg err"></div></div>
+<div id="adminLogin" class="card hidden"><h2 style="color:var(--gold)">Área Admin</h2><input id="admUser" class="input" value="adm"><input id="admPass" type="password" class="input" placeholder="Senha"><button class="btn green" id="btnLoginAdm">ENTRAR</button><div id="admMsg" class="msg err"></div></div>
 
 <div id="painel" class="card hidden">
   <h2 style="color:var(--green)">Painel Admin</h2>
-  <p>Saldo da Casa: R$ <b id="saldoAdm">0,00</b> • <a href="#" onclick="trocarSenhaAdmin()" style="color:var(--cyan)">Trocar senha</a></p>
-  <button class="btn gold" onclick="sacarAdm()">SACAR TUDO</button>
+  <p>Saldo da Casa: R$ <b id="saldoAdm">0,00</b> • <a href="#" id="linkTrocarSenhaAdm" style="color:var(--cyan)">Trocar senha</a></p>
+  <button class="btn gold" id="btnSacarAdm">SACAR TUDO</button>
   <hr style="margin:20px 0;border:1px solid #333">
   <h3 style="color:var(--gold)">Saques Pendentes</h3>
   <div id="saquesPendentes" style="max-height:300px;overflow:auto;padding:10px;background:rgba(20,0,0,.3);border-radius:10px"></div>
   <hr style="margin:20px 0;border:1px solid #333">
   <input id="lucroTotal" type="number" step="0.01" class="input" placeholder="Lucro total recebido (R$)">
-  <button class="btn green" onclick="distribuir()">DISTRIBUIR 75%</button><div id="distMsg" class="msg"></div>
+  <button class="btn green" id="btnDistribuir">DISTRIBUIR 75%</button><div id="distMsg" class="msg"></div>
   <hr style="margin:20px 0">
-  <h3>Adicionar Cliente</h3><input id="newNome" class="input" placeholder="Nome"><input id="newAtom" type="number" class="input" placeholder="Átomos"><button class="btn green" onclick="addCliente()">ADICIONAR</button>
-  <h3 style="margin-top:20px">Retirar Elétrons → Loja</h3><input id="retNome" class="input" placeholder="Nome"><input id="retQtd" type="number" class="input" placeholder="Elétrons"><button class="btn red" onclick="retirar()">RETIRAR</button><div id="retMsg" class="msg err"></div>
+  <h3>Adicionar Cliente</h3><input id="newNome" class="input" placeholder="Nome"><input id="newAtom" type="number" class="input" placeholder="Átomos"><button class="btn green" id="btnAddCliente">ADICIONAR</button>
+  <h3 style="margin-top:20px">Retirar Elétrons → Loja</h3><input id="retNome" class="input" placeholder="Nome"><input id="retQtd" type="number" class="input" placeholder="Elétrons"><button class="btn red" id="btnRetirar">RETIRAR</button><div id="retMsg" class="msg err"></div>
   <h3 style="margin-top:20px">Clientes</h3><div style="max-height:200px;overflow:auto"><table id="tabela"><tr><th>Nome</th><th>Elétrons</th><th>Saldo R$</th><th></th></tr></table></div>
-  <button class="btn" style="margin-top:20px" onclick="volta(0)">Sair</button>
+  <button class="btn" style="margin-top:20px" id="btnSairAdm">Sair</button>
 </div>
 
-<div id="cliente" class="card hidden"><h2 style="color:var(--cyan)">Olá, <span id="nomeCli"></span>!</h2><p>Elétrons: <b id="eletrons">0</b> | Saldo: R$ <b id="saldoCli">0,00</b></p><button class="btn green" onclick="vender()">VENDER ELÉTRONS</button><button class="btn green" onclick="loja()">LOJA</button><button class="btn gold" onclick="sacarCli()">SACAR SALDO</button><button class="btn" style="background:#8B00FF;color:#fff;margin-top:10px" onclick="trocarSenhaCliente()">Trocar Minha Senha</button><button class="btn" style="margin-top:15px" onclick="volta(0)">Sair</button></div>
+<div id="cliente" class="card hidden"><h2 style="color:var(--cyan)">Olá, <span id="nomeCli"></span>!</h2><p>Elétrons: <b id="eletrons">0</b> | Saldo: R$ <b id="saldoCli">0,00</b></p><button class="btn green" id="btnVender">VENDER ELÉTRONS</button><button class="btn green" id="btnLoja">LOJA</button><button class="btn gold" id="btnSacarCli">SACAR SALDO</button><button class="btn" style="background:#8B00FF;color:#fff;margin-top:10px" id="btnTrocarSenhaCli">Trocar Minha Senha</button><button class="btn" style="margin-top:15px" id="btnSairCli">Sair</button></div>
 
-<div id="venderDiv" class="card hidden"><h2>Vender Elétrons</h2><p>Você tem: <b id="temEle">0</b> elétrons</p><input id="qtdVenda" type="number" min="1" class="input" placeholder="Quantidade"><input id="precoVenda" type="number" step="0.01" min="2" class="input" placeholder="Preço por elétron (mín. 2)"><p>Total: R$ <b id="totalVenda">0,00</b></p><button class="btn green" onclick="anunciar()">ANUNCIAR</button><button class="btn" onclick="volta(3)">Cancelar</button></div>
+<div id="venderDiv" class="card hidden"><h2>Vender Elétrons</h2><p>Você tem: <b id="temEle">0</b> elétrons</p><input id="qtdVenda" type="number" min="1" class="input" placeholder="Quantidade"><input id="precoVenda" type="number" step="0.01" min="2" class="input" placeholder="Preço por elétron (mín. 2)"><p>Total: R$ <b id="totalVenda">0,00</b></p><button class="btn green" id="btnAnunciar">ANUNCIAR</button><button class="btn" id="btnCancelarVender">Cancelar</button></div>
 
-<div id="lojaDiv" class="card hidden"><h2 style="color:var(--green)">Loja P2P</h2><div id="listaAnuncios" style="max-height:400px;overflow:auto"></div><button class="btn" style="margin-top:15px" onclick="volta(3)">Voltar</button></div>
+<div id="lojaDiv" class="card hidden"><h2 style="color:var(--green)">Loja P2P</h2><div id="listaAnuncios" style="max-height:400px;overflow:auto"></div><button class="btn" style="margin-top:15px" id="btnVoltarLoja">Voltar</button></div>
 
-<div id="trocaSenhaAdm" class="card hidden"><h2 style="color:var(--gold)">Trocar Senha Admin</h2><input id="oldPassAdm" type="password" class="input" placeholder="Senha atual"><input id="newPassAdm1" type="password" class="input" placeholder="Nova"><input id="newPassAdm2" type="password" class="input" placeholder="Repetir"><button class="btn green" onclick="salvarSenhaAdm()">SALVAR</button><button class="btn" onclick="volta(2)">Cancelar</button><div id="msgSenhaAdm" class="msg err"></div></div>
+<div id="trocaSenhaAdm" class="card hidden"><h2 style="color:var(--gold)">Trocar Senha Admin</h2><input id="oldPassAdm" type="password" class="input" placeholder="Senha atual"><input id="newPassAdm1" type="password" class="input" placeholder="Nova"><input id="newPassAdm2" type="password" class="input" placeholder="Repetir"><button class="btn green" id="btnSalvarSenhaAdm">SALVAR</button><button class="btn" id="btnCancelarSenhaAdm">Cancelar</button><div id="msgSenhaAdm" class="msg err"></div></div>
 
-<div id="trocaSenhaCli" class="card hidden"><h2 style="color:var(--cyan)">Trocar Sua Senha</h2><p><small>Deixe em branco para remover</small></p><input id="novaSenhaCli1" type="password" class="input" placeholder="Nova"><input id="novaSenhaCli2" type="password" class="input" placeholder="Repetir"><button class="btn green" onclick="salvarSenhaCliente()">SALVAR</button><button class="btn" onclick="volta(3)">Cancelar</button><div id="msgSenhaCli" class="msg"></div></div>
+<div id="trocaSenhaCli" class="card hidden"><h2 style="color:var(--cyan)">Trocar Sua Senha</h2><p><small>Deixe em branco para remover</small></p><input id="novaSenhaCli1" type="password" class="input" placeholder="Nova"><input id="novaSenhaCli2" type="password" class="input" placeholder="Repetir"><button class="btn green" id="btnSalvarSenhaCli">SALVAR</button><button class="btn" id="btnCancelarSenhaCli">Cancelar</button><div id="msgSenhaCli" class="msg"></div></div>
 
-<script>
-function h(s){if(!s)return null;let x=0;for(let i=0;i<s.length;i++)x=(x*31+s.charCodeAt(i))|0;return x.toString(16)}
-if(!localStorage.getItem('adm'))localStorage.setItem('adm',JSON.stringify({user:'adm',pass:h('123'),saldo:0}));
-const get=k=>JSON.parse(localStorage.getItem(k)||'[]'), set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-let user=null;
-const adm=()=>JSON.parse(localStorage.getItem('adm')), saveAdm=d=>localStorage.setItem('adm',JSON.stringify(d));
-const msg=(id,txt,err=false)=>{const e=document.getElementById(id);if(e){e.textContent=txt;e.className='msg'+(err?' err':'');setTimeout(()=>{if(e)e.textContent=''},5000)}}
-const volta=i=>{document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));const t=['main','adminLogin','painel','cliente','venderDiv','lojaDiv','trocaSenhaAdm','trocaSenhaCli'];document.getElementById(t[i])?.classList.remove('hidden')}
+<!-- Firebase SDK (modular) -->
+<script type="module">
+  // Firebase imports (modular SDK)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import {
+    getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-// LOGIN
-function entrar(){const n=document.getElementById('nome').value.trim(),p=document.getElementById('senhaCli').value;if(!n)return msg('msg','Digite seu nome',true);const c=get('clientes').find(x=>x.nome.toLowerCase()===n.toLowerCase());if(!c)return msg('msg','Nome não encontrado! Compre primeiro.',true);if(c.pass&&h(p)!==c.pass)return msg('msg','Senha incorreta!',true);user=c;document.getElementById('nomeCli').textContent=user.nome;document.getElementById('eletrons').textContent=user.eletrons||0;document.getElementById('saldoCli').textContent=(user.saldo||0).toFixed(2);volta(3)}
-function admin(){volta(1)}
-function loginAdm(){const u=document.getElementById('admUser').value.trim(),p=document.getElementById('admPass').value,a=adm();if(u===a.user&&h(p)===a.pass){loadPainel();volta(2)}else msg('admMsg','Dados incorretos',true)}
+  // --------- CONFIGURE AQUI (use sua config ou a que você já tem) ----------
+  const firebaseConfig = {
+    apiKey: "AIzaSyARmdv2Zet_EXfUmOXpjzuafNjqZgWi4Gg",
+    authDomain: "atomic-2026.firebaseapp.com",
+    projectId: "atomic-2026",
+    storageBucket: "atomic-2026.firebasestorage.app",
+    messagingSenderId: "466342337880",
+    appId: "1:466342337880:web:ec364294a86b63cdba992d"
+  };
+  // -----------------------------------------------------------------------
 
-// PAINEL ADMIN
-function loadPainel(){const a=adm();document.getElementById('saldoAdm').textContent=a.saldo.toFixed(2);const tb=document.getElementById('tabela');tb.innerHTML='<tr><th>Nome</th><th>Elétrons</th><th>Saldo R$</th><th></th></tr>';get('clientes').forEach((c,i)=>{tb.innerHTML+=`<tr><td>${c.nome}</td><td>${c.eletrons||0}</td><td>${(c.saldo||0).toFixed(2)}</td><td><button class="red" onclick="delCli(${i})">X</button></td></tr>`});carregarSaques()}
-function carregarSaques(){const d=document.getElementById('saquesPendentes'),s=get('saques');d.innerHTML=s.length?'':'<p style="color:#888">Nenhum saque pendente</p>';s.forEach((sq,i)=>{d.innerHTML+=`<div style="background:rgba(50,20,20,.8);padding:12px;margin:8px 0;border-radius:10px;border:1px solid #800"><b>${sq.nome}</b> → R$${sq.valor.toFixed(2)}<br><small>PIX: <b>${sq.pix}</b></small><br><small>${sq.data}</small><br><button class="btn red" style="font-size:12px;padding:6px;margin-top:8px" onclick="pagarSaque(${i})">PAGO</button></div>`})}
-function pagarSaque(i){if(confirm('Marcar como pago?')){let s=get('saques');s.splice(i,1);set('saques',s);carregarSaques()}}
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-// RETIRAR ELÉTRONS DO CLIENTE → LOJA (CORRIGIDO: cliente perde elétrons sem ganhar nada)
-function retirar(){
-  const nome=document.getElementById('retNome').value.trim();
-  const qtd=+document.getElementById('retQtd').value;
-  if(!nome||!qtd)return msg('retMsg','Preencha tudo',true);
-  let clientes=get('clientes');
-  const cli=clientes.find(c=>c.nome.toLowerCase()===nome.toLowerCase());
-  if(!cli)return msg('retMsg','Cliente não encontrado',true);
-  if((cli.eletrons||0)<qtd)return msg('retMsg','Elétrons insuficientes',true);
-  cli.eletrons-=qtd;
-  set('clientes',clientes);
-  let anuncios=get('anuncios');
-  anuncios.push({id:Date.now(),vendedor:'ATOMIC',qtd:qtd,preco:3,lucro:0});
-  set('anuncios',anuncios);
-  msg('retMsg',`${qtd} elétrons retirados de ${nome} e colocados na loja por R$3`,false);
-  loadPainel();
-}
+  // Util: hash simples (igual ao seu)
+  function h(s){ if(!s) return null; let x=0; for(let i=0;i<s.length;i++) x=(x*31+s.charCodeAt(i))|0; return x.toString(16) }
 
-// DISTRIBUIR 75%
-function distribuir(){
-  const total=+document.getElementById('lucroTotal').value;
-  if(!total||total<=0)return alert('Valor inválido');
-  let clientes=get('clientes'),anuncios=get('anuncios');
-  const totalEle=clientes.reduce((s,c)=>s+(c.eletrons||0),0)+anuncios.reduce((s,a)=>s+a.qtd,0);
-  if(totalEle===0)return alert('Sem elétrons');
-  const porEle=(total*0.75)/totalEle;
-  clientes.forEach(c=>{const emAnuncio=anuncios.filter(a=>a.vendedor===c.nome).reduce((s,a)=>s+a.qtd,0);c.saldo=(c.saldo||0)+(c.eletrons||0-emAnuncio)*porEle});
-  anuncios.forEach(a=>a.lucro=(a.lucro||0)+a.qtd*porEle);
-  const a=adm();a.saldo+=total*0.25;saveAdm(a);
-  set('anuncios',anuncios);set('clientes',clientes);
-  msg('distMsg',`Distribuído! Casa +R$${(total*0.25).toFixed(2)}`);
-  document.getElementById('lucroTotal').value='';
-  loadPainel();
-}
+  // UI helpers
+  const msg = (id, txt, err=false) => {
+    const e = document.getElementById(id);
+    if(e){ e.textContent = txt; e.className = 'msg' + (err ? ' err' : ''); setTimeout(()=>{ if(e) e.textContent = '' }, 5000); }
+  };
+  const volta = i => {
+    document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+    const t=['main','adminLogin','painel','cliente','venderDiv','lojaDiv','trocaSenhaAdm','trocaSenhaCli'];
+    document.getElementById(t[i])?.classList.remove('hidden');
+  };
 
-// COMPRA CORRIGIDA 100%: 90% pro vendedor, 10% pra casa | ATOMIC = 100% pra casa
-function comprar(id){
-  let anuncios=get('anuncios');
-  const idx=anuncios.findIndex(x=>x.id===id);
-  if(idx===-1||anuncios[idx].vendedor===user.nome)return;
-  const a=anuncios[idx];
-  const qtd=+prompt(`Quantos (máx ${a.qtd})?`,a.qtd)||0;
-  if(qtd<1||qtd>a.qtd)return alert('Quantidade inválida');
-  const total=qtd*a.preco;
-  const bonus=qtd*(a.lucro||0)/a.qtd;
-  if((user.saldo||0)<total)return alert('Saldo insuficiente');
+  // Firestore wrappers ----------------------------------------------------
 
-  user.saldo=(user.saldo||0)-total+bonus;
-  user.eletrons+=qtd;
-
-  // CORREÇÃO: 90% pro vendedor | 10% pra casa | ATOMIC = 100% pra casa
-  if(a.vendedor==='ATOMIC'){
-    const casa=adm(); casa.saldo+=total; saveAdm(casa);
-  }else{
-    let clientes=get('clientes');
-    const vendedor=clientes.find(c=>c.nome===a.vendedor);
-    if(vendedor){
-      vendedor.saldo+=(total*0.9);
-      clientes[clientes.indexOf(vendedor)]=vendedor;
-      set('clientes',clientes);
-    }
-    const casa=adm(); casa.saldo+=(total*0.1); saveAdm(casa);
+  // ADMIN doc at collection 'meta', doc 'adm'
+  async function getAdminDoc(){
+    const d = doc(db, 'meta', 'adm');
+    const snap = await getDoc(d);
+    if(snap.exists()) return snap.data();
+    // create default admin
+    const defaultAdm = { user: 'adm', pass: h('123'), saldo: 0 };
+    await setDoc(d, defaultAdm);
+    return defaultAdm;
+  }
+  async function saveAdminDoc(obj){
+    const d = doc(db, 'meta', 'adm');
+    await setDoc(d, obj);
   }
 
-  a.qtd-=qtd; a.lucro=(a.lucro||0)-bonus;
-  if(a.qtd<=0)anuncios.splice(idx,1);
-  set('anuncios',anuncios);
+  // CLIENTES collection: doc.id = nomeLower (slug)
+  function slug(n){ return n.trim().toLowerCase(); }
 
-  // Salva usuário comprador
-  let clientes=get('clientes');
-  const ui=clientes.findIndex(c=>c.nome===user.nome);
-  clientes[ui]=user; set('clientes',clientes);
+  async function getAllClientes(){
+    const col = collection(db, 'clientes');
+    const snap = await getDocs(col);
+    return snap.docs.map(d => d.data());
+  }
+  async function getClienteByName(nome){
+    const id = slug(nome);
+    const d = doc(db, 'clientes', id);
+    const snap = await getDoc(d);
+    return snap.exists() ? snap.data() : null;
+  }
+  async function setCliente(cli){
+    const id = slug(cli.nome);
+    await setDoc(doc(db, 'clientes', id), cli);
+  }
+  async function deleteClienteByName(nome){
+    await deleteDoc(doc(db, 'clientes', slug(nome)));
+  }
 
-  document.getElementById('eletrons').textContent=user.eletrons;
-  document.getElementById('saldoCli').textContent=user.saldo.toFixed(2);
-  alert(`Comprado! +${qtd} elétrons\n+Bônus R$${bonus.toFixed(2)}`);
-  loja();
-}
+  // ANUNCIOS collection: doc.id = timestamp or generated
+  async function getAllAnuncios(){
+    const col = collection(db, 'anuncios');
+    // simple get (no ordering necessary), but ordering by id timestamp helps
+    const snap = await getDocs(query(col, orderBy('__name__')));
+    return snap.docs.map(d => d.data());
+  }
+  async function addAnuncio(anuncio){
+    // ensure unique id
+    const id = String(Date.now()) + Math.floor(Math.random()*9999);
+    await setDoc(doc(db, 'anuncios', id), { ...anuncio, id });
+  }
+  async function updateAnuncio(a){
+    await setDoc(doc(db, 'anuncios', a.id), a);
+  }
+  async function deleteAnuncioById(id){
+    await deleteDoc(doc(db, 'anuncios', id));
+  }
 
-// DEMAIS FUNÇÕES (100% funcionais)
-function anunciar(){const q=+document.getElementById('qtdVenda').value,p=+document.getElementById('precoVenda').value;if(q<1||q>(user.eletrons||0)||p<2)return alert('Erro');user.eletrons-=q;let a=get('anuncios');a.push({id:Date.now(),vendedor:user.nome,qtd:q,preco:p,lucro:0});set('anuncios',a);let c=get('clientes');c[c.findIndex(x=>x.nome===user.nome)]=user;set('clientes',c);alert('Anunciado!');volta(3)}
-function cancelar(id){if(!confirm('Cancelar?'))return;let a=get('anuncios'),i=a.findIndex(x=>x.id===id);user.eletrons+=a[i].qtd;user.saldo+=(a[i].lucro||0);a.splice(i,1);set('anuncios',a);let c=get('clientes');c[c.findIndex(x=>x.nome===user.nome)]=user;set('clientes',c);loja()}
-function loja(){const d=document.getElementById('listaAnuncios');d.innerHTML='';const a=get('anuncios');if(!a.length){d.innerHTML='<p style="color:#888">Loja vazia</p>';volta(5);return}a.forEach(x=>{const div=document.createElement('div');div.style='background:rgba(42,42,45,.6);padding:14px;margin:8px 0;border-radius:12px;border:1px solid rgba(255,215,0,.2)';const btn=x.vendedor===user.nome?`<button class="red" onclick="cancelar(${x.id})">Cancelar</button>`:`<button class="btn green" onclick="comprar(${x.id})">Comprar</button>`;div.innerHTML=`<b>${x.vendedor}</b><br>${x.qtd} × R$${x.preco.toFixed(2)} → R$${(x.qtd*x.preco).toFixed(2)}<br><small style="color:#0f0">+R$${(x.lucro||0).toFixed(2)} bônus</small><div style="margin-top:10px">${btn}</div>`;d.appendChild(div)});volta(5)}
-function vender(){document.getElementById('temEle').textContent=user.eletrons||0;document.getElementById('qtdVenda').max=user.eletrons||0;const calc=()=>document.getElementById('totalVenda').textContent=((+document.getElementById('qtdVenda').value||0)*(+document.getElementById('precoVenda').value||0)).toFixed(2);document.getElementById('qtdVenda').oninput=calc;document.getElementById('precoVenda').oninput=calc;volta(4)}
-function sacarCli(){if((user.saldo||0)<=0)return alert('Sem saldo');const pix=prompt(`Sacando R$${(user.saldo||0).toFixed(2)}\nChave Pix:`);if(pix&&pix.trim()){let s=get('saques');s.push({nome:user.nome,valor:user.saldo,pix:pix.trim(),data:new Date().toLocaleString('pt-BR')});set('saques',s);user.saldo=0;let c=get('clientes');c[c.findIndex(x=>x.nome===user.nome)]=user;set('clientes',c);document.getElementById('saldoCli').textContent='0.00';alert('Saque solicitado!');volta(3)}}
-function addCliente(){const n=document.getElementById('newNome').value.trim(),a=+document.getElementById('newAtom').value;if(!n||!a)return alert('Preencha');let c=get('clientes');if(c.some(x=>x.nome.toLowerCase()===n.toLowerCase()))return alert('Já existe');c.push({nome:n,eletrons:a*100,saldo:0,pass:null});set('clientes',c);document.getElementById('newNome').value='';document.getElementById('newAtom').value='';loadPainel()}
-function delCli(i){if(confirm('Excluir cliente?')){let c=get('clientes');c.splice(i,1);set('clientes',c);loadPainel()}}
-function sacarAdm(){const a=adm();if(a.saldo<=0)return alert('Sem saldo');if(confirm(`Sacar R$${a.saldo.toFixed(2)}?`)){a.saldo=0;saveAdm(a);loadPainel();alert('Sacado!')}}
-function trocarSenhaAdmin(){volta(6)}
-function salvarSenhaAdm(){const o=document.getElementById('oldPassAdm').value,n1=document.getElementById('newPassAdm1').value,n2=document.getElementById('newPassAdm2').value,a=adm();if(h(o)!==a.pass)return msg('msgSenhaAdm','Senha atual errada',true);if(n1!==n2)return msg('msgSenhaAdm','Senhas não coincidem',true);if(n1&&n1.length<3)return msg('msgSenhaAdm','Mínimo 3 caracteres',true);a.pass=h(n1);saveAdm(a);msg('msgSenhaAdm','Senha alterada!');setTimeout(()=>volta(2),2000)}
-function trocarSenhaCliente(){volta(7)}
-function salvarSenhaCliente(){const s1=document.getElementById('novaSenhaCli1').value,s2=document.getElementById('novaSenhaCli2').value;if(s1!==s2)return msg('msgSenhaCli','Senhas não coincidem',true);if(s1&&s1.length<3)return msg('msgSenhaCli','Mínimo 3 caracteres',true);user.pass=s1?h(s1):null;let c=get('clientes');c[c.findIndex(x=>x.nome===user.nome)]=user;set('clientes',c);msg('msgSenhaCli',s1?'Senha alterada!':'Senha removida!');setTimeout(()=>volta(3),2000)}
+  // SAQUES collection
+  async function getAllSaques(){
+    const col = collection(db, 'saques');
+    const snap = await getDocs(col);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+  async function addSaque(saque){
+    const id = String(Date.now()) + Math.floor(Math.random()*9999);
+    await setDoc(doc(db, 'saques', id), saque);
+  }
+  async function deleteSaqueById(id){ await deleteDoc(doc(db, 'saques', id)); }
+
+  // ----------------------------------------------------------------------
+
+  // ------- application state -------
+  let user = null; // cliente logado (obj)
+  // ---------------------------------
+
+  // DOM references & events
+  document.getElementById('btnEntrar').addEventListener('click', entrar);
+  document.getElementById('linkAdmin').addEventListener('click', (e)=>{ e.preventDefault(); volta(1); });
+  document.getElementById('btnLoginAdm').addEventListener('click', loginAdm);
+  document.getElementById('btnSairAdm').addEventListener('click', ()=>volta(0));
+  document.getElementById('btnSacarAdm').addEventListener('click', sacarAdm);
+  document.getElementById('btnDistribuir').addEventListener('click', distribuir);
+  document.getElementById('btnAddCliente').addEventListener('click', addCliente);
+  document.getElementById('btnRetirar').addEventListener('click', retirar);
+  document.getElementById('btnVender').addEventListener('click', vender);
+  document.getElementById('btnLoja').addEventListener('click', loja);
+  document.getElementById('btnAnunciar').addEventListener('click', anunciar);
+  document.getElementById('btnCancelarVender').addEventListener('click', ()=>volta(3));
+  document.getElementById('btnVoltarLoja').addEventListener('click', ()=>volta(3));
+  document.getElementById('btnSacarCli').addEventListener('click', sacarCli);
+  document.getElementById('btnTrocarSenhaCli').addEventListener('click', ()=>volta(7));
+  document.getElementById('btnSalvarSenhaCli').addEventListener('click', salvarSenhaCliente);
+  document.getElementById('btnSalvarSenhaAdm').addEventListener('click', salvarSenhaAdm);
+  document.getElementById('btnCancelarSenhaAdm').addEventListener('click', ()=>volta(2));
+  document.getElementById('btnCancelarSenhaCli').addEventListener('click', ()=>volta(3));
+
+  // ---------- CORE logic (replacing localStorage calls) ----------
+  async function entrar(){
+    const n = document.getElementById('nome').value.trim();
+    const p = document.getElementById('senhaCli').value;
+    if(!n) return msg('msg','Digite seu nome',true);
+    const c = await getClienteByName(n);
+    if(!c) return msg('msg','Nome não encontrado! Peça para admin adicionar.',true);
+    if(c.pass && h(p) !== c.pass) return msg('msg','Senha incorreta!',true);
+    user = c;
+    document.getElementById('nomeCli').textContent = user.nome;
+    document.getElementById('eletrons').textContent = user.eletrons || 0;
+    document.getElementById('saldoCli').textContent = (user.saldo || 0).toFixed(2);
+    volta(3);
+  }
+
+  async function loginAdm(){
+    const u = document.getElementById('admUser').value.trim();
+    const p = document.getElementById('admPass').value;
+    const a = await getAdminDoc();
+    if(u === a.user && h(p) === a.pass){
+      await loadPainel();
+      volta(2);
+    } else {
+      msg('admMsg','Dados incorretos',true);
+    }
+  }
+
+  async function loadPainel(){
+    const a = await getAdminDoc();
+    document.getElementById('saldoAdm').textContent = (a.saldo || 0).toFixed(2);
+    const tb = document.getElementById('tabela');
+    tb.innerHTML = '<tr><th>Nome</th><th>Elétrons</th><th>Saldo R$</th><th></th></tr>';
+    const clientes = await getAllClientes();
+    clientes.forEach((c,i)=>{
+      tb.innerHTML += `<tr><td>${c.nome}</td><td>${c.eletrons||0}</td><td>${(c.saldo||0).toFixed(2)}</td><td><button class="red" onclick="window.__delCli('${escape(c.nome)}')">X</button></td></tr>`;
+    });
+    carregarSaques();
+  }
+
+  // expose delete helper for inline onclick created above
+  window.__delCli = async function(encodedNome){
+    const nome = unescape(encodedNome);
+    if(!confirm('Excluir cliente?')) return;
+    await deleteClienteByName(nome);
+    await loadPainel();
+  }
+
+  async function carregarSaques(){
+    const d = document.getElementById('saquesPendentes');
+    const s = await getAllSaques();
+    d.innerHTML = s.length ? '' : '<p style="color:#888">Nenhum saque pendente</p>';
+    s.forEach(sq=>{
+      d.innerHTML += `<div style="background:rgba(50,20,20,.8);padding:12px;margin:8px 0;border-radius:10px;border:1px solid #800"><b>${sq.nome}</b> → R$${(sq.valor||0).toFixed(2)}<br><small>PIX: <b>${sq.pix}</b></small><br><small>${sq.data||''}</small><br><button class="btn red" style="font-size:12px;padding:6px;margin-top:8px" onclick="window.__pagarSaque('${sq.id}')">PAGO</button></div>`;
+    });
+  }
+
+  window.__pagarSaque = async function(id){
+    if(!confirm('Marcar como pago?')) return;
+    await deleteSaqueById(id);
+    await carregarSaques();
+  }
+
+  // retirar elétrons do cliente -> criar anuncio ATOMIC
+  async function retirar(){
+    const nome = document.getElementById('retNome').value.trim();
+    const qtd = +document.getElementById('retQtd').value;
+    if(!nome || !qtd) return msg('retMsg','Preencha tudo',true);
+    const cli = await getClienteByName(nome);
+    if(!cli) return msg('retMsg','Cliente não encontrado',true);
+    if((cli.eletrons||0) < qtd) return msg('retMsg','Elétrons insuficientes',true);
+    cli.eletrons -= qtd;
+    await setCliente(cli);
+    await addAnuncio({ vendedor: 'ATOMIC', qtd: qtd, preco: 3, lucro: 0 });
+    msg('retMsg', `${qtd} elétrons retirados de ${nome} e colocados na loja por R$3`, false);
+    await loadPainel();
+  }
+
+  async function distribuir(){
+    const total = +document.getElementById('lucroTotal').value;
+    if(!total || total <= 0) return alert('Valor inválido');
+    const clientes = await getAllClientes();
+    const anuncios = await getAllAnuncios();
+    const totalEle = clientes.reduce((s,c)=>s+(c.eletrons||0),0) + anuncios.reduce((s,a)=>s+a.qtd,0);
+    if(totalEle === 0) return alert('Sem elétrons');
+    const porEle = (total * 0.75) / totalEle;
+    // distribuir para clientes (considerando anuncios próprios)
+    for(const c of clientes){
+      const emAnuncio = anuncios.filter(a=>a.vendedor===c.nome).reduce((s,a)=>s+a.qtd,0);
+      c.saldo = (c.saldo||0) + ( (c.eletrons||0) - emAnuncio ) * porEle;
+      await setCliente(c);
+    }
+    // anúncios ganham lucro contabilizado
+    for(const a of anuncios){
+      a.lucro = (a.lucro||0) + a.qtd * porEle;
+      await updateAnuncio(a);
+    }
+    const aadm = await getAdminDoc();
+    aadm.saldo = (aadm.saldo || 0) + total * 0.25;
+    await saveAdminDoc(aadm);
+    msg('distMsg', `Distribuído! Casa +R$${(total*0.25).toFixed(2)}`);
+    document.getElementById('lucroTotal').value = '';
+    await loadPainel();
+  }
+
+  async function comprar(id){
+    const a = (await getAllAnuncios()).find(x=>x.id===id);
+    if(!a || a.vendedor === (user && user.nome)) return;
+    const qtd = +prompt(`Quantos (máx ${a.qtd})?`, a.qtd) || 0;
+    if(qtd < 1 || qtd > a.qtd) return alert('Quantidade inválida');
+    const total = qtd * a.preco;
+    const bonus = qtd * (a.lucro || 0) / a.qtd;
+    if((user.saldo || 0) < total) return alert('Saldo insuficiente');
+    user.saldo = (user.saldo || 0) - total + bonus;
+    user.eletrons = (user.eletrons || 0) + qtd;
+
+    if(a.vendedor === 'ATOMIC'){
+      const casa = await getAdminDoc(); casa.saldo = (casa.saldo || 0) + total; await saveAdminDoc(casa);
+    } else {
+      const vendedor = await getClienteByName(a.vendedor);
+      if(vendedor){
+        vendedor.saldo = (vendedor.saldo || 0) + (total * 0.9);
+        await setCliente(vendedor);
+      }
+      const casa = await getAdminDoc(); casa.saldo = (casa.saldo || 0) + (total * 0.1); await saveAdminDoc(casa);
+    }
+
+    a.qtd -= qtd; a.lucro = (a.lucro || 0) - bonus;
+    if(a.qtd <= 0) await deleteAnuncioById(a.id); else await updateAnuncio(a);
+    await setCliente(user); // salva comprador
+    document.getElementById('eletrons').textContent = user.eletrons;
+    document.getElementById('saldoCli').textContent = (user.saldo||0).toFixed(2);
+    alert(`Comprado! +${qtd} elétrons\n+Bônus R$${bonus.toFixed(2)}`);
+    await loja();
+  }
+
+  // expose comprar so generated buttons can call it
+  window.__comprar = async function(id){ await comprar(id); };
+
+  async function anunciar(){
+    const q = +document.getElementById('qtdVenda').value;
+    const p = +document.getElementById('precoVenda').value;
+    if(q < 1 || q > (user.eletrons || 0) || p < 2) return alert('Erro');
+    user.eletrons -= q;
+    await setCliente(user);
+    await addAnuncio({ id: String(Date.now()) + Math.floor(Math.random()*9999), vendedor: user.nome, qtd: q, preco: p, lucro: 0 });
+    alert('Anunciado!');
+    volta(3);
+  }
+
+  async function cancelar(id){
+    if(!confirm('Cancelar?')) return;
+    const a = (await getAllAnuncios()).find(x=>x.id===id);
+    if(!a) return;
+    user.eletrons += a.qtd;
+    user.saldo = (user.saldo || 0) + (a.lucro || 0);
+    await setCliente(user);
+    await deleteAnuncioById(id);
+    await loja();
+  }
+
+  window.__cancelar = async function(id){ await cancelar(id); };
+
+  async function loja(){
+    const d = document.getElementById('listaAnuncios');
+    d.innerHTML = '';
+    const a = await getAllAnuncios();
+    if(!a.length){ d.innerHTML = '<p style="color:#888">Loja vazia</p>'; volta(5); return; }
+    for(const x of a){
+      const div = document.createElement('div');
+      div.style = 'background:rgba(42,42,45,.6);padding:14px;margin:8px 0;border-radius:12px;border:1px solid rgba(255,215,0,.2)';
+      const btn = x.vendedor === user.nome ? `<button class="red" onclick="window.__cancelar('${x.id}')">Cancelar</button>` : `<button class="btn green" onclick="window.__comprar('${x.id}')">Comprar</button>`;
+      div.innerHTML = `<b>${x.vendedor}</b><br>${x.qtd} × R$${(x.preco||0).toFixed(2)} → R$${(x.qtd*(x.preco||0)).toFixed(2)}<br><small style="color:#0f0">+R$${(x.lucro||0).toFixed(2)} bônus</small><div style="margin-top:10px">${btn}</div>`;
+      d.appendChild(div);
+    }
+    volta(5);
+  }
+
+  function vender(){
+    document.getElementById('temEle').textContent = user.eletrons||0;
+    document.getElementById('qtdVenda').max = user.eletrons||0;
+    const calc = () => document.getElementById('totalVenda').textContent = ((+document.getElementById('qtdVenda').value||0)*(+document.getElementById('precoVenda').value||0)).toFixed(2);
+    document.getElementById('qtdVenda').oninput = calc;
+    document.getElementById('precoVenda').oninput = calc;
+    volta(4);
+  }
+
+  async function sacarCli(){
+    if((user.saldo || 0) <= 0) return alert('Sem saldo');
+    const pix = prompt(`Sacando R$${(user.saldo||0).toFixed(2)}\nChave Pix:`);
+    if(pix && pix.trim()){
+      await addSaque({ nome: user.nome, valor: user.saldo, pix: pix.trim(), data: new Date().toLocaleString('pt-BR') });
+      user.saldo = 0;
+      await setCliente(user);
+      document.getElementById('saldoCli').textContent = '0.00';
+      alert('Saque solicitado!');
+      volta(3);
+    }
+  }
+
+  async function addCliente(){
+    const n = document.getElementById('newNome').value.trim();
+    const a = +document.getElementById('newAtom').value;
+    if(!n || !a) return alert('Preencha');
+    const exists = await getClienteByName(n);
+    if(exists) return alert('Já existe');
+    const cli = { nome: n, eletrons: a * 100, saldo: 0, pass: null };
+    await setCliente(cli);
+    document.getElementById('newNome').value = '';
+    document.getElementById('newAtom').value = '';
+    await loadPainel();
+  }
+
+  async function sacarAdm(){
+    const a = await getAdminDoc();
+    if((a.saldo||0) <= 0) return alert('Sem saldo');
+    if(confirm(`Sacar R$${(a.saldo||0).toFixed(2)}?`)){
+      a.saldo = 0;
+      await saveAdminDoc(a);
+      await loadPainel();
+      alert('Sacado!');
+    }
+  }
+
+  async function salvarSenhaAdm(){
+    const o = document.getElementById('oldPassAdm').value;
+    const n1 = document.getElementById('newPassAdm1').value;
+    const n2 = document.getElementById('newPassAdm2').value;
+    const a = await getAdminDoc();
+    if(h(o) !== a.pass) return msg('msgSenhaAdm','Senha atual errada',true);
+    if(n1 !== n2) return msg('msgSenhaAdm','Senhas não coincidem',true);
+    if(n1 && n1.length < 3) return msg('msgSenhaAdm','Mínimo 3 caracteres',true);
+    a.pass = h(n1);
+    await saveAdminDoc(a);
+    msg('msgSenhaAdm','Senha alterada!');
+    setTimeout(()=>volta(2),2000);
+  }
+
+  async function salvarSenhaCliente(){
+    const s1 = document.getElementById('novaSenhaCli1').value;
+    const s2 = document.getElementById('novaSenhaCli2').value;
+    if(s1 !== s2) return msg('msgSenhaCli','Senhas não coincidem',true);
+    if(s1 && s1.length < 3) return msg('msgSenhaCli','Mínimo 3 caracteres',true);
+    user.pass = s1 ? h(s1) : null;
+    await setCliente(user);
+    msg('msgSenhaCli', s1 ? 'Senha alterada!' : 'Senha removida!');
+    setTimeout(()=>volta(3),2000);
+  }
+
+  // on load: ensure admin exists and create some required collections if empty
+  (async function init(){
+    await getAdminDoc(); // creates admin doc if missing
+    // ensure collections exist (no-op in Firestore, but we can create a sample ATOMIC anuncio if no anuncios)
+    const anuncios = await getAllAnuncios();
+    if(!anuncios.length){
+      await addAnuncio({ vendedor: 'ATOMIC', qtd: 1000, preco: 3, lucro: 0 });
+    }
+    // attach global functions for inline use
+    window.__comprar = window.__comprar;
+    window.__cancelar = window.__cancelar;
+    window.__delCli = window.__delCli;
+    window.__pagarSaque = window.__pagarSaque;
+  })();
+
 </script>
+
 </body>
 </html>
