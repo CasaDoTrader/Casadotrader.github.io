@@ -321,6 +321,10 @@
     }catch(e){ console.error(e); msg('retMsg','Erro: '+e.message,true); }
   }
 
+  // ====== FIXED distribuir() ======
+  // Previously subtracted anúncios from client eletrons causing negatives when a client had few elétrons.
+  // Now we use the client's current wallet eletrons (they already lose eletrons on announce),
+  // and credit anúncios separately with their lucro share. Rounds to 2 decimals.
   async function distribuir(){
     try{
       const total = +document.getElementById('lucroTotal').value;
@@ -333,24 +337,66 @@
       const totalEle = clientes.reduce((s,c)=>s+(c.eletrons||0),0) + anuncios.reduce((s,a)=>s+a.qtd,0);
       if(totalEle === 0) return alert('Sem elétrons');
       const porEle = (total * 0.75) / totalEle;
-      // update clients
+      if(!isFinite(porEle)) return alert('Erro no cálculo');
+      // credit clients: use wallet eletrons only (clients.eletrons already exclude announced quantities)
       for(const c of clientes){
-        const emAnuncio = anuncios.filter(a=>a.vendedor===c.nome).reduce((s,a)=>s+a.qtd,0);
-        c.saldo = (c.saldo||0) + ( (c.eletrons||0) - emAnuncio ) * porEle;
-        await setClienteObject(c);
+        const walletEle = (c.eletrons||0);
+        const ganho = walletEle * porEle;
+        if(ganho){
+          c.saldo = (c.saldo||0) + ganho;
+          c.saldo = Number(c.saldo.toFixed(2));
+          await setClienteObject(c);
+        }
       }
-      // update anuncios lucro
+      // credit anúncios' lucro portion
       for(const a of anuncios){
-        a.lucro = (a.lucro||0) + a.qtd * porEle;
+        const adicional = a.qtd * porEle;
+        a.lucro = (a.lucro||0) + adicional;
+        a.lucro = Number((a.lucro||0).toFixed(2));
         await updateAnuncioObj(a);
       }
       const snap = await getDoc(metaRef);
       const aadm = snap.exists() ? snap.data() : { user:'adm', pass:h('123'), saldo:0 };
       aadm.saldo = (aadm.saldo || 0) + total * 0.25;
+      aadm.saldo = Number((aadm.saldo||0).toFixed(2));
       await setDoc(metaRef, aadm);
       msg('distMsg', `Distribuído! Casa +R$${(total*0.25).toFixed(2)}`);
       document.getElementById('lucroTotal').value = '';
       await loadPainel();
+    }catch(e){ console.error(e); alert('Erro: '+e.message); }
+  }
+
+  // ====== FIXED cancelar() ======
+  // Previously used the currently logged-in `user` to restore elétrons — if `user` changed or was null the cancel failed.
+  // Now we restore the seller by the annonce's `vendedor` field (works even if the seller is not the logged user).
+  async function cancelar(id){
+    try{
+      if(!confirm('Cancelar?')) return;
+      const aSnap = await getDocs(anunciosCol);
+      const anuncios = aSnap.docs.map(d=>d.data());
+      const a = anuncios.find(x=>x.id===id);
+      if(!a) return;
+      const sellerName = a.vendedor;
+      if(sellerName === 'ATOMIC'){
+        // ATOMIC anuncios: just remove
+        await deleteAnuncioById(id);
+        await loja();
+        return;
+      }
+      const cli = await getClienteByName(sellerName);
+      if(cli){
+        cli.eletrons = (cli.eletrons || 0) + (a.qtd || 0);
+        cli.saldo = (cli.saldo || 0) + (a.lucro || 0);
+        cli.eletrons = Math.max(0, cli.eletrons);
+        cli.saldo = Number((cli.saldo||0).toFixed(2));
+        await setClienteObject(cli);
+      } else {
+        // if seller record missing, create a minimal one to keep data consistent
+        const newCli = { nome: sellerName, eletrons: (a.qtd||0), saldo: Number((a.lucro||0).toFixed(2)), pass: null };
+        await setClienteObject(newCli);
+      }
+      await deleteAnuncioById(id);
+      await loja();
     }catch(e){ console.error(e); alert('Erro: '+e.message); }
   }
 
@@ -399,25 +445,6 @@
       alert(`Comprado! +${qtd} elétrons\n+Bônus R$${bonus.toFixed(2)}`);
       await loja();
     }catch(e){ console.error(e); alert('Erro compra: '+e.message); }
-  }
-
-  async function cancelar(id){
-    try{
-      if(!confirm('Cancelar?')) return;
-      const aSnap = await getDocs(anunciosCol);
-      const anuncios = aSnap.docs.map(d=>d.data());
-      const a = anuncios.find(x=>x.id===id);
-      if(!a) return;
-      // give back elétrons and lucro to user
-      const cli = await getClienteByName(user.nome);
-      if(cli){
-        cli.eletrons = (cli.eletrons || 0) + a.qtd;
-        cli.saldo = (cli.saldo || 0) + (a.lucro || 0);
-        await setClienteObject(cli);
-      }
-      await deleteAnuncioById(id);
-      await loja();
-    }catch(e){ console.error(e); alert('Erro: '+e.message); }
   }
 
   async function loja(){
@@ -536,6 +563,10 @@
       }
     }catch(e){ console.error('init err', e); msg('msg','Erro init: '+(e.message||e), true); }
   })();
+
+  // expose functions used by event handlers
+  window.distribuir = distribuir;
+  window.cancelar = cancelar;
 
 </script>
 
