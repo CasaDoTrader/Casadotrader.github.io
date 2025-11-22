@@ -160,6 +160,20 @@
   document.getElementById('btnCancelarSenhaCli').addEventListener('click', ()=>volta(3));
   document.getElementById('btnSairCli').addEventListener('click', ()=>{ user=null; volta(0); });
 
+  // Added listener to open admin password change panel (fix)
+  document.getElementById('linkTrocarSenhaAdm').addEventListener('click', (e)=>{
+    e.preventDefault();
+    // clear inputs and messages for a clean state
+    const oldI = document.getElementById('oldPassAdm');
+    const n1 = document.getElementById('newPassAdm1');
+    const n2 = document.getElementById('newPassAdm2');
+    if(oldI) oldI.value = '';
+    if(n1) n1.value = '';
+    if(n2) n2.value = '';
+    msg('msgSenhaAdm', '');
+    volta(6); // show trocaSenhaAdm
+  });
+
   // ---------- Real-time listeners ----------
   // admin meta (user/pass/saldo)
   onSnapshot(metaRef, snap=>{
@@ -208,7 +222,7 @@
   onSnapshot(query(anunciosCol, orderBy('__name__')), snapshot=>{
     const a = [];
     snapshot.forEach(d=> a.push(d.data()));
-    // if loja visible, re-render
+    // if loja visível, re-render
     const lista = document.getElementById('listaAnuncios');
     if(lista){
       lista.innerHTML = '';
