@@ -40,14 +40,38 @@
   <h3>Adicionar Cliente</h3><input id="newNome" class="input" placeholder="Nome"><input id="newAtom" type="number" class="input" placeholder="Átomos"><button class="btn green" id="btnAddCliente">ADICIONAR</button>
   <h3 style="margin-top:20px">Retirar Elétrons → Loja</h3><input id="retNome" class="input" placeholder="Nome"><input id="retQtd" type="number" class="input" placeholder="Elétrons"><button class="btn red" id="btnRetirar">RETIRAR</button><div id="retMsg" class="msg err"></div>
   <h3 style="margin-top:20px">Clientes</h3><div style="max-height:200px;overflow:auto"><table id="tabela"><tr><th>Nome</th><th>Elétrons</th><th>Saldo R$</th><th></th></tr></table></div>
+  <hr style="margin:20px 0;border:1px solid #333">
+
+<h3 style="color:var(--cyan)">Gerenciar Produtos</h3>
+<input id="prodNome" class="input" placeholder="Nome do Produto">
+<input id="prodValor" type="number" step="0.01" class="input" placeholder="Valor (R$)">
+<input id="prodEstoque" type="number" class="input" placeholder="Estoque">
+<button class="btn green" id="btnSalvarProduto">SALVAR PRODUTO</button>
+
+<div id="listaProdutos" style="max-height:200px;overflow:auto;margin-top:10px"></div>
+
+<hr style="margin:20px 0;border:1px solid #333">
+
+<h3 style="color:var(--pink)">Desconto Personalizado</h3>
+<input id="descNome" class="input" placeholder="Nome do Cliente">
+<input id="descValor" type="number" min="0" max="100" class="input" placeholder="Desconto % (1 a 100)">
+<button class="btn gold" id="btnAplicarDesconto">APLICAR DESCONTO</button>
+
   <button class="btn" style="margin-top:20px" id="btnSairAdm">Sair</button>
 </div>
 
 <div id="cliente" class="card hidden"><h2 style="color:var(--cyan)">Olá, <span id="nomeCli"></span>!</h2><p>Elétrons: <b id="eletrons">0</b> | Saldo: R$ <b id="saldoCli">0,00</b></p><button class="btn green" id="btnVender">VENDER ELÉTRONS</button><button class="btn green" id="btnLoja">LOJA</button><button class="btn gold" id="btnSacarCli">SACAR SALDO</button><button class="btn" style="background:#8B00FF;color:#fff;margin-top:10px" id="btnTrocarSenhaCli">Trocar Minha Senha</button><button class="btn" style="margin-top:15px" id="btnSairCli">Sair</button></div>
+<button class="btn gold" id="btnProdutos">MEUS PRODUTOS</button>
 
 <div id="venderDiv" class="card hidden"><h2>Vender Elétrons</h2><p>Você tem: <b id="temEle">0</b> elétrons</p><input id="qtdVenda" type="number" min="1" class="input" placeholder="Quantidade"><input id="precoVenda" type="number" step="0.01" min="2" class="input" placeholder="Preço por elétron (mín. 2)"><p>Total: R$ <b id="totalVenda">0,00</b></p><button class="btn green" id="btnAnunciar">ANUNCIAR</button><button class="btn" id="btnCancelarVender">Cancelar</button></div>
 
 <div id="lojaDiv" class="card hidden"><h2 style="color:var(--green)">Loja P2P</h2><div id="listaAnuncios" style="max-height:400px;overflow:auto"></div><button class="btn" style="margin-top:15px" id="btnVoltarLoja">Voltar</button></div>
+
+  <div id="produtosDiv" class="card hidden">
+  <h2 style="color:var(--gold)">Meus Produtos Digitais</h2>
+  <div id="listaMeusProdutos"></div>
+  <button class="btn" style="margin-top:15px" id="btnVoltarProdutos">Voltar</button>
+</div>
 
 <div id="trocaSenhaAdm" class="card hidden"><h2 style="color:var(--gold)">Trocar Senha Admin</h2><input id="oldPassAdm" type="password" class="input" placeholder="Senha atual"><input id="newPassAdm1" type="password" class="input" placeholder="Nova"><input id="newPassAdm2" type="password" class="input" placeholder="Repetir"><button class="btn green" id="btnSalvarSenhaAdm">SALVAR</button><button class="btn" id="btnCancelarSenhaAdm">Cancelar</button><div id="msgSenhaAdm" class="msg err"></div></div>
 
@@ -82,7 +106,7 @@
   };
   const volta = i => {
     document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
-    const t=['main','adminLogin','painel','cliente','venderDiv','lojaDiv','trocaSenhaAdm','trocaSenhaCli'];
+    const t=['main','adminLogin','painel','cliente','venderDiv','lojaDiv','trocaSenhaAdm','trocaSenhaCli','produtosDiv'];
     document.getElementById(t[i])?.classList.remove('hidden');
   };
   function slug(n){ return n.trim().toLowerCase().replace(/\s+/g,'-'); }
@@ -92,6 +116,8 @@
   const clientesCol = collection(db, 'clientes');
   const anunciosCol = collection(db, 'anuncios');
   const saquesCol = collection(db, 'saques');
+  const produtosCol = collection(db, 'produtos');
+  const marketplaceCol = collection(db, 'marketplace');
 
   async function ensureAdminDoc(){
     const snap = await getDoc(metaRef);
@@ -101,9 +127,15 @@
   }
 
   async function setClienteObject(cli){
-    const id = slug(cli.nome);
-    await setDoc(doc(db, 'clientes', id), cli);
-  }
+  const id = slug(cli.nome);
+
+  // garantir novos campos
+  if(!cli.produtosDigitais) cli.produtosDigitais = [];
+  if(typeof cli.desconto !== "number") cli.desconto = 0;
+
+  await setDoc(doc(db, 'clientes', id), cli);
+}
+
   async function getClienteByName(nome){
     if(!nome) return null;
     const id = slug(nome);
@@ -159,6 +191,10 @@
   document.getElementById('btnCancelarSenhaAdm').addEventListener('click', ()=>volta(2));
   document.getElementById('btnCancelarSenhaCli').addEventListener('click', ()=>volta(3));
   document.getElementById('btnSairCli').addEventListener('click', ()=>{ user=null; volta(0); });
+  document.getElementById('btnSalvarProduto').addEventListener('click', salvarProduto);
+  document.getElementById('btnAplicarDesconto').addEventListener('click', aplicarDesconto);
+  document.getElementById('btnProdutos').addEventListener('click', abrirProdutos);
+  document.getElementById('btnVoltarProdutos').addEventListener('click', ()=>volta(3));
 
   // Added listener to open admin password change panel (fix)
   document.getElementById('linkTrocarSenhaAdm').addEventListener('click', (e)=>{
@@ -177,10 +213,17 @@
   // ---------- Real-time listeners ----------
   // admin meta (user/pass/saldo)
   onSnapshot(metaRef, snap=>{
-    if(!snap.exists()) return;
-    const a = snap.data();
-    document.getElementById('saldoAdm').textContent = (a.saldo || 0).toFixed(2);
-  });
+  if(!snap.exists()) return;
+
+  const a = snap.data() || {};
+  const saldo = Number(a.saldo || 0);
+
+  const el = document.getElementById('saldoAdm');
+
+  if(el){
+    el.textContent = saldo.toFixed(2);
+  }
+});
 
   // clientes snapshot -> atualiza tabela do admin e atualiza UI do cliente logado (se houver mudança)
   onSnapshot(query(clientesCol, orderBy('__name__')), snapshot=>{
@@ -302,6 +345,7 @@
     if(snap.exists()){
       const a = snap.data();
       document.getElementById('saldoAdm').textContent = (a.saldo || 0).toFixed(2);
+      await carregarProdutos();
     }
   }
 
@@ -448,9 +492,49 @@
   }
 
   async function loja(){
-    // rendering handled by snapshot; just ensure view switch
-    volta(5);
-  }
+  const lista = document.getElementById('listaAnuncios');
+  lista.innerHTML = '';
+
+  // ===== PRODUTOS OFICIAIS =====
+  const produtosSnap = await getDocs(produtosCol);
+  produtosSnap.forEach(docu=>{
+    const p = docu.data();
+    lista.innerHTML += `
+      <div style="background:rgba(0,100,0,.3);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--green)">
+        <b>${p.nome}</b><br>
+        R$${p.valor.toFixed(2)} | Estoque: ${p.estoque}
+        <br>
+        <button class="btn gold" style="margin-top:8px"
+          onclick="comprarProdutoLoja('${p.id}')">
+          Comprar da Loja
+        </button>
+      </div>
+    `;
+  });
+
+  // ===== MARKETPLACE ENTRE CLIENTES =====
+  const marketSnap = await getDocs(marketplaceCol);
+
+  marketSnap.forEach(docu=>{
+    const m = docu.data();
+
+    lista.innerHTML += `
+      <div style="background:rgba(100,0,100,.3);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--pink)">
+        <b>${m.nome}</b><br>
+        Vendedor: ${m.vendedor}<br>
+        R$${m.valor.toFixed(2)}
+        <br>
+        ${
+          user && user.nome === m.vendedor
+          ? `<button class="btn red" onclick="cancelarMarketplace('${docu.id}')">Cancelar</button>`
+          : `<button class="btn green" onclick="comprarMarketplace('${docu.id}')">Comprar</button>`
+        }
+      </div>
+    `;
+  });
+
+  volta(5);
+}
 
   async function anunciar(){
     try{
@@ -496,7 +580,9 @@
       if(!n || !a) return alert('Preencha');
       const exists = await getClienteByName(n);
       if(exists) return alert('Já existe');
-      const cli = { nome: n, eletrons: a * 100, saldo: 0, pass: null };
+      const cli = {nome: n, eletrons: a * 100, saldo: 0, pass: null, produtosDigitais: [], desconto: 0
+};
+
       await setClienteObject(cli);
       document.getElementById('newNome').value = '';
       document.getElementById('newAtom').value = '';
@@ -551,22 +637,325 @@
       setTimeout(()=>volta(3),2000);
     }catch(e){ console.error(e); msg('msgSenhaCli','Erro: '+e.message,true); }
   }
+  // ================= PRODUTOS =================
+
+async function salvarProduto(){
+  try{
+    const nome = document.getElementById('prodNome').value.trim();
+    const valor = +document.getElementById('prodValor').value;
+    const estoque = +document.getElementById('prodEstoque').value;
+
+    if(!nome || !valor || estoque < 0) return alert('Preencha corretamente');
+
+    const id = slug(nome);
+
+    await setDoc(doc(produtosCol, id), {
+      id,
+      nome,
+      valor,
+      estoque,
+      atualizadoEm: new Date().toISOString()
+    });
+
+    document.getElementById('prodNome').value = '';
+    document.getElementById('prodValor').value = '';
+    document.getElementById('prodEstoque').value = '';
+
+    alert('Produto salvo!');
+    carregarProdutos();
+  }catch(e){
+    alert('Erro: '+e.message);
+  }
+}
+// ================= DESCONTO =================
+
+async function aplicarDesconto(){
+  try{
+    const nome = document.getElementById('descNome').value.trim();
+    const valor = +document.getElementById('descValor').value;
+
+    if(!nome || valor < 0 || valor > 100)
+      return alert('Informe entre 0 e 100%');
+
+    const cli = await getClienteByName(nome);
+    if(!cli) return alert('Cliente não encontrado');
+
+    cli.desconto = valor;
+    await setClienteObject(cli);
+
+    alert(`Desconto de ${valor}% aplicado para ${nome}`);
+  }catch(e){
+    alert('Erro: '+e.message);
+  }
+}
+
+async function carregarProdutos(){
+  const snap = await getDocs(produtosCol);
+  const div = document.getElementById('listaProdutos');
+  div.innerHTML = '';
+
+  snap.forEach(docu=>{
+    const p = docu.data();
+    div.innerHTML += `
+      <div style="background:rgba(42,42,45,.6);padding:10px;margin:6px 0;border-radius:10px">
+        <b>${p.nome}</b><br>
+        R$ ${p.valor.toFixed(2)} | Estoque: ${p.estoque}
+        <br>
+        <button class="btn gold" style="font-size:12px;padding:6px;margin-top:5px"
+          onclick="editarProduto('${p.id}','${p.nome}',${p.valor},${p.estoque})">
+          EDITAR
+        </button>
+      </div>
+    `;
+  });
+}
+
+window.editarProduto = function(id,nome,valor,estoque){
+  document.getElementById('prodNome').value = nome;
+  document.getElementById('prodValor').value = valor;
+  document.getElementById('prodEstoque').value = estoque;
+};
+
+// ================= COMPRA LOJA OFICIAL =================
+
+async function comprarProdutoLoja(prodId){
+  try{
+    const ref = doc(produtosCol, prodId);
+    const snap = await getDoc(ref);
+    if(!snap.exists()) return alert('Produto não encontrado');
+
+    const produto = snap.data();
+
+    if(produto.estoque <= 0) return alert('Sem estoque');
+
+    let valorFinal = produto.valor;
+
+    // aplicar desconto se existir
+    if(user.desconto && user.desconto > 0){
+      valorFinal = valorFinal - (valorFinal * (user.desconto/100));
+    }
+
+    if((user.saldo||0) < valorFinal)
+      return alert('Saldo insuficiente');
+
+    if(!confirm(`Comprar ${produto.nome} por R$${valorFinal.toFixed(2)}?`))
+      return;
+
+    // debitar saldo
+    user.saldo -= valorFinal;
+
+    // diminuir estoque
+    produto.estoque -= 1;
+
+    // criar produto digital
+    const digital = {
+      id: Date.now().toString(),
+      nome: produto.nome,
+      valorPago: valorFinal,
+      origem: "loja"
+    };
+
+    user.produtosDigitais.push(digital);
+
+    await setClienteObject(user);
+    await setDoc(ref, produto);
+
+    document.getElementById('saldoCli').textContent = user.saldo.toFixed(2);
+
+    alert('Produto adquirido!');
+    abrirProdutos();
+
+  }catch(e){
+    alert('Erro: '+e.message);
+  }
+}
+function abrirProdutos(){
+  const div = document.getElementById('listaMeusProdutos');
+  div.innerHTML = '';
+
+  if(!user.produtosDigitais || user.produtosDigitais.length === 0){
+    div.innerHTML = '<p>Nenhum produto digital.</p>';
+  }else{
+    user.produtosDigitais.forEach(p=>{
+      div.innerHTML += `
+  <div style="background:rgba(42,42,45,.6);padding:12px;margin:8px 0;border-radius:10px">
+    <b>${p.nome}</b><br>
+    Pago: R$ ${p.valorPago.toFixed(2)}<br>
+
+    <button class="btn green" style="font-size:12px;padding:6px;margin-top:6px"
+      onclick="revenderEmpresa('${p.id}')">
+      Revender p/ Empresa (-30%)
+    </button>
+
+    <button class="btn gold" style="font-size:12px;padding:6px;margin-top:6px"
+      onclick="trocarFisico('${p.id}')">
+      Trocar por Produto Físico
+    </button>
+
+    <button class="btn" style="background:#8B00FF;color:#fff;font-size:12px;padding:6px;margin-top:6px"
+      onclick="colocarMarketplace('${p.id}')">
+      Vender para Clientes
+    </button>
+  </div>
+`;
+    });
+  }
+
+  volta(8);
+}
+
+window.revenderEmpresa = async function(prodId){
+  const index = user.produtosDigitais.findIndex(p=>p.id===prodId);
+  if(index === -1) return;
+
+  const p = user.produtosDigitais[index];
+
+  const valorRetorno = p.valorPago * 0.7;
+
+  if(!confirm(`Receber R$${valorRetorno.toFixed(2)}?`))
+    return;
+
+  user.saldo += valorRetorno;
+  user.produtosDigitais.splice(index,1);
+
+  await setClienteObject(user);
+
+  document.getElementById('saldoCli').textContent = user.saldo.toFixed(2);
+
+  alert('Revenda concluída!');
+  abrirProdutos();
+};
+
+window.trocarFisico = async function(prodId){
+  const endereco = prompt("Digite seu endereço completo:");
+  if(!endereco) return;
+
+  const index = user.produtosDigitais.findIndex(p=>p.id===prodId);
+  if(index === -1) return;
+
+  user.produtosDigitais.splice(index,1);
+
+  await setClienteObject(user);
+
+  alert("Solicitação enviada! Admin irá finalizar.");
+  abrirProdutos();
+};
+  
+  window.colocarMarketplace = async function(prodId){
+  const index = user.produtosDigitais.findIndex(p=>p.id===prodId);
+  if(index === -1) return;
+
+  const novoValor = +prompt("Defina o valor de venda:");
+  if(!novoValor || novoValor <= 0) return alert("Valor inválido");
+
+  const produto = user.produtosDigitais[index];
+
+  await addDoc(marketplaceCol, {
+    produtoId: produto.id,
+    nome: produto.nome,
+    valor: novoValor,
+    vendedor: user.nome,
+    criadoEm: new Date().toISOString()
+  });
+
+  user.produtosDigitais.splice(index,1);
+  await setClienteObject(user);
+
+  alert("Produto publicado no marketplace!");
+  abrirProdutos();
+};
+  window.comprarMarketplace = async function(docId){
+  const ref = doc(marketplaceCol, docId);
+  const snap = await getDoc(ref);
+  if(!snap.exists()) return;
+
+  const m = snap.data();
+
+  if(user.nome === m.vendedor) return;
+
+  if((user.saldo||0) < m.valor)
+    return alert("Saldo insuficiente");
+
+  if(!confirm(`Comprar por R$${m.valor.toFixed(2)}?`))
+    return;
+
+  // debitar comprador
+  user.saldo -= m.valor;
+  user.produtosDigitais.push({
+    id: Date.now().toString(),
+    nome: m.nome,
+    valorPago: m.valor,
+    origem: "cliente"
+  });
+
+  await setClienteObject(user);
+
+  // pagar vendedor (SEM TAXA)
+  const vendedor = await getClienteByName(m.vendedor);
+  if(vendedor){
+    vendedor.saldo += m.valor;
+    await setClienteObject(vendedor);
+  }
+
+  await deleteDoc(ref);
+
+  alert("Compra realizada!");
+  loja();
+};
+  window.cancelarMarketplace = async function(docId){
+  const ref = doc(marketplaceCol, docId);
+  const snap = await getDoc(ref);
+  if(!snap.exists()) return;
+
+  const m = snap.data();
+
+  if(m.vendedor !== user.nome) return;
+
+  user.produtosDigitais.push({
+    id: m.produtoId,
+    nome: m.nome,
+    valorPago: m.valor,
+    origem: "retorno"
+  });
+
+  await setClienteObject(user);
+  await deleteDoc(ref);
+
+  alert("Venda cancelada!");
+  loja();
+};
 
   // ---------- init ----------
   (async function init(){
-    try{
-      await ensureAdminDoc();
-      // ensure at least one anuncio ATOMIC exists
-      const snap = await getDocs(anunciosCol);
-      if(snap.empty){
-        await addAnuncioObj({ vendedor: 'ATOMIC', qtd: 1000, preco: 3, lucro: 0 });
-      }
-    }catch(e){ console.error('init err', e); msg('msg','Erro init: '+(e.message||e), true); }
-  })();
+  try{
+    await ensureAdminDoc();
 
-  // expose functions used by event handlers
-  window.distribuir = distribuir;
-  window.cancelar = cancelar;
+    // ===== Criar produto inicial se não existir =====
+    const produtosSnap = await getDocs(produtosCol);
+
+    if(produtosSnap.empty){
+      const produtoInicial = {
+        id: "pacote-gel",
+        nome: "Pacote de Gel",
+        valor: 10.00,
+        estoque: 100,
+        criadoEm: new Date().toISOString()
+      };
+
+      await setDoc(doc(produtosCol, produtoInicial.id), produtoInicial);
+    }
+
+    // manter anúncio ATOMIC antigo
+    const snap = await getDocs(anunciosCol);
+    if(snap.empty){
+      await addAnuncioObj({ vendedor: 'ATOMIC', qtd: 1000, preco: 3, lucro: 0 });
+    }
+
+  }catch(e){
+    console.error('init err', e);
+    msg('msg','Erro init: '+(e.message||e), true);
+  }
+})();
 
 </script>
 
