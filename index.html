@@ -22,13 +22,18 @@
   <a href="https://wa.me/558599522997?text=Quero%201%20%C3%81tomo%20ATOMIC%20por%20R$100%20(50%25%20OFF)%20%F0%9F%94%A5%F0%9F%92%A5" target="_blank" class="btn buy">COMPRAR AGORA COM O PIX</a>
   <p style="margin:20px 0;font-size:15px">Venda Mínima Entre Clientes <b>R$ 2,00</b>/elétron<br>Taxa de: <b>10%</b></p>
   <small><a href="#" id="linkAdmin">ÁREA RESTRITA</a></small>
-<p style="margin:20px 0;line-height:1.6">CRIADO POR FELIPE GALDINO MENDES<br></p></div>
+</div>
 
 <div id="adminLogin" class="card hidden"><h2 style="color:var(--gold)">Área Admin</h2><input id="admUser" class="input" value="adm"><input id="admPass" type="password" class="input" placeholder="Senha"><button class="btn green" id="btnLoginAdm">ENTRAR</button><div id="admMsg" class="msg err"></div></div>
 
 <div id="painel" class="card hidden">
   <h2 style="color:var(--green)">Painel Admin</h2>
-  <p>Saldo da Casa: R$ <b id="saldoAdm">0,00</b> • <a href="#" id="linkTrocarSenhaAdm" style="color:var(--cyan)">Trocar senha</a></p>
+  <p>Saldo Lucro: R$ <b id="saldoAdm">0,00</b><br>
+  Saldo Insumos: R$ <b id="saldoInsumos">0,00</b> • <a href="#" id="linkTrocarSenhaAdm" style="color:var(--cyan)">Trocar senha</a></p>
+  <hr style="margin:20px 0;border:1px solid #333">
+<h3 style="color:var(--cyan)">Comprar Insumos</h3>
+<input id="valorInsumo" type="number" step="0.01" class="input" placeholder="Valor do Insumo (R$)">
+<button class="btn red" id="btnComprarInsumo">COMPRAR INSUMO</button>
   <hr style="margin:20px 0;border:1px solid #333">
   <h3 style="color:var(--pink)">Trocas Físicas Pendentes</h3>
   <div id="listaTrocas" style="max-height:200px;overflow:auto"></div>
@@ -53,6 +58,7 @@
 <h3 style="color:var(--cyan)">Gerenciar Produtos</h3>
 <input id="prodNome" class="input" placeholder="Nome do Produto">
 <input id="prodValor" type="number" step="0.01" class="input" placeholder="Valor (R$)">
+  <input id="prodCusto" type="number" step="0.01" class="input" placeholder="Custo (R$)">
 <input id="prodEstoque" type="number" class="input" placeholder="Estoque">
 <button class="btn green" id="btnSalvarProduto">SALVAR PRODUTO</button>
 
@@ -163,11 +169,16 @@ TRANSFERIR SALDO
   const marketplaceCol = collection(db, 'marketplace');
 
   async function ensureAdminDoc(){
-    const snap = await getDoc(metaRef);
-    if(!snap.exists()){
-      await setDoc(metaRef, { user: 'adm', pass: h('123'), saldo: 0 });
-    }
+  const snap = await getDoc(metaRef);
+  if(!snap.exists()){
+    await setDoc(metaRef, {
+      user: 'adm',
+      pass: h('123'),
+      saldo: 0,
+      saldoInsumos: 0 // NOVO
+    });
   }
+}
 
   async function setClienteObject(cli){
   const id = slug(cli.nome);
@@ -299,6 +310,18 @@ async function transferirSaldo(){
   document.getElementById('btnAplicarDesconto').addEventListener('click', aplicarDesconto);
   document.getElementById('btnProdutos').addEventListener('click', abrirProdutos);
   document.getElementById('btnVoltarProdutos').addEventListener('click', ()=>volta(3));
+document.getElementById('btnComprarInsumo')
+  .addEventListener('click', async ()=>{
+
+  const valor = +document.getElementById('valorInsumo').value;
+
+  if(!valor || valor <= 0)
+    return alert("Valor inválido");
+
+  await comprarInsumo(valor);
+
+  document.getElementById('valorInsumo').value = '';
+});
 
   // Added listener to open admin password change panel (fix)
   const linkTrocar = document.getElementById('linkTrocarSenhaAdm');
@@ -325,15 +348,13 @@ if(linkTrocar){
   if(!snap.exists()) return;
 
   const a = snap.data() || {};
-  const saldo = Number(a.saldo || 0);
 
-  const el = document.getElementById('saldoAdm');
+  document.getElementById('saldoAdm').textContent =
+    Number(a.saldo || 0).toFixed(2);
 
-  if(el){
-    el.textContent = Number(saldo || 0).toFixed(2);
-  }
+  document.getElementById('saldoInsumos').textContent =
+    Number(a.saldoInsumos || 0).toFixed(2);
 });
-
 
   // clientes snapshot -> atualiza tabela do admin e atualiza UI do cliente logado (se houver mudança)
   onSnapshot(query(clientesCol, orderBy('__name__')), snapshot=>{
@@ -671,7 +692,8 @@ if(linkTrocar){
 
     div.innerHTML = `
       <b>${p.nome}</b><br>
-      R$${Number(p.valor ||0).toFixed(2)} | Estoque: ${p.estoque}
+      R$${Number(p.valorVenda ||0).toFixed(2)}
+ | Estoque: ${p.estoque}
       <br>
     `;
 
@@ -764,6 +786,20 @@ if(linkTrocar){
     }catch(e){ console.error(e); alert('Erro anunciar: '+e.message); }
   }
 
+  async function comprarInsumo(valor){
+  const snap = await getDoc(metaRef);
+  const admin = snap.data();
+
+  if((admin.saldoInsumos || 0) < valor)
+    return alert("Saldo de insumos insuficiente");
+
+  admin.saldoInsumos -= valor;
+
+  await setDoc(metaRef, admin);
+
+  alert("Insumo comprado com saldo de reposição");
+}
+
   function vender(){
     document.getElementById('temEle').textContent = user.eletrons||0;
     document.getElementById('qtdVenda').max = user.eletrons||0;
@@ -787,6 +823,28 @@ if(linkTrocar){
       }
     }catch(e){ console.error(e); alert('Erro saque: '+e.message); }
   }
+  
+async function distribuirAutomatico(valor){
+
+  if(valor <= 0) return;
+
+  const clientesSnap = await getDocs(clientesCol);
+  const clientes = clientesSnap.docs.map(d=>d.data());
+
+  const totalEle = clientes.reduce((s,c)=>s+(c.eletrons||0),0);
+  if(totalEle === 0) return;
+
+  const porEletron = valor / totalEle;
+
+  for(const c of clientes){
+    const ganho = (c.eletrons||0) * porEletron;
+
+    if(ganho > 0){
+      c.saldo = Number(((c.saldo||0) + ganho).toFixed(2));
+      await setClienteObject(c);
+    }
+  }
+}
 
   async function addCliente(){
     try{
@@ -857,23 +915,30 @@ if(linkTrocar){
 async function salvarProduto(){
   try{
     const nome = document.getElementById('prodNome').value.trim();
-    const valor = +document.getElementById('prodValor').value;
+    const valor = +document.getElementById('prodValor').value; // venda
+    const custo = +document.getElementById('prodCusto').value; // NOVO
     const estoque = +document.getElementById('prodEstoque').value;
 
-    if(!nome || !valor || estoque < 0) return alert('Preencha corretamente');
+    if(!nome || !valor || !custo || estoque < 0)
+      return alert('Preencha corretamente');
+
+    if(custo > valor)
+      return alert('Custo não pode ser maior que valor de venda');
 
     const id = slug(nome);
 
     await setDoc(doc(produtosCol, id), {
       id,
       nome,
-      valor,
+      valorVenda: valor,
+      custoCompra: custo, // separado
       estoque,
       atualizadoEm: new Date().toISOString()
     });
 
     document.getElementById('prodNome').value = '';
     document.getElementById('prodValor').value = '';
+    document.getElementById('prodCusto').value = '';
     document.getElementById('prodEstoque').value = '';
 
     alert('Produto salvo!');
@@ -882,6 +947,7 @@ async function salvarProduto(){
     alert('Erro: '+e.message);
   }
 }
+
 // ================= DESCONTO =================
 
 async function aplicarDesconto(){
@@ -903,7 +969,7 @@ async function aplicarDesconto(){
     alert('Erro: '+e.message);
   }
 }
-
+  
 async function carregarProdutos(){
   const snap = await getDocs(produtosCol);
   const div = document.getElementById('listaProdutos');
@@ -911,13 +977,16 @@ async function carregarProdutos(){
 
   snap.forEach(docu=>{
     const p = docu.data();
+
     div.innerHTML += `
       <div style="background:rgba(42,42,45,.6);padding:10px;margin:6px 0;border-radius:10px">
         <b>${p.nome}</b><br>
-        R$ ${Number(p.valor || 0).toFixed(2)} | Estoque: ${p.estoque}
+        Venda: R$ ${Number(p.valorVenda || 0).toFixed(2)}<br>
+        Custo: R$ ${Number(p.custoCompra || 0).toFixed(2)}<br>
+        Estoque: ${p.estoque}
         <br>
         <button class="btn gold" style="font-size:12px;padding:6px;margin-top:5px"
-          onclick="editarProduto('${p.id}','${p.nome}',${p.valor},${p.estoque})">
+          onclick="editarProduto('${p.id}')">
           EDITAR
         </button>
       </div>
@@ -925,10 +994,19 @@ async function carregarProdutos(){
   });
 }
 
-window.editarProduto = function(id,nome,valor,estoque){
-  document.getElementById('prodNome').value = nome;
-  document.getElementById('prodValor').value = valor;
-  document.getElementById('prodEstoque').value = estoque;
+window.editarProduto = async function(id){
+
+  const ref = doc(produtosCol, id);
+  const snap = await getDoc(ref);
+
+  if(!snap.exists()) return alert("Produto não encontrado");
+
+  const p = snap.data();
+
+  document.getElementById('prodNome').value = p.nome;
+  document.getElementById('prodValor').value = p.valorVenda || 0;
+  document.getElementById('prodCusto').value = p.custoCompra || 0;
+  document.getElementById('prodEstoque').value = p.estoque || 0;
 };
 
 // ================= COMPRA LOJA OFICIAL =================
@@ -943,7 +1021,7 @@ window.editarProduto = function(id,nome,valor,estoque){
 
     if(produto.estoque <= 0) return alert('Sem estoque');
 
-    let valorFinal = produto.valor;
+    let valorFinal = produto.valorVenda;
 
     // aplicar desconto se existir
     if(user.desconto && user.desconto > 0){
@@ -961,6 +1039,27 @@ window.editarProduto = function(id,nome,valor,estoque){
 
     // diminuir estoque
     produto.estoque -= 1;
+      
+      // ===== DIVISÃO FINANCEIRA =====
+
+const custo = produto.custoCompra || 0;
+const lucro = valorFinal - custo;
+
+const snapAdm = await getDoc(metaRef);
+const admin = snapAdm.data();
+
+// custo vai para saldo de reposição
+admin.saldoInsumos = Number((admin.saldoInsumos || 0) + custo);
+
+// lucro vai para saldo principal
+admin.saldo = Number((admin.saldo || 0) + lucro);
+
+// distribuir 2% automaticamente
+const valorDistribuir = valorFinal * 0.02;
+await distribuirAutomatico(valorDistribuir);
+
+await setDoc(metaRef, admin);
+
 
     // criar produto digital
     const digital = {
@@ -1169,12 +1268,12 @@ window.trocarFisico = async function(prodId){
 
     if(produtosSnap.empty){
       const produtoInicial = {
-        id: "pacote-gel",
-        nome: "Pacote de Gel",
-        valor: 10.00,
-        estoque: 100,
-        criadoEm: new Date().toISOString()
-      };
+  id: "pacote-gel",
+  nome: "Pacote de Gel",
+  valorVenda: 10.00,
+  custoCompra: 6.00,
+  estoque: 100
+};
 
       await setDoc(doc(produtosCol, produtoInicial.id), produtoInicial);
     }
@@ -1192,6 +1291,15 @@ window.trocarFisico = async function(prodId){
 })();
 
 </script>
+<footer style="
+  position:fixed;
+  bottom:10px;
+  right:60px;
+  font-size:12px;
+  opacity:0.5;
+  letter-spacing:1px;
+">Desenvolvido por Felipe Galdino Mendes
+</footer>
 
 </body>
 </html>
