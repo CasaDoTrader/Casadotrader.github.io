@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Casa do Trader</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-<style>:root{--bg:#0a0a1f;--card:rgba(20,20,40,.95);--cyan:#00f2ff;--gold:#FFD700;--pink:#ff00ff;--green:#00ff88;--red:#ff2d55;--text:#e0e0ff}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Rajdhani,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:grid;place-items:center;background-image:radial-gradient(circle at 20% 80%,rgba(0,242,255,.08)0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,215,0,.08)0%,transparent 50%)}.card{max-width:390px;width:90%;background:var(--card);border-radius:20px;padding:28px 20px;border:1px solid rgba(255,215,0,.25);box-shadow:0 15px 40px rgba(255,215,0,.2),0 0 30px rgba(0,242,255,.15);position:relative;overflow:hidden}.card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--gold),var(--pink))}.logo{font-size:56px;font-weight:900;background:linear-gradient(45deg,var(--cyan),var(--gold),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}.title{font-size:28px;color:#fff;margin:8px 0 20px;letter-spacing:1px}.price{font-size:42px;color:var(--gold);text-shadow:0 0 15px rgba(255,215,0,.6);margin:16px 0;font-weight:800}.off{color:var(--green);font-size:20px;font-weight:700}.btn{display:block;width:100%;padding:16px;border-radius:14px;font-weight:800;font-size:18px;margin:14px 0;border:none;cursor:pointer;transition:.3s}.buy{background:#25d366;color:#fff;box-shadow:0 8px 20px rgba(37,211,100,.5)}.buy:hover{transform:scale(1.04)}.gold{background:var(--gold);color:#000}.green{background:var(--green);color:#000}.red{background:var(--red);color:#fff;font-size:14px;padding:8px}.input{width:100%;padding:14px;margin:10px 0;border-radius:12px;background:rgba(42,42,45,.9);border:1px solid rgba(255,215,0,.3);color:#fff;font-size:16px;outline:none;text-align:center}.orbit{width:90px;height:90px;margin:24px auto;position:relative}.e{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 20px currentColor;animation:orbit 2.8s linear infinite,color 4s infinite}@keyframes orbit{0%{transform:rotate(0deg) translateX(45px)}100%{transform:rotate(360deg) translateX(45px)}}@keyframes color{0%,100%{background:var(--cyan)}25%{background:var(--pink)}50%{background:var(--green)}75%{background:var(--gold)}}table{width:100%;margin-top:12px;font-size:14px;border-collapse:collapse}th,td{padding:8px;text-align:left}th{background:rgba(42,42,45,.8)}tr:nth-child(even){background:rgba(34,34,34,.5)}.hidden{display:none}.msg{color:var(--green);margin:10px 0;min-height:24px;font-size:15px}.err{color:var(--red)}small a{color:var(--gold);text-decoration:none}small a:hover{text-decoration:underline}</style>
+<style>:root{--bg:#0a0a1f;--card:rgba(20,20,40,.95);--cyan:#00f2ff;--gold:#FFD700;--pink:#ff00ff;--green:#00ff88;--red:#ff2d55;--text:#e0e0ff}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Rajdhani,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:grid;place-items:center;background-image:radial-gradient(circle at 20% 80%,rgba(0,242,255,.08)0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,215,0,.08)0%,transparent 50%)}.card{max-width:390px;width:90%;background:var(--card);border-radius:20px;padding:28px 20px;border:1px solid rgba(255,215,0,.25);box-shadow:0 15px 40px rgba(255,215,0,.2),0 0 30px rgba(0,242,255,.15);position:relative;overflow:hidden}.card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--gold),var(--pink))}.logo{font-size:56px;font-weight:900;background:linear-gradient(45deg,var(--cyan),var(--gold),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}.title{font-size:28px;color:#fff;margin:8px 0 20px;letter-spacing:1px}.price{font-size:42px;color:var(--gold);text-shadow:0 0 15px rgba(255,215,0,.6);margin:16px 0;font-weight:800}.off{color:var(--green);font-size:20px;font-weight:700}.btn{display:block;width:100%;padding:16px;border-radius:14px;font-weight:800;font-size:18px;margin:14px 0;border:none;cursor:pointer;transition:.3s}.buy{background:#25d366;color:#fff;box-shadow:0 8px 20px rgba(37,211,100,.5)}.buy:hover{transform:scale(1.04)}.gold{background:var(--gold);color:#000}.green{background:var(--green);color:#000}.red{background:var(--red);color:#fff;font-size:14px;padding:8px}.input{width:100%;padding:14px;margin:10px 0;border-radius:12px;background:rgba(42,42,45,.9);border:1px solid rgba(255,215,0,.3);color:#fff;font-size:16px;outline:none;text-align:center}.orbit{width:90px;height:90px;margin:24px auto;position:relative}.e{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 20px currentColor;animation:orbit 2.8s linear infinite,color 4s infinite}@keyframes orbit{0%{transform:rotate(0deg) translateX(45px)}100%{transform:rotate(360deg) translateX(45px)}}@keyframes color{0%,100%{background:var(--cyan)}25%{background:var(--pink)}50%{background:var(--green)}75%{background:var(--gold)}}table{width:100%;margin-top:12px;font-size:14px;border-collapse:collapse}th,td{padding:8px;text-align:left}th{background:rgba(42,42,45,.8)}tr:nth-child(even){background:rgba(34,34,34,.5)}.hidden{display:none}.msg{color:var(--green);margin:10px 0;min-height:24px;font-size:15px}.err{color:var(--red)}small a{color:var(--gold);text-decoration:none}small a:hover{text-decoration:underline}.file-input-wrapper{position:relative;margin:10px 0;background:rgba(42,42,45,.9);border-radius:12px;border:1px solid rgba(255,215,0,.3);padding:10px;text-align:center;cursor:pointer}.file-input-wrapper input{position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer}.preview-image{width:100%;max-height:150px;object-fit:contain;border-radius:10px;margin-top:10px;background:#222;display:none}</style>
 </head>
 <body>
 
+<!-- ===== CARD PRINCIPAL (ACESSO) ===== -->
 <div id="main" class="card">
   <div class="logo">I'say StorePay</div>
   <div class="title">ELTS/REAL</div>
@@ -19,110 +20,175 @@
   <div class="msg err" id="msg"></div>
   <p style="margin:20px 0;line-height:1.6">100 Elétrons<br><span class="off">50% DE DESCONTO</span></p>
   <div class="price">R$ 100,00</div>
-  <a href="https://wa.me/558599522997?text=Quero%201%20%C3%81tomo%20ATOMIC%20por%20R$100%20(50%25%20OFF)%20%F0%9F%94%A5%F0%9F%92%A5" target="_blank" class="btn buy">APROVEITAR DESCONTO</a>
+  <a href="https://wa.me/558599522997?text=Quero%20participar%20do%20grupo%20-%20Quero%20meus%20primeiros%20el%C3%A9trons" target="_blank" class="btn buy">APROVEITAR DESCONTO</a>
   <p style="margin:20px 0;font-size:15px">Venda Mínima Entre Clientes <b>R$ 2,00</b>/elétron<br>Taxa de: <b>10%</b></p>
   <small><a href="#" id="linkAdmin">área restrita</a></small>
 </div>
 
+<!-- ===== ADMIN LOGIN ===== -->
 <div id="adminLogin" class="card hidden"><h2 style="color:var(--gold)">Área Admin</h2><input id="admUser" class="input" value="adm"><input id="admPass" type="password" class="input" placeholder="Senha"><button class="btn green" id="btnLoginAdm">ENTRAR</button><div id="admMsg" class="msg err"></div></div>
 
+<!-- ===== PAINEL ADMIN (COM UPLOAD DE IMAGEM) ===== -->
 <div id="painel" class="card hidden">
   <h2 style="color:var(--green)">Painel Admin</h2>
   <p>Saldo Lucro: R$ <b id="saldoAdm">0,00</b><br>
   Saldo Insumos: R$ <b id="saldoInsumos">0,00</b> • <a href="#" id="linkTrocarSenhaAdm" style="color:var(--cyan)">Trocar senha</a></p>
   <hr style="margin:20px 0;border:1px solid #333">
-<h3 style="color:var(--cyan)">Comprar Insumos</h3>
-<input id="valorInsumo" type="number" step="0.01" class="input" placeholder="Valor do Insumo (R$)">
-<button class="btn red" id="btnComprarInsumo">COMPRAR INSUMO</button>
+
+  <!-- COMPRAR INSUMOS -->
+  <h3 style="color:var(--cyan)">Comprar Insumos</h3>
+  <input id="valorInsumo" type="number" step="0.01" class="input" placeholder="Valor do Insumo (R$)">
+  <button class="btn red" id="btnComprarInsumo">COMPRAR INSUMO</button>
   <hr style="margin:20px 0;border:1px solid #333">
+
+  <!-- TROCAS FÍSICAS -->
   <h3 style="color:var(--pink)">Trocas Físicas Pendentes</h3>
   <div id="listaTrocas" style="max-height:200px;overflow:auto"></div>
-  <button class="btn gold" id="btnSacarAdm">SACAR TUDO</button>
+  <button class="btn gold" id="btnSacarAdm">SACA LUCRO</button>
   <hr style="margin:20px 0;border:1px solid #333">
-  <h3 style="color:var(--gold)">Saques Pendentes</h3>
+
+  <!-- SAQUES PENDENTES -->
+  <h3 style="color:var(--gold)">Repasses Pendentes</h3>
   <div id="saquesPendentes" style="max-height:300px;overflow:auto;padding:10px;background:rgba(20,0,0,.3);border-radius:10px"></div>
   <hr style="margin:20px 0;border:1px solid #333">
-  <input id="lucroTotal" type="number" step="0.01" class="input" placeholder="Lucro total recebido (R$)">
+
+  <!-- DISTRIBUIÇÃO -->
+  <input id="lucroTotal" type="number" step="0.01" class="input" placeholder="Total arrecadado (R$)">
   <button class="btn green" id="btnDistribuir">DISTRIBUIR 75%</button><div id="distMsg" class="msg"></div>
   <hr style="margin:20px 0">
-  <h3>Adicionar Cliente</h3><input id="newNome" class="input" placeholder="Nome"><input id="newAtom" type="number" class="input" placeholder="Átomos"><button class="btn green" id="btnAddCliente">ADICIONAR</button>
-  <h3 style="margin-top:20px">Retirar Elétrons → Loja</h3><input id="retNome" class="input" placeholder="Nome"><input id="retQtd" type="number" class="input" placeholder="Elétrons"><button class="btn red" id="btnRetirar">RETIRAR</button><div id="retMsg" class="msg err"></div>
-  <h3 style="margin-top:20px">Clientes</h3><div style="max-height:200px;overflow:auto"><table id="tabela"><tr><th>Nome</th><th>Elétrons</th><th>Saldo R$</th><th></th></tr></table></div>
+
+  <!-- ADICIONAR CLIENTE -->
+  <h3>Adicionar Cliente</h3>
+  <input id="newNome" class="input" placeholder="Nome">
+  <input id="newAtom" type="number" class="input" placeholder="Átomos">
+  <button class="btn green" id="btnAddCliente">ADICIONAR</button>
+
+  <!-- RETIRAR ELÉTRONS -->
+  <h3 style="margin-top:20px">Retirar Elétrons → Loja</h3>
+  <input id="retNome" class="input" placeholder="Nome">
+  <input id="retQtd" type="number" class="input" placeholder="Elétrons">
+  <button class="btn red" id="btnRetirar">RETIRAR</button>
+  <div id="retMsg" class="msg err"></div>
+
+  <!-- TABELA CLIENTES -->
+  <h3 style="margin-top:20px">Clientes</h3>
+  <div style="max-height:200px;overflow:auto"><table id="tabela"><tr><th>Nome</th><th>Elétrons</th><th>Saldo R$</th><th></th></tr></table></div>
   <hr style="margin:20px 0;border:1px solid #333">
+
+  <!-- AJUSTAR SALDO -->
   <h3 style="margin-top:20px">Ajustar Saldo do Cliente</h3>
   <input id="saldoNome" class="input" placeholder="Nome do Cliente">
   <input id="saldoValor" type="number" step="0.01" class="input" placeholder="Valor (use negativo para retirar)">
   <button class="btn green" id="btnAjustarSaldo">APLICAR</button>
   <div id="saldoMsg" class="msg"></div>
 
-<h3 style="color:var(--cyan)">Gerenciar Produtos</h3>
-<input id="prodNome" class="input" placeholder="Nome do Produto">
-<input id="prodValor" type="number" step="0.01" class="input" placeholder="Valor (R$)">
-  <input id="prodCusto" type="number" step="0.01" class="input" placeholder="Custo (R$)">
-<input id="prodEstoque" type="number" class="input" placeholder="Estoque">
-<button class="btn green" id="btnSalvarProduto">SALVAR PRODUTO</button>
+  <!-- ===== GERENCIAR PRODUTOS (COM UPLOAD DE IMAGEM) ===== -->
+  <h3 style="color:var(--cyan)">Gerenciar Produtos</h3>
+  <input id="prodNome" class="input" placeholder="Nome do Produto">
+  <div style="display:flex; gap:10px;">
+    <input id="prodValor" type="number" step="0.01" class="input" placeholder="Valor (R$)" style="flex:1">
+    <input id="prodCusto" type="number" step="0.01" class="input" placeholder="Custo (R$)" style="flex:1">
+  </div>
+  <input id="prodEstoque" type="number" class="input" placeholder="Estoque">
+  
+  <!-- UPLOAD DE IMAGEM DA GALERIA -->
+  <div class="file-input-wrapper" id="fileWrapper">
+    📸 SELECIONAR IMAGEM DA GALERIA
+    <input type="file" id="prodImagemFile" accept="image/*">
+  </div>
+  <img id="previewImagem" class="preview-image" src="#" alt="Prévia">
+  
+  <button class="btn green" id="btnSalvarProduto">SALVAR PRODUTO</button>
+  <div id="listaProdutos" style="max-height:200px;overflow:auto;margin-top:10px"></div>
+  <hr style="margin:20px 0;border:1px solid #333">
 
-<div id="listaProdutos" style="max-height:200px;overflow:auto;margin-top:10px"></div>
-
-<hr style="margin:20px 0;border:1px solid #333">
-
-<h3 style="color:var(--pink)">Desconto Personalizado</h3>
-<input id="descNome" class="input" placeholder="Nome do Cliente">
-<input id="descValor" type="number" min="0" max="100" class="input" placeholder="Desconto % (1 a 100)">
-<button class="btn gold" id="btnAplicarDesconto">APLICAR DESCONTO</button>
-
+  <!-- DESCONTO PERSONALIZADO -->
+  <h3 style="color:var(--pink)">Desconto Personalizado</h3>
+  <input id="descNome" class="input" placeholder="Nome do Cliente">
+  <input id="descValor" type="number" min="0" max="100" class="input" placeholder="Desconto % (1 a 100)">
+  <button class="btn gold" id="btnAplicarDesconto">APLICAR DESCONTO</button>
   <button class="btn" style="margin-top:20px" id="btnSairAdm">Sair</button>
 </div>
 
+<!-- ===== ÁREA DO CLIENTE ===== -->
 <div id="cliente" class="card hidden">
   <h2 style="color:var(--cyan)">Olá, <span id="nomeCli"></span>!</h2>
-
-  <p>
-    Elétrons: <b id="eletrons">0</b><br>
-    Saldo: R$ <b id="saldoCli">0,00</b>
-  </p>
-
+  <p>Elétrons: <b id="eletrons">0</b><br>Saldo: R$ <b id="saldoCli">0,00</b></p>
   <hr style="margin:15px 0;border:1px solid #333">
-
   <button class="btn green" id="btnVender">VENDER ELÉTRONS</button>
   <button class="btn green" id="btnLoja">LOJA</button>
-  <button class="btn gold" id="btnSacarCli">SACAR SALDO</button>
-  
+  <button class="btn gold" id="btnSacarCli">RETIRA SALDO</button>
   <hr style="margin:15px 0;border:1px solid #333">
-
-  <button class="btn" style="background:#8B00FF;color:#fff" id="btnProdutos">
-MEUS PRODUTOS
-</button>
-
-  <button class="btn green" id="btnTransferir">
-TRANSFERIR SALDO
-</button>
-
+  <button class="btn" style="background:#8B00FF;color:#fff" id="btnProdutos">MEUS PRODUTOS</button>
+  <button class="btn green" id="btnTransferir">TRANSFERIR SALDO</button>
   <hr style="margin:15px 0;border:1px solid #333">
-
   <button class="btn" id="btnTrocarSenhaCli">Trocar Minha Senha</button>
-  
- <button class="btn red" id="btnSairCli">Sair</button>
-
+  <button class="btn red" id="btnSairCli">Sair</button>
 </div>
 
-<div id="venderDiv" class="card hidden"><h2>Vender Elétrons</h2><p>Você tem: <b id="temEle">0</b> elétrons</p><input id="qtdVenda" type="number" min="1" class="input" placeholder="Quantidade"><input id="precoVenda" type="number" step="0.01" min="2" class="input" placeholder="Preço por elétron (mín. 2)"><p>Total: R$ <b id="totalVenda">0,00</b></p><button class="btn green" id="btnAnunciar">ANUNCIAR</button><button class="btn" id="btnCancelarVender">Cancelar</button></div>
+<!-- ===== VENDER ELÉTRONS ===== -->
+<div id="venderDiv" class="card hidden">
+  <h2>Vender Elétrons</h2>
+  <p>Você tem: <b id="temEle">0</b> elétrons</p>
+  <input id="qtdVenda" type="number" min="1" class="input" placeholder="Quantidade">
+  <input id="precoVenda" type="number" step="0.01" min="2" class="input" placeholder="Preço por elétron (mín. 2)">
+  <p>Total: R$ <b id="totalVenda">0,00</b></p>
+  <button class="btn green" id="btnAnunciar">ANUNCIAR</button>
+  <button class="btn" id="btnCancelarVender">Cancelar</button>
+</div>
 
-<div id="lojaDiv" class="card hidden"><h2 style="color:var(--green)">Loja P2P</h2><div id="listaAnuncios" style="max-height:400px;overflow:auto"></div><button class="btn" style="margin-top:15px" id="btnVoltarLoja">Voltar</button></div>
+<!-- ===== LOJA (COM IMAGENS E SELETOR DE QUANTIDADE) ===== -->
+<div id="lojaDiv" class="card hidden">
+  <h2 style="color:var(--green)">Loja</h2>
+  <div id="listaAnuncios" style="max-height:400px;overflow:auto"></div>
+  <button class="btn" style="margin-top:15px" id="btnVoltarLoja">Voltar</button>
+</div>
 
-  <div id="produtosDiv" class="card hidden">
+<!-- ===== MEUS PRODUTOS ===== -->
+<div id="produtosDiv" class="card hidden">
   <h2 style="color:var(--gold)">Meus Produtos Digitais</h2>
   <div id="listaMeusProdutos"></div>
   <button class="btn" style="margin-top:15px" id="btnVoltarProdutos">Voltar</button>
 </div>
 
-<div id="trocaSenhaAdm" class="card hidden"><h2 style="color:var(--gold)">Trocar Senha Admin</h2><input id="oldPassAdm" type="password" class="input" placeholder="Senha atual"><input id="newPassAdm1" type="password" class="input" placeholder="Nova"><input id="newPassAdm2" type="password" class="input" placeholder="Repetir"><button class="btn green" id="btnSalvarSenhaAdm">SALVAR</button><button class="btn" id="btnCancelarSenhaAdm">Cancelar</button><div id="msgSenhaAdm" class="msg err"></div></div>
+<!-- ===== MODAL DE COMPRA COM QUANTIDADE ===== -->
+<div id="modalCompra" class="card hidden" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:350px;">
+  <h3 style="color:var(--gold)" id="modalTitulo">Comprar Produto</h3>
+  <img id="modalImagem" src="#" style="width:100%;max-height:150px;object-fit:contain;border-radius:10px;margin:10px 0;background:#222">
+  <p><span id="modalNome"></span></p>
+  <p>Preço unitário: R$ <span id="modalPrecoUnit"></span></p>
+  <p>Seu saldo: R$ <span id="modalSaldo"></span></p>
+  <input id="modalQuantidade" type="number" min="1" class="input" placeholder="Quantidade" value="1">
+  <p>Total: R$ <b id="modalTotal">0.00</b></p>
+  <button class="btn green" id="btnConfirmarCompra">CONFIRMAR COMPRA</button>
+  <button class="btn red" id="btnCancelarCompra">Cancelar</button>
+</div>
 
-<div id="trocaSenhaCli" class="card hidden"><h2 style="color:var(--cyan)">Trocar Sua Senha</h2><p><small>Deixe em branco para remover</small></p><input id="novaSenhaCli1" type="password" class="input" placeholder="Nova"><input id="novaSenhaCli2" type="password" class="input" placeholder="Repetir"><button class="btn green" id="btnSalvarSenhaCli">SALVAR</button><button class="btn" id="btnCancelarSenhaCli">Cancelar</button><div id="msgSenhaCli" class="msg"></div></div>
+<!-- ===== TROCAR SENHA ADMIN ===== -->
+<div id="trocaSenhaAdm" class="card hidden">
+  <h2 style="color:var(--gold)">Trocar Senha Admin</h2>
+  <input id="oldPassAdm" type="password" class="input" placeholder="Senha atual">
+  <input id="newPassAdm1" type="password" class="input" placeholder="Nova">
+  <input id="newPassAdm2" type="password" class="input" placeholder="Repetir">
+  <button class="btn green" id="btnSalvarSenhaAdm">SALVAR</button>
+  <button class="btn" id="btnCancelarSenhaAdm">Cancelar</button>
+  <div id="msgSenhaAdm" class="msg err"></div>
+</div>
 
-<!-- Firebase (modular) -->
+<!-- ===== TROCAR SENHA CLIENTE ===== -->
+<div id="trocaSenhaCli" class="card hidden">
+  <h2 style="color:var(--cyan)">Trocar Sua Senha</h2>
+  <p><small>Deixe em branco para remover</small></p>
+  <input id="novaSenhaCli1" type="password" class="input" placeholder="Nova">
+  <input id="novaSenhaCli2" type="password" class="input" placeholder="Repetir">
+  <button class="btn green" id="btnSalvarSenhaCli">SALVAR</button>
+  <button class="btn" id="btnCancelarSenhaCli">Cancelar</button>
+  <div id="msgSenhaCli" class="msg"></div>
+</div>
+
+<!-- ===== FIREBASE (MODULAR) ===== -->
 <script type="module">
-  console.log("SCRIPT CARREGADO - VERSÃO CORRIGIDA");
+  console.log("SCRIPT CARREGADO - VERSÃO COM UPLOAD DE IMAGEM E QUANTIDADE");
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
   import {
     getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
@@ -156,7 +222,7 @@ TRANSFERIR SALDO
   
   const volta = i => {
     document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
-    const t=['main','adminLogin','painel','cliente','venderDiv','lojaDiv','trocaSenhaAdm','trocaSenhaCli','produtosDiv'];
+    const t=['main','adminLogin','painel','cliente','venderDiv','lojaDiv','trocaSenhaAdm','trocaSenhaCli','produtosDiv','modalCompra'];
     document.getElementById(t[i])?.classList.remove('hidden');
   };
   
@@ -170,6 +236,9 @@ TRANSFERIR SALDO
   const saquesCol = collection(db, 'saques');
   const produtosCol = collection(db, 'produtos');
   const marketplaceCol = collection(db, 'marketplace');
+
+  // Variável global para o produto sendo comprado
+  let produtoSelecionado = null;
 
   async function ensureAdminDoc(){
     const snap = await getDoc(metaRef);
@@ -207,60 +276,32 @@ TRANSFERIR SALDO
     try{
       const nome = document.getElementById('saldoNome').value.trim();
       const valor = +document.getElementById('saldoValor').value;
-
-      if(!nome || isNaN(valor))
-        return msg('saldoMsg','Preencha corretamente',true);
-
+      if(!nome || isNaN(valor)) return msg('saldoMsg','Preencha corretamente',true);
       const cli = await getClienteByName(nome);
-      if(!cli)
-        return msg('saldoMsg','Cliente não encontrado',true);
-
+      if(!cli) return msg('saldoMsg','Cliente não encontrado',true);
       cli.saldo = Number(((cli.saldo || 0) + valor).toFixed(2));
-
-      if(cli.saldo < 0)
-        cli.saldo = 0;
-
+      if(cli.saldo < 0) cli.saldo = 0;
       await setClienteObject(cli);
-
       msg('saldoMsg','Saldo atualizado!');
-    }catch(e){
-      msg('saldoMsg','Erro: '+e.message,true);
-    }
+    }catch(e){ msg('saldoMsg','Erro: '+e.message,true); }
   }
   
   async function transferirSaldo(){
     try{
       const destino = prompt("Transferir para qual cliente?");
       if(!destino) return;
-
       const valor = +prompt("Valor da transferência:");
-      if(!valor || valor <= 0)
-        return alert("Valor inválido");
-
-      if((user.saldo || 0) < valor)
-        return alert("Saldo insuficiente");
-
+      if(!valor || valor <= 0) return alert("Valor inválido");
+      if((user.saldo || 0) < valor) return alert("Saldo insuficiente");
       const cliDestino = await getClienteByName(destino);
-      if(!cliDestino)
-        return alert("Cliente não encontrado");
-
-      // debita remetente
+      if(!cliDestino) return alert("Cliente não encontrado");
       user.saldo -= valor;
-
-      // credita destino
       cliDestino.saldo = (cliDestino.saldo || 0) + valor;
-
       await setClienteObject(user);
       await setClienteObject(cliDestino);
-
-      document.getElementById('saldoCli')
-        .textContent = Number(user.saldo ||0).toFixed(2);
-
+      document.getElementById('saldoCli').textContent = Number(user.saldo ||0).toFixed(2);
       alert("Transferência realizada!");
-
-    }catch(e){
-      alert("Erro: "+e.message);
-    }
+    }catch(e){ alert("Erro: "+e.message); }
   }
 
   async function addAnuncioObj(a){
@@ -286,9 +327,9 @@ TRANSFERIR SALDO
   }
 
   // ---------- STATE ----------
-  let user = null; // objeto do cliente atual
+  let user = null;
 
-  // ---------- DOM bindings ----------
+  // ---------- DOM BINDINGS ----------
   document.getElementById('btnEntrar').addEventListener('click', entrar);
   document.getElementById('linkAdmin').addEventListener('click', (e)=>{ e.preventDefault(); volta(1); });
   document.getElementById('btnLoginAdm').addEventListener('click', loginAdm);
@@ -322,24 +363,37 @@ TRANSFERIR SALDO
     document.getElementById('valorInsumo').value = '';
   });
 
-  // Added listener to open admin password change panel (fix)
+  // MODAL DE COMPRA
+  document.getElementById('btnConfirmarCompra').addEventListener('click', confirmarCompraModal);
+  document.getElementById('btnCancelarCompra').addEventListener('click', ()=>volta(5));
+  document.getElementById('modalQuantidade').addEventListener('input', atualizarTotalModal);
+
+  // UPLOAD DE IMAGEM
+  document.getElementById('prodImagemFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        document.getElementById('previewImagem').src = event.target.result;
+        document.getElementById('previewImagem').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
   const linkTrocar = document.getElementById('linkTrocarSenhaAdm');
   if(linkTrocar){
     linkTrocar.addEventListener('click', (e)=>{
       e.preventDefault();
-      const oldI = document.getElementById('oldPassAdm');
-      const n1 = document.getElementById('newPassAdm1');
-      const n2 = document.getElementById('newPassAdm2');
-      if(oldI) oldI.value = '';
-      if(n1) n1.value = '';
-      if(n2) n2.value = '';
+      document.getElementById('oldPassAdm').value = '';
+      document.getElementById('newPassAdm1').value = '';
+      document.getElementById('newPassAdm2').value = '';
       msg('msgSenhaAdm', '');
       volta(6);
     });
   }
 
-  // ---------- Real-time listeners ----------
-  // admin meta (user/pass/saldo)
+  // ---------- REAL-TIME LISTENERS ----------
   onSnapshot(metaRef, snap=>{
     if(!snap.exists()) return;
     const a = snap.data() || {};
@@ -347,7 +401,6 @@ TRANSFERIR SALDO
     document.getElementById('saldoInsumos').textContent = Number(a.saldoInsumos || 0).toFixed(2);
   });
 
-  // clientes snapshot -> atualiza tabela do admin e atualiza UI do cliente logado
   onSnapshot(query(clientesCol, orderBy('__name__')), snapshot=>{
     const tb = document.getElementById('tabela');
     if(tb) {
@@ -356,17 +409,8 @@ TRANSFERIR SALDO
       snapshot.forEach(d=>{
         const c = d.data();
         clients.push(c);
-        const enc = encodeURIComponent(c.nome);
-        tb.innerHTML += `
-<tr>
-<td>${c.nome}</td>
-<td>${c.eletrons||0}</td>
-<td>${(c.saldo||0).toFixed(2)}</td>
-<td>${c.desconto||0}%</td>
-<td><button class="red" data-name="${c.nome}">X</button></td>
-</tr>`;
+        tb.innerHTML += `<tr><td>${c.nome}</td><td>${c.eletrons||0}</td><td>${(c.saldo||0).toFixed(2)}</td><td>${c.desconto||0}%</td><td><button class="red" data-name="${c.nome}">X</button></td></tr>`;
       });
-      // attach delete handlers
       tb.querySelectorAll('button.red').forEach(btn=>{
         btn.onclick = async ()=> {
           const nome = btn.getAttribute('data-name');
@@ -374,8 +418,6 @@ TRANSFERIR SALDO
           await deleteClienteByName(nome);
         };
       });
-
-      // if logged-in user, refresh its displayed info from Firestore
       if(user){
         const updated = clients.find(x=>x.nome.toLowerCase() === user.nome.toLowerCase());
         if(updated){
@@ -384,7 +426,6 @@ TRANSFERIR SALDO
           document.getElementById('eletrons').textContent = user.eletrons || 0;
           document.getElementById('saldoCli').textContent = (user.saldo || 0).toFixed(2);
         } else {
-          // user removed
           user = null;
           volta(0);
         }
@@ -392,26 +433,13 @@ TRANSFERIR SALDO
     }
   });
 
-  // anuncios snapshot -> atualiza loja
-  onSnapshot(query(anunciosCol, orderBy('__name__')), snapshot=>{
-    const a = [];
-    snapshot.forEach(d=> a.push(d.data()));
-    const lista = document.getElementById('listaAnuncios');
-    if(lista){
-      renderizarLoja(lista, a);
-    }
-  });
-
-  // marketplace snapshot
   onSnapshot(query(marketplaceCol, orderBy('__name__')), snapshot=>{
     const lista = document.getElementById('listaAnuncios');
     if(lista && document.getElementById('lojaDiv') && !document.getElementById('lojaDiv').classList.contains('hidden')){
-      // Se a loja estiver visível, re-renderiza completa
       carregarErenderizarLoja();
     }
   });
 
-  // produtos snapshot
   onSnapshot(query(produtosCol, orderBy('__name__')), snapshot=>{
     const listaProd = document.getElementById('listaProdutos');
     if(listaProd){
@@ -423,25 +451,20 @@ TRANSFERIR SALDO
             <b>${p.nome}</b><br>
             Venda: R$ ${Number(p.valorVenda || 0).toFixed(2)}<br>
             Custo: R$ ${Number(p.custoCompra || 0).toFixed(2)}<br>
-            Estoque: ${p.estoque}
-            <br>
-            <button class="btn gold" style="font-size:12px;padding:6px;margin-top:5px"
-              onclick="editarProduto('${p.id}')">
-              EDITAR
-            </button>
+            Estoque: ${p.estoque}<br>
+            <button class="btn gold" style="font-size:12px;padding:6px;margin-top:5px" onclick="editarProduto('${p.id}')">EDITAR</button>
           </div>
         `;
       });
     }
   });
 
-  // saques snapshot -> atualiza painel de saques
   onSnapshot(query(saquesCol, orderBy('__name__')), snapshot=>{
     const d = document.getElementById('saquesPendentes');
     if(d){
       const arr = [];
       snapshot.forEach(docu => { arr.push({ id: docu.id, ...docu.data() }); });
-      d.innerHTML = arr.length ? '' : '<p style="color:#888">Nenhum saque pendente</p>';
+      d.innerHTML = arr.length ? '' : '<p style="color:#888">Nenhum repasse pendente</p>';
       arr.forEach(sq=>{
         d.innerHTML += `<div style="background:rgba(50,20,20,.8);padding:12px;margin:8px 0;border-radius:10px;border:1px solid #800"><b>${sq.nome}</b> → R$${(sq.valor||0).toFixed(2)}<br><small>PIX: <b>${sq.pix}</b></small><br><small>${sq.data||''}</small><br><button class="btn red" data-id="${sq.id}" style="font-size:12px;padding:6px;margin-top:8px">PAGO</button></div>`;
       });
@@ -455,7 +478,6 @@ TRANSFERIR SALDO
     }
   });
 
-  // trocas snapshot
   onSnapshot(trocasCol, snapshot=>{
     const div = document.getElementById('listaTrocas');
     if(!div) return;
@@ -468,25 +490,20 @@ TRANSFERIR SALDO
           Produto: ${t.produto}<br>
           Endereço: ${t.endereco}<br>
           <small>${t.data}</small><br>
-          <button class="btn green" style="font-size:12px;padding:6px;margin-top:6px"
-            onclick="confirmarTroca('${docu.id}')">
-            CONFIRMAR ENVIO
-          </button>
+          <button class="btn green" style="font-size:12px;padding:6px;margin-top:6px" onclick="confirmarTroca('${docu.id}')">CONFIRMAR ENVIO</button>
         </div>
       `;
     });
   });
 
   // ---------- FUNÇÕES PRINCIPAIS ----------
-
   async function entrar(){
     try{
-      console.log("ENTRAR FOI CLICADO");
       const n = document.getElementById('nome').value.trim();
       const p = document.getElementById('senhaCli').value;
       if(!n) return msg('msg','Digite seu nome',true);
       const c = await getClienteByName(n);
-      if(!c) return msg('msg','Nome não encontrado! Compre primeiro.',true);
+      if(!c) return msg('msg','Nome não encontrado!',true);
       if(c.pass && h(p) !== c.pass) return msg('msg','Senha incorreta!',true);
       user = c;
       document.getElementById('nomeCli').textContent = user.nome;
@@ -502,7 +519,8 @@ TRANSFERIR SALDO
       const p = document.getElementById('admPass').value;
       const snap = await getDoc(metaRef);
       const a = snap.exists() ? snap.data() : null;
-      if(a && u === a.user && h(p) === a.pass){ await loadPainel(); volta(2); } else { msg('admMsg','Dados incorretos',true); }
+      if(a && u === a.user && h(p) === a.pass){ await loadPainel(); volta(2); } 
+      else { msg('admMsg','Dados incorretos',true); }
     }catch(e){ console.error(e); msg('admMsg','Erro: '+e.message,true); }
   }
 
@@ -528,7 +546,7 @@ TRANSFERIR SALDO
       cli.eletrons = (cli.eletrons||0) - qtd;
       await setClienteObject(cli);
       await addAnuncioObj({ vendedor: 'ATOMIC', qtd: qtd, preco: 3, lucro: 0 });
-      msg('retMsg', `${qtd} elétrons retirados de ${nome} e colocados na loja por R$3`, false);
+      msg('retMsg', `${qtd} elétrons retirados de ${nome}`, false);
     }catch(e){ console.error(e); msg('retMsg','Erro: '+e.message,true); }
   }
 
@@ -536,33 +554,21 @@ TRANSFERIR SALDO
     try{
       const total = +document.getElementById('lucroTotal').value;
       if(!total || total <= 0) return alert('Valor inválido');
-
       const clientsSnap = await getDocs(clientesCol);
       const anunciosSnap = await getDocs(anunciosCol);
-
       const clientes = clientsSnap.docs.map(d=>d.data());
       const anuncios = anunciosSnap.docs.map(d=>d.data());
-
-      const totalEle =
-        clientes.reduce((s,c)=>s+(c.eletrons||0),0) +
-        anuncios.reduce((s,a)=>s+(a.qtd||0),0);
-
+      const totalEle = clientes.reduce((s,c)=>s+(c.eletrons||0),0) + anuncios.reduce((s,a)=>s+(a.qtd||0),0);
       if(totalEle === 0) return alert('Sem elétrons');
-
       const porEle = (total * 0.75) / totalEle;
       if(!isFinite(porEle)) return alert('Erro no cálculo');
-
-      // ===== CLIENTES =====
       for(const c of clientes){
-        const walletEle = (c.eletrons||0);
-        const ganho = walletEle * porEle;
+        const ganho = (c.eletrons||0) * porEle;
         if(ganho > 0){
-          c.saldo = Number(( (c.saldo||0) + ganho ).toFixed(2));
+          c.saldo = Number(((c.saldo||0) + ganho).toFixed(2));
           await setClienteObject(c);
         }
       }
-
-      // ===== ANÚNCIOS =====
       for(const a of anuncios){
         const adicional = (a.qtd||0) * porEle;
         if(adicional > 0){
@@ -570,20 +576,13 @@ TRANSFERIR SALDO
           await updateAnuncioObj(a);
         }
       }
-
-      // ===== CASA =====
       const snap = await getDoc(metaRef);
       const aadm = snap.exists() ? snap.data() : { user:'adm', pass:h('123'), saldo:0, saldoInsumos:0 };
       aadm.saldo = Number(((aadm.saldo||0) + (total*0.25)).toFixed(2));
       await setDoc(metaRef, aadm);
-
-      msg('distMsg', `Distribuído! Casa +R$${(total*0.25).toFixed(2)}`);
+      msg('distMsg', `Distribuído!`);
       document.getElementById('lucroTotal').value = '';
-
-    }catch(e){
-      console.error(e);
-      alert('Erro: '+e.message);
-    }
+    }catch(e){ console.error(e); alert('Erro: '+e.message); }
   }
 
   async function cancelar(id){
@@ -593,22 +592,16 @@ TRANSFERIR SALDO
       const anuncios = aSnap.docs.map(d=>d.data());
       const a = anuncios.find(x=>x.id===id);
       if(!a) return;
-      const sellerName = a.vendedor;
-      if(sellerName === 'ATOMIC'){
+      if(a.vendedor === 'ATOMIC'){
         await deleteAnuncioById(id);
         await loja();
         return;
       }
-      const cli = await getClienteByName(sellerName);
+      const cli = await getClienteByName(a.vendedor);
       if(cli){
         cli.eletrons = (cli.eletrons || 0) + (a.qtd || 0);
         cli.saldo = (cli.saldo || 0) + (a.lucro || 0);
-        cli.eletrons = Math.max(0, cli.eletrons);
-        cli.saldo = Number((cli.saldo||0).toFixed(2));
         await setClienteObject(cli);
-      } else {
-        const newCli = { nome: sellerName, eletrons: (a.qtd||0), saldo: Number((a.lucro||0).toFixed(2)), pass: null, produtosDigitais: [], desconto: 0 };
-        await setClienteObject(newCli);
       }
       await deleteAnuncioById(id);
       await loja();
@@ -620,33 +613,18 @@ TRANSFERIR SALDO
       const aSnap = await getDocs(anunciosCol);
       const anuncios = aSnap.docs.map(d=>d.data());
       const a = anuncios.find(x=>x.id===id);
-      if(!a || (user && a.vendedor === user.nome)) return;
-      
+      if(!a || a.vendedor === user.nome) return;
       const qtd = +prompt(`Quantos (máx ${a.qtd})?`, a.qtd) || 0;
       if(qtd < 1 || qtd > a.qtd) return alert('Quantidade inválida');
-      
       const total = qtd * a.preco;
       const bonus = a.qtd ? (qtd * (a.lucro || 0) / a.qtd) : 0;
-      
-      // VERIFICAÇÃO CRÍTICA: Saldo do comprador
-      if((user.saldo || 0) < total) {
-        alert(`Saldo insuficiente! Você tem R$ ${(user.saldo || 0).toFixed(2)} e precisa de R$ ${total.toFixed(2)}`);
-        return;
-      }
-
-      console.log("ANTES da compra - Saldo user:", user.saldo, "Total:", total);
-      
-      // update buyer - CORRIGIDO: desconta o total e adiciona o bônus
+      if((user.saldo || 0) < total) return alert('Saldo insuficiente');
       user.saldo = Number(((user.saldo || 0) - total + bonus).toFixed(2));
       user.eletrons = (user.eletrons || 0) + qtd;
-      
-      console.log("DEPOIS do cálculo - Saldo user:", user.saldo);
-      
       await setClienteObject(user);
-
       if(a.vendedor === 'ATOMIC'){
         const snap = await getDoc(metaRef);
-        const casa = snap.exists() ? snap.data() : { user:'adm', pass:h('123'), saldo:0, saldoInsumos:0 };
+        const casa = snap.data();
         casa.saldo = Number(((casa.saldo || 0) + total).toFixed(2));
         await setDoc(metaRef, casa);
       } else {
@@ -656,117 +634,250 @@ TRANSFERIR SALDO
           await setClienteObject(vendedor);
         }
         const snap = await getDoc(metaRef);
-        const casa = snap.exists() ? snap.data() : { user:'adm', pass:h('123'), saldo:0, saldoInsumos:0 };
+        const casa = snap.data();
         casa.saldo = Number(((casa.saldo || 0) + (total * 0.1)).toFixed(2));
         await setDoc(metaRef, casa);
       }
-
-      // update anuncio
       a.qtd -= qtd;
       a.lucro = (a.lucro || 0) - bonus;
       if(a.qtd <= 0) await deleteAnuncioById(a.id); else await updateAnuncioObj(a);
-
-      // Atualiza UI imediatamente
       document.getElementById('eletrons').textContent = user.eletrons;
       document.getElementById('saldoCli').textContent = (user.saldo||0).toFixed(2);
-      
-      alert(`Comprado! +${qtd} elétrons\n+Bônus R$${bonus.toFixed(2)}`);
+      alert(`Comprado! +${qtd} elétrons`);
       await loja();
-    }catch(e){ 
-      console.error('Erro compra:', e); 
-      alert('Erro compra: '+e.message); 
-    }
+    }catch(e){ console.error('Erro compra:', e); alert('Erro compra: '+e.message); }
   }
 
+  // ===== LOJA COM IMAGENS E MODAL DE QUANTIDADE =====
   async function carregarErenderizarLoja() {
     const lista = document.getElementById('listaAnuncios');
     if (!lista) return;
-    
     lista.innerHTML = '';
-    
-    // Buscar todos os dados necessários
     const [produtosSnap, marketSnap, anunciosSnap] = await Promise.all([
       getDocs(produtosCol),
       getDocs(marketplaceCol),
       getDocs(anunciosCol)
     ]);
-    
-    // Produtos oficiais
+
+    // PRODUTOS OFICIAIS (COM IMAGEM UPLOAD)
     produtosSnap.forEach(docu => {
       const p = docu.data();
       const div = document.createElement('div');
-      div.style = "background:rgba(0,100,0,.3);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--green)";
-      
+      div.style = "background:rgba(0,0,0,.4);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--green);display:flex;gap:12px;align-items:center";
       let valorExibido = p.valorVenda;
       if (user && user.desconto && user.desconto > 0) {
-        valorExibido = p.valorVenda * (1 - user.desconto/100);
+        valorExibido = p.valorVenda * (1 - user.desconto / 100);
       }
+      // Imagem (agora suporta Base64)
+      const imgDiv = document.createElement('div');
+      imgDiv.style = "width:80px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#222";
+      const imagemSrc = p.imagem || 'https://via.placeholder.com/150';
+      imgDiv.innerHTML = `<img src="${imagemSrc}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://via.placeholder.com/150'">`;
       
-      div.innerHTML = `
-        <b>${p.nome}</b><br>
-        R$ ${Number(p.valorVenda || 0).toFixed(2)}
-        ${user && user.desconto ? `<br><span style="color:var(--gold)">Com desconto: R$ ${valorExibido.toFixed(2)}</span>` : ''}
-        | Estoque: ${p.estoque}
+      // Info
+      const infoDiv = document.createElement('div');
+      infoDiv.style = "flex:1";
+      infoDiv.innerHTML = `
+        <div><b style="color:var(--gold);font-size:18px;">${p.nome}</b></div>
+        <div style="margin:5px 0;color:var(--green);font-size:20px;font-weight:700;">R$ ${Number(p.valorVenda || 0).toFixed(2)}</div>
+        ${user && user.desconto ? `<div style="color:var(--cyan);font-size:14px;">🔹 Com desconto: R$ ${valorExibido.toFixed(2)}</div>` : ''}
+        <div style="color:#aaa;font-size:13px;">Estoque: ${p.estoque}</div>
       `;
       
+      // Botão que abre modal
       const btn = document.createElement('button');
       btn.className = "btn gold";
-      btn.style.marginTop = "8px";
-      btn.textContent = "Comprar da Loja";
-      btn.onclick = () => comprarProdutoLoja(p.id);
-      div.appendChild(btn);
+      btn.style.margin = "5px 0 0 0";
+      btn.style.padding = "10px";
+      btn.style.fontSize = "14px";
+      btn.textContent = "COMPRAR";
+      btn.onclick = () => abrirModalCompra(p);
+      infoDiv.appendChild(btn);
+      
+      div.appendChild(imgDiv);
+      div.appendChild(infoDiv);
       lista.appendChild(div);
     });
-    
-    // Marketplace
+
+    // MARKETPLACE
     marketSnap.forEach(docu => {
       const m = docu.data();
       const div = document.createElement('div');
-      div.style = "background:rgba(100,0,100,.3);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--pink)";
-      div.innerHTML = `
-        <b>${m.nome}</b><br>
-        Vendedor: ${m.vendedor}<br>
-        R$ ${Number(m.valor || 0).toFixed(2)}
+      div.style = "background:rgba(100,0,100,.3);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--pink);display:flex;gap:12px;align-items:center";
+      const imgDiv = document.createElement('div');
+      imgDiv.style = "width:80px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#222";
+      imgDiv.innerHTML = `<img src="https://via.placeholder.com/150/800080" style="width:100%;height:100%;object-fit:cover;">`;
+      const infoDiv = document.createElement('div');
+      infoDiv.style = "flex:1";
+      infoDiv.innerHTML = `
+        <div><b style="color:var(--pink);">${m.nome}</b></div>
+        <div style="color:#aaa;font-size:13px;">Vendedor: ${m.vendedor}</div>
+        <div style="color:var(--gold);font-size:20px;font-weight:700;margin:5px 0;">R$ ${Number(m.valor || 0).toFixed(2)}</div>
       `;
-      
       const btn = document.createElement('button');
-      if(user && user.nome === m.vendedor){
+      if (user && user.nome === m.vendedor) {
         btn.className = "btn red";
         btn.textContent = "Cancelar";
-        btn.onclick = ()=> cancelarMarketplace(docu.id);
+        btn.onclick = () => cancelarMarketplace(docu.id);
       } else {
         btn.className = "btn green";
         btn.textContent = "Comprar";
-        btn.onclick = ()=> comprarMarketplace(docu.id);
+        btn.onclick = () => comprarMarketplace(docu.id);
       }
-      div.appendChild(btn);
+      btn.style.marginTop = "5px";
+      btn.style.padding = "10px";
+      btn.style.fontSize = "14px";
+      infoDiv.appendChild(btn);
+      div.appendChild(imgDiv);
+      div.appendChild(infoDiv);
       lista.appendChild(div);
     });
-    
-    // Anúncios P2P
+
+    // ANÚNCIOS P2P
     anunciosSnap.forEach(docu => {
       const a = docu.data();
       const div = document.createElement('div');
-      div.style = "background:rgba(42,42,45,.6);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--gold)";
-      div.innerHTML = `
-        <b>${a.vendedor}</b><br>
-        ${a.qtd} elétrons<br>
-        R$ ${Number(a.preco || 0).toFixed(2)} cada
+      div.style = "background:rgba(42,42,45,.6);padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--gold);display:flex;gap:12px;align-items:center";
+      const imgDiv = document.createElement('div');
+      imgDiv.style = "width:80px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#222";
+      imgDiv.innerHTML = `<img src="https://via.placeholder.com/150/FFD700" style="width:100%;height:100%;object-fit:cover;">`;
+      const infoDiv = document.createElement('div');
+      infoDiv.style = "flex:1";
+      infoDiv.innerHTML = `
+        <div><b style="color:var(--gold);">${a.vendedor}</b></div>
+        <div style="color:#aaa;font-size:13px;">${a.qtd} elétrons</div>
+        <div style="color:var(--green);font-size:20px;font-weight:700;margin:5px 0;">R$ ${Number(a.preco || 0).toFixed(2)} cada</div>
       `;
-      
       const btn = document.createElement('button');
-      if(user && user.nome === a.vendedor){
+      if (user && user.nome === a.vendedor) {
         btn.className = "btn red";
         btn.textContent = "Cancelar";
-        btn.onclick = ()=> cancelar(a.id);
+        btn.onclick = () => cancelar(a.id);
       } else {
         btn.className = "btn green";
         btn.textContent = "Comprar";
-        btn.onclick = ()=> comprar(a.id);
+        btn.onclick = () => comprar(a.id);
       }
-      div.appendChild(btn);
+      btn.style.marginTop = "5px";
+      btn.style.padding = "10px";
+      btn.style.fontSize = "14px";
+      infoDiv.appendChild(btn);
+      div.appendChild(imgDiv);
+      div.appendChild(infoDiv);
       lista.appendChild(div);
     });
+  }
+
+  // ===== FUNÇÕES DO MODAL DE COMPRA =====
+  function abrirModalCompra(produto) {
+    produtoSelecionado = produto;
+    document.getElementById('modalTitulo').textContent = `Comprar ${produto.nome}`;
+    document.getElementById('modalImagem').src = produto.imagem || 'https://via.placeholder.com/150';
+    document.getElementById('modalNome').textContent = produto.nome;
+    
+    let precoUnit = produto.valorVenda;
+    if (user && user.desconto && user.desconto > 0) {
+      precoUnit = produto.valorVenda * (1 - user.desconto / 100);
+    }
+    
+    document.getElementById('modalPrecoUnit').textContent = precoUnit.toFixed(2);
+    document.getElementById('modalSaldo').textContent = (user.saldo || 0).toFixed(2);
+    document.getElementById('modalQuantidade').value = 1;
+    document.getElementById('modalQuantidade').max = produto.estoque;
+    atualizarTotalModal();
+    volta(9); // Mostra o modal (índice 9)
+  }
+
+  function atualizarTotalModal() {
+    const qtd = parseInt(document.getElementById('modalQuantidade').value) || 0;
+    const precoUnit = parseFloat(document.getElementById('modalPrecoUnit').textContent) || 0;
+    const total = qtd * precoUnit;
+    document.getElementById('modalTotal').textContent = total.toFixed(2);
+  }
+
+  async function confirmarCompraModal() {
+    try {
+      if (!produtoSelecionado) return;
+      
+      const qtd = parseInt(document.getElementById('modalQuantidade').value);
+      if (qtd < 1 || qtd > produtoSelecionado.estoque) {
+        return alert(`Quantidade inválida. Máximo: ${produtoSelecionado.estoque}`);
+      }
+      
+      let precoUnit = produtoSelecionado.valorVenda;
+      if (user && user.desconto && user.desconto > 0) {
+        precoUnit = produtoSelecionado.valorVenda * (1 - user.desconto / 100);
+      }
+      
+      const total = qtd * precoUnit;
+      
+      if ((user.saldo || 0) < total) {
+        return alert('Saldo insuficiente');
+      }
+
+      const clienteAtualizado = await getClienteByName(user.nome);
+      if (!clienteAtualizado) return alert('Erro ao buscar cliente');
+
+      // Buscar produto atualizado
+      const ref = doc(produtosCol, produtoSelecionado.id);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) return alert('Produto não encontrado');
+      const produtoAtual = snap.data();
+
+      if (produtoAtual.estoque < qtd) {
+        return alert(`Estoque insuficiente. Disponível: ${produtoAtual.estoque}`);
+      }
+
+      // Debita saldo
+      clienteAtualizado.saldo = Number((clienteAtualizado.saldo || 0) - total);
+      
+      // Diminui estoque
+      produtoAtual.estoque -= qtd;
+      
+      // Divisão financeira
+      const custo = produtoAtual.custoCompra || 0;
+      const lucro = total - (custo * qtd);
+
+      const snapAdm = await getDoc(metaRef);
+      const admin = snapAdm.data();
+
+      admin.saldoInsumos = Number((admin.saldoInsumos || 0) + (custo * qtd));
+      admin.saldo = Number((admin.saldo || 0) + lucro);
+
+      // Distribuir 2%
+      const valorDistribuir = total * 0.02;
+      await distribuirAutomatico(valorDistribuir);
+
+      // Adicionar produtos digitais (um para cada unidade)
+      for (let i = 0; i < qtd; i++) {
+        const digital = {
+          id: Date.now().toString() + i,
+          nome: produtoAtual.nome,
+          valorPago: precoUnit,
+          origem: "loja"
+        };
+        clienteAtualizado.produtosDigitais.push(digital);
+      }
+
+      // Salvar tudo
+      await setClienteObject(clienteAtualizado);
+      await setDoc(ref, produtoAtual);
+      await setDoc(metaRef, admin);
+
+      // Atualizar user local
+      user = clienteAtualizado;
+
+      // Atualizar interface
+      document.getElementById('saldoCli').textContent = Number(user.saldo || 0).toFixed(2);
+      document.getElementById('eletrons').textContent = user.eletrons || 0;
+
+      alert(`${qtd}x ${produtoAtual.nome} adquirido${qtd > 1 ? 's' : ''}!`);
+      volta(5); // Volta para a loja
+      await carregarErenderizarLoja(); // Recarrega a loja
+      
+    } catch (e) {
+      alert('Erro: ' + e.message);
+    }
   }
 
   async function loja(){
@@ -790,11 +901,10 @@ TRANSFERIR SALDO
   async function comprarInsumo(valor){
     const snap = await getDoc(metaRef);
     const admin = snap.data();
-    if((admin.saldoInsumos || 0) < valor)
-      return alert("Saldo de insumos insuficiente");
+    if((admin.saldoInsumos || 0) < valor) return alert("Saldo de insumos insuficiente");
     admin.saldoInsumos -= valor;
     await setDoc(metaRef, admin);
-    alert("Insumo comprado com saldo de reposição");
+    alert("Insumo comprado");
   }
 
   function vender(){
@@ -809,13 +919,13 @@ TRANSFERIR SALDO
   async function sacarCli(){
     try{
       if((user.saldo || 0) <= 0) return alert('Sem saldo');
-      const pix = prompt(`Sacando R$${(user.saldo||0).toFixed(2)}\nChave Pix:`);
+      const pix = prompt(`Repassando R$${(user.saldo||0).toFixed(2)}\nChave Pix:`);
       if(pix && pix.trim()){
         await addSaqueObj({ nome: user.nome, valor: user.saldo, pix: pix.trim(), data: new Date().toLocaleString('pt-BR') });
         user.saldo = 0;
         await setClienteObject(user);
         document.getElementById('saldoCli').textContent = '0.00';
-        alert('Saque solicitado!');
+        alert('Repasse solicitado!');
         volta(3);
       }
     }catch(e){ console.error(e); alert('Erro saque: '+e.message); }
@@ -856,12 +966,12 @@ TRANSFERIR SALDO
       const snap = await getDoc(metaRef);
       const a = snap.exists() ? snap.data() : null;
       if(!a || (a.saldo || 0) <= 0) return alert('Sem saldo');
-      if(confirm(`Sacar R$${(a.saldo||0).toFixed(2)}?`)){
+      if(confirm(`Repassar R$${(a.saldo||0).toFixed(2)}?`)){
         a.saldo = 0;
         await setDoc(metaRef, a);
-        alert('Sacado!');
+        alert('Repassado!');
       }
-    }catch(e){ console.error(e); alert('Erro sacarAdm: '+e.message); }
+    }catch(e){ console.error(e); alert('Erro repasse: '+e.message); }
   }
 
   async function salvarSenhaAdm(){
@@ -895,63 +1005,50 @@ TRANSFERIR SALDO
     }catch(e){ console.error(e); msg('msgSenhaCli','Erro: '+e.message,true); }
   }
 
-  // ================= PRODUTOS =================
-
+  // ===== PRODUTOS COM UPLOAD DE IMAGEM =====
   async function salvarProduto(){
     try{
       const nome = document.getElementById('prodNome').value.trim();
       const valor = +document.getElementById('prodValor').value;
       const custo = +document.getElementById('prodCusto').value;
       const estoque = +document.getElementById('prodEstoque').value;
-
-      if(!nome || !valor || !custo || estoque < 0)
-        return alert('Preencha corretamente');
-
-      if(custo > valor)
-        return alert('Custo não pode ser maior que valor de venda');
-
-      const id = slug(nome);
-
+      
+      // PEGAR IMAGEM DO UPLOAD
+      const fileInput = document.getElementById('prodImagemFile');
+      let imagemBase64 = 'https://via.placeholder.com/150';
+      
+      if (fileInput.files && fileInput.files[0]) {
+        imagemBase64 = await lerArquivoComoBase64(fileInput.files[0]);
+      }
+      
+      if(!nome || !valor || !custo || estoque < 0) return alert('Preencha corretamente');
+      if(custo > valor) return alert('Custo não pode ser maior que valor de venda');
+      
+      const id = slug(nome) + '-' + Date.now();
       await setDoc(doc(produtosCol, id), {
-        id,
-        nome,
-        valorVenda: valor,
-        custoCompra: custo,
-        estoque,
+        id, nome, valorVenda: valor, custoCompra: custo, estoque, imagem: imagemBase64,
         atualizadoEm: new Date().toISOString()
       });
-
+      
+      // Limpar campos
       document.getElementById('prodNome').value = '';
       document.getElementById('prodValor').value = '';
       document.getElementById('prodCusto').value = '';
       document.getElementById('prodEstoque').value = '';
-
-      alert('Produto salvo!');
-    }catch(e){
-      alert('Erro: '+e.message);
-    }
+      document.getElementById('prodImagemFile').value = '';
+      document.getElementById('previewImagem').style.display = 'none';
+      
+      alert('Produto salvo com imagem da galeria!');
+    }catch(e){ alert('Erro: '+e.message); }
   }
 
-  // ================= DESCONTO =================
-
-  async function aplicarDesconto(){
-    try{
-      const nome = document.getElementById('descNome').value.trim();
-      const valor = +document.getElementById('descValor').value;
-
-      if(!nome || valor < 0 || valor > 100)
-        return alert('Informe entre 0 e 100%');
-
-      const cli = await getClienteByName(nome);
-      if(!cli) return alert('Cliente não encontrado');
-
-      cli.desconto = valor;
-      await setClienteObject(cli);
-
-      alert(`Desconto de ${valor}% aplicado para ${nome}`);
-    }catch(e){
-      alert('Erro: '+e.message);
-    }
+  function lerArquivoComoBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   }
 
   window.editarProduto = async function(id){
@@ -959,96 +1056,21 @@ TRANSFERIR SALDO
     const snap = await getDoc(ref);
     if(!snap.exists()) return alert("Produto não encontrado");
     const p = snap.data();
-    document.getElementById('prodNome').value = p.nome;
+    document.getElementById('prodNome').value = p.nome || '';
     document.getElementById('prodValor').value = p.valorVenda || 0;
     document.getElementById('prodCusto').value = p.custoCompra || 0;
     document.getElementById('prodEstoque').value = p.estoque || 0;
+    
+    // Mostrar prévia da imagem existente
+    if (p.imagem) {
+      document.getElementById('previewImagem').src = p.imagem;
+      document.getElementById('previewImagem').style.display = 'block';
+    }
   };
 
-  // ================= COMPRA LOJA OFICIAL =================
-window.comprarProdutoLoja = async function(prodId){
-  try{
-    const ref = doc(produtosCol, prodId);
-    const snap = await getDoc(ref);
-    if(!snap.exists()) return alert('Produto não encontrado');
-
-    const produto = snap.data();
-
-    if(produto.estoque <= 0) return alert('Sem estoque');
-
-    let valorFinal = produto.valorVenda;
-
-    // aplicar desconto se existir
-    if(user.desconto && user.desconto > 0){
-      valorFinal = valorFinal - (valorFinal * (user.desconto/100));
-    }
-
-    if((user.saldo||0) < valorFinal)
-      return alert('Saldo insuficiente');
-
-    if(!confirm(`Comprar ${produto.nome} por R$${valorFinal.toFixed(2)}?`))
-      return;
-
-    // BUSCAR O CLIENTE ATUALIZADO DO FIRESTORE ANTES DE MODIFICAR
-    const clienteAtualizado = await getClienteByName(user.nome);
-    if (!clienteAtualizado) return alert('Erro ao buscar cliente');
-
-    // debitar saldo do cliente atualizado
-    clienteAtualizado.saldo = Number((clienteAtualizado.saldo || 0) - valorFinal);
-    
-    // diminuir estoque
-    produto.estoque -= 1;
-      
-    // ===== DIVISÃO FINANCEIRA =====
-    const custo = produto.custoCompra || 0;
-    const lucro = valorFinal - custo;
-
-    const snapAdm = await getDoc(metaRef);
-    const admin = snapAdm.data();
-
-    // custo vai para saldo de reposição
-    admin.saldoInsumos = Number((admin.saldoInsumos || 0) + custo);
-
-    // lucro vai para saldo principal
-    admin.saldo = Number((admin.saldo || 0) + lucro);
-
-    // distribuir 2% automaticamente
-    const valorDistribuir = valorFinal * 0.02;
-    await distribuirAutomatico(valorDistribuir);
-
-    // criar produto digital
-    const digital = {
-      id: Date.now().toString(),
-      nome: produto.nome,
-      valorPago: valorFinal,
-      origem: "loja"
-    };
-
-    clienteAtualizado.produtosDigitais.push(digital);
-
-    // SALVAR TUDO NO FIRESTORE
-    await setClienteObject(clienteAtualizado);
-    await setDoc(ref, produto);
-    await setDoc(metaRef, admin);
-
-    // ATUALIZAR O OBJETO USER LOCAL
-    user = clienteAtualizado;
-
-    // ATUALIZAR A INTERFACE
-    document.getElementById('saldoCli').textContent = Number(user.saldo ||0).toFixed(2);
-    document.getElementById('eletrons').textContent = user.eletrons || 0;
-
-    alert('Produto adquirido!');
-    abrirProdutos();
-
-  }catch(e){
-    alert('Erro: '+e.message);
-  }
-}
   function abrirProdutos(){
     const div = document.getElementById('listaMeusProdutos');
     div.innerHTML = '';
-
     if(!user.produtosDigitais || user.produtosDigitais.length === 0){
       div.innerHTML = '<p>Nenhum produto digital.</p>';
     }else{
@@ -1057,18 +1079,9 @@ window.comprarProdutoLoja = async function(prodId){
           <div style="background:rgba(42,42,45,.6);padding:12px;margin:8px 0;border-radius:10px">
             <b>${p.nome}</b><br>
             Pago: R$ ${Number(p.valorPago ||0).toFixed(2)}<br>
-            <button class="btn green" style="font-size:12px;padding:6px;margin-top:6px"
-              onclick="revenderEmpresa('${p.id}')">
-              Revender p/ Empresa (-30%)
-            </button>
-            <button class="btn gold" style="font-size:12px;padding:6px;margin-top:6px"
-              onclick="trocarFisico('${p.id}')">
-              Trocar por Produto Físico
-            </button>
-            <button class="btn" style="background:#8B00FF;color:#fff;font-size:12px;padding:6px;margin-top:6px"
-              onclick="colocarMarketplace('${p.id}')">
-              Vender para Clientes
-            </button>
+            <button class="btn green" style="font-size:12px;padding:6px;margin-top:6px" onclick="revenderEmpresa('${p.id}')">Revender (-30%)</button>
+            <button class="btn gold" style="font-size:12px;padding:6px;margin-top:6px" onclick="trocarFisico('${p.id}')">Trocar por Físico</button>
+            <button class="btn" style="background:#8B00FF;color:#fff;font-size:12px;padding:6px;margin-top:6px" onclick="colocarMarketplace('${p.id}')">Vender para Clientes</button>
           </div>
         `;
       });
@@ -1077,76 +1090,45 @@ window.comprarProdutoLoja = async function(prodId){
   }
 
   window.revenderEmpresa = async function(prodId){
-  const index = user.produtosDigitais.findIndex(p=>p.id===prodId);
-  if(index === -1) return;
-
-  const p = user.produtosDigitais[index];
-
-  const valorRetorno = p.valorPago * 0.7;
-
-  if(!confirm(`Receber R$${Number(valorRetorno ||0).toFixed(2)}?`))
-    return;
-
-  // BUSCAR CLIENTE ATUALIZADO
-  const clienteAtualizado = await getClienteByName(user.nome);
-  if (!clienteAtualizado) return alert('Erro ao buscar cliente');
-
-  // ENCONTRAR O PRODUTO NO CLIENTE ATUALIZADO
-  const produtoIndex = clienteAtualizado.produtosDigitais.findIndex(p => p.id === prodId);
-  if (produtoIndex === -1) return alert('Produto não encontrado');
-  
-  const produto = clienteAtualizado.produtosDigitais[produtoIndex];
-
-  // ===== DEVOLVER AO ESTOQUE =====
-  // Buscar o produto na coleção de produtos pelo nome
-  const produtosSnap = await getDocs(produtosCol);
-  let produtoEstoque = null;
-  let produtoRef = null;
-
-  for (const doc of produtosSnap.docs) {
-    const prod = doc.data();
-    if (prod.nome === produto.nome) {
-      produtoEstoque = prod;
-      produtoRef = doc.ref;
-      break;
+    const index = user.produtosDigitais.findIndex(p=>p.id===prodId);
+    if(index === -1) return;
+    const p = user.produtosDigitais[index];
+    const valorRetorno = p.valorPago * 0.7;
+    if(!confirm(`Receber R$${Number(valorRetorno ||0).toFixed(2)}?`)) return;
+    const clienteAtualizado = await getClienteByName(user.nome);
+    if (!clienteAtualizado) return alert('Erro ao buscar cliente');
+    const produtoIndex = clienteAtualizado.produtosDigitais.findIndex(p => p.id === prodId);
+    if (produtoIndex === -1) return alert('Produto não encontrado');
+    const produto = clienteAtualizado.produtosDigitais[produtoIndex];
+    const produtosSnap = await getDocs(produtosCol);
+    let produtoEstoque = null, produtoRef = null;
+    for (const doc of produtosSnap.docs) {
+      const prod = doc.data();
+      if (prod.nome === produto.nome) { produtoEstoque = prod; produtoRef = doc.ref; break; }
     }
-  }
-
-  if (produtoEstoque && produtoRef) {
-    // Aumentar o estoque
-    produtoEstoque.estoque = (produtoEstoque.estoque || 0) + 1;
-    await setDoc(produtoRef, produtoEstoque);
-  } else {
-    // Se não encontrou, criar um novo produto no estoque
-    const novoProduto = {
-      id: slug(produto.nome) + '-' + Date.now(),
-      nome: produto.nome,
-      valorVenda: produto.valorPago, // Usar o valor original como referência
-      custoCompra: produto.valorPago * 0.6, // Aproximadamente 60% do valor
-      estoque: 1,
-      atualizadoEm: new Date().toISOString()
-    };
-    await setDoc(doc(produtosCol, novoProduto.id), novoProduto);
-  }
-
-  // ATUALIZAR SALDO DO CLIENTE
-  clienteAtualizado.saldo = Number((clienteAtualizado.saldo || 0) + valorRetorno);
-  
-  // REMOVER PRODUTO DA LISTA DO CLIENTE
-  clienteAtualizado.produtosDigitais.splice(produtoIndex, 1);
-
-  // SALVAR CLIENTE ATUALIZADO
-  await setClienteObject(clienteAtualizado);
-
-  // ATUALIZAR OBJETO USER LOCAL
-  user = clienteAtualizado;
-
-  // ATUALIZAR INTERFACE
-  document.getElementById('saldoCli').textContent = Number(user.saldo ||0).toFixed(2);
-
-  alert('Revenda concluída! Produto devolvido ao estoque.');
-  abrirProdutos();
-};
+    if (produtoEstoque && produtoRef) {
+      produtoEstoque.estoque = (produtoEstoque.estoque || 0) + 1;
+      await setDoc(produtoRef, produtoEstoque);
+    } else {
+      const novoProduto = { 
+        id: slug(produto.nome) + '-' + Date.now(), 
+        nome: produto.nome, 
+        valorVenda: produto.valorPago, 
+        custoCompra: produto.valorPago * 0.6, 
+        estoque: 1, 
+        imagem: 'https://via.placeholder.com/150', 
+        atualizadoEm: new Date().toISOString() 
+      };
+      await setDoc(doc(produtosCol, novoProduto.id), novoProduto);
+    }
+    clienteAtualizado.saldo = Number((clienteAtualizado.saldo || 0) + valorRetorno);
+    clienteAtualizado.produtosDigitais.splice(produtoIndex, 1);
+    await setClienteObject(clienteAtualizado);
+    user = clienteAtualizado;
+    document.getElementById('saldoCli').textContent = Number(user.saldo ||0).toFixed(2);
+    alert('Revenda concluída!');
+    abrirProdutos();
+  };
 
   window.trocarFisico = async function(prodId){
     try{
@@ -1155,20 +1137,12 @@ window.comprarProdutoLoja = async function(prodId){
       const index = user.produtosDigitais.findIndex(p=>p.id===prodId);
       if(index === -1) return;
       const produto = user.produtosDigitais[index];
-      await addDoc(trocasCol, {
-        cliente: user.nome,
-        produto: produto.nome,
-        endereco: endereco,
-        data: new Date().toLocaleString('pt-BR'),
-        status: "pendente"
-      });
+      await addDoc(trocasCol, { cliente: user.nome, produto: produto.nome, endereco: endereco, data: new Date().toLocaleString('pt-BR'), status: "pendente" });
       user.produtosDigitais.splice(index,1);
       await setClienteObject(user);
-      alert("Solicitação enviada! Aguarde confirmação.");
+      alert("Solicitação enviada!");
       abrirProdutos();
-    }catch(e){
-      alert("Erro: "+e.message);
-    }
+    }catch(e){ alert("Erro: "+e.message); }
   };
  
   window.confirmarTroca = async function(id){
@@ -1182,16 +1156,10 @@ window.comprarProdutoLoja = async function(prodId){
     const novoValor = +prompt("Defina o valor de venda:");
     if(!novoValor || novoValor <= 0) return alert("Valor inválido");
     const produto = user.produtosDigitais[index];
-    await addDoc(marketplaceCol, {
-      produtoId: produto.id,
-      nome: produto.nome,
-      valor: novoValor,
-      vendedor: user.nome,
-      criadoEm: new Date().toISOString()
-    });
+    await addDoc(marketplaceCol, { produtoId: produto.id, nome: produto.nome, valor: novoValor, vendedor: user.nome, criadoEm: new Date().toISOString() });
     user.produtosDigitais.splice(index,1);
     await setClienteObject(user);
-    alert("Produto publicado no marketplace!");
+    alert("Produto publicado!");
     abrirProdutos();
   };
 
@@ -1201,38 +1169,15 @@ window.comprarProdutoLoja = async function(prodId){
     if(!snap.exists()) return;
     const m = snap.data();
     if(user.nome === m.vendedor) return;
-    
-    // VERIFICAÇÃO CRÍTICA
-    if((user.saldo||0) < m.valor) {
-      alert(`Saldo insuficiente! Você tem R$ ${(user.saldo || 0).toFixed(2)} e precisa de R$ ${m.valor.toFixed(2)}`);
-      return;
-    }
-
+    if((user.saldo||0) < m.valor) return alert('Saldo insuficiente');
     if(!confirm(`Comprar por R$ ${Number(m.valor || 0).toFixed(2)}?`)) return;
-
-    // debitar comprador - CORRIGIDO
     user.saldo = Number(((user.saldo || 0) - m.valor).toFixed(2));
-    
-    user.produtosDigitais.push({
-      id: Date.now().toString(),
-      nome: m.nome,
-      valorPago: m.valor,
-      origem: "cliente"
-    });
-
+    user.produtosDigitais.push({ id: Date.now().toString(), nome: m.nome, valorPago: m.valor, origem: "cliente" });
     await setClienteObject(user);
-
-    // pagar vendedor
     const vendedor = await getClienteByName(m.vendedor);
-    if(vendedor){
-      vendedor.saldo = Number(((vendedor.saldo || 0) + m.valor).toFixed(2));
-      await setClienteObject(vendedor);
-    }
-
+    if(vendedor){ vendedor.saldo = Number(((vendedor.saldo || 0) + m.valor).toFixed(2)); await setClienteObject(vendedor); }
     await deleteDoc(ref);
-
     document.getElementById('saldoCli').textContent = Number(user.saldo ||0).toFixed(2);
-    
     alert("Compra realizada!");
     loja();
   };
@@ -1243,30 +1188,40 @@ window.comprarProdutoLoja = async function(prodId){
     if(!snap.exists()) return;
     const m = snap.data();
     if(m.vendedor !== user.nome) return;
-    user.produtosDigitais.push({
-      id: m.produtoId,
-      nome: m.nome,
-      valorPago: m.valor,
-      origem: "retorno"
-    });
+    user.produtosDigitais.push({ id: m.produtoId, nome: m.nome, valorPago: m.valor, origem: "retorno" });
     await setClienteObject(user);
     await deleteDoc(ref);
     alert("Venda cancelada!");
     loja();
   };
 
-  // ---------- init ----------
+  // ===== APLICAR DESCONTO =====
+  async function aplicarDesconto(){
+    try{
+      const nome = document.getElementById('descNome').value.trim();
+      const valor = +document.getElementById('descValor').value;
+      if(!nome || valor < 0 || valor > 100) return alert('Informe entre 0 e 100%');
+      const cli = await getClienteByName(nome);
+      if(!cli) return alert('Cliente não encontrado');
+      cli.desconto = valor;
+      await setClienteObject(cli);
+      alert(`Desconto de ${valor}% aplicado`);
+    }catch(e){ alert('Erro: '+e.message); }
+  }
+
+  // ---------- INIT ----------
   (async function init(){
     try{
       await ensureAdminDoc();
       const produtosSnap = await getDocs(produtosCol);
       if(produtosSnap.empty){
         const produtoInicial = {
-          id: "pacote-gel",
+          id: "pacote-gel-" + Date.now(),
           nome: "Pacote de Gel",
           valorVenda: 10.00,
           custoCompra: 6.00,
-          estoque: 100
+          estoque: 100,
+          imagem: "https://via.placeholder.com/150/00ff88"
         };
         await setDoc(doc(produtosCol, produtoInicial.id), produtoInicial);
       }
@@ -1274,24 +1229,13 @@ window.comprarProdutoLoja = async function(prodId){
       if(snap.empty){
         await addAnuncioObj({ vendedor: 'ATOMIC', qtd: 1000, preco: 3, lucro: 0 });
       }
-    }catch(e){
-      console.error('init err', e);
-      msg('msg','Erro init: '+(e.message||e), true);
-    }
+    }catch(e){ console.error('init err', e); msg('msg','Erro init: '+(e.message||e), true); }
   })();
-
 </script>
-<footer style="
-  position:fixed;
-  bottom:10px;
-  right:60px;
-  font-size:12px;
-  opacity:0.5;
-  letter-spacing:1px;
-">Desenvolvido por Felipe Galdino Mendes
-</footer>
 
-  <!-- ===== PÁGINA DE DIVULGAÇÃO - CASA DO TRADER ===== -->
+<footer style="position:fixed;bottom:10px;right:60px;font-size:12px;opacity:0.5;letter-spacing:1px;">Desenvolvido por Felipe Galdino Mendes</footer>
+
+<!-- ===== PÁGINA DE DIVULGAÇÃO (AMIGOS) ===== -->
 <style>
   .pagina-divulgacao {
     max-width: 390px;
@@ -1304,199 +1248,40 @@ window.comprarProdutoLoja = async function(prodId){
     box-shadow: 0 20px 40px rgba(0,242,255,0.15);
     font-family: 'Rajdhani', sans-serif;
   }
-
-  .divulgacao-titulo {
-    font-size: 28px;
-    font-weight: 800;
-    text-align: center;
-    background: linear-gradient(135deg, #00f2ff, #FFD700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
-  }
-
-  .divulgacao-sub {
-    text-align: center;
-    color: #e0e0ff;
-    font-size: 16px;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255,215,0,0.3);
-  }
-
-  .grade-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 25px;
-  }
-
-  .card-simples {
-    background: rgba(255,255,255,0.03);
-    border-radius: 20px;
-    padding: 15px 10px;
-    border: 1px solid rgba(0,242,255,0.2);
-    text-align: center;
-  }
-
-  .card-simples .icone {
-    font-size: 32px;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .card-simples h4 {
-    color: #00f2ff;
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-
-  .card-simples p {
-    color: #aaa;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .caixa-destaque {
-    background: rgba(0,255,136,0.05);
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px dashed #00ff88;
-  }
-
-  .caixa-destaque h4 {
-    color: #00ff88;
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-
-  .lista-beneficios {
-    list-style: none;
-    padding: 0;
-  }
-
-  .lista-beneficios li {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    color: #ddd;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .lista-beneficios li:last-child {
-    border-bottom: none;
-  }
-
-  .numeros-final {
-    display: flex;
-    justify-content: space-around;
-    margin: 25px 0;
-    text-align: center;
-  }
-
-  .item-numero {
-    background: rgba(255,215,0,0.08);
-    padding: 12px 8px;
-    border-radius: 15px;
-    min-width: 80px;
-  }
-
-  .valor-numero {
-    color: #FFD700;
-    font-size: 24px;
-    font-weight: 800;
-  }
-
-  .label-numero {
-    font-size: 11px;
-    color: #aaa;
-  }
-
-  .explicacao-simples {
-    background: rgba(0,0,0,0.3);
-    padding: 20px;
-    border-radius: 20px;
-    margin: 20px 0;
-    border-left: 4px solid #00f2ff;
-  }
-
-  .explicacao-simples p {
-    color: #ddd;
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
-
-  .explicacao-simples strong {
-    color: #FFD700;
-  }
-
-  .botao-whatsapp {
-    display: block;
-    background: #25d366;
-    color: white;
-    text-align: center;
-    padding: 16px;
-    border-radius: 40px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 18px;
-    margin: 20px 0 10px;
-    box-shadow: 0 10px 20px rgba(37,211,100,0.3);
-  }
-
-  .botao-whatsapp:hover {
-    transform: scale(1.02);
-  }
-
-  .oferta-especial {
-    text-align: center;
-    font-size: 14px;
-    color: #888;
-    margin-top: 15px;
-  }
-
-  .aviso-legal {
-    font-size: 11px;
-    color: #666;
-    text-align: center;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    line-height: 1.5;
-  }
+  .divulgacao-titulo { font-size: 28px; font-weight: 800; text-align: center; background: linear-gradient(135deg, #00f2ff, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+  .divulgacao-sub { text-align: center; color: #e0e0ff; font-size: 16px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,215,0,0.3); }
+  .grade-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+  .card-simples { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 15px 10px; border: 1px solid rgba(0,242,255,0.2); text-align: center; }
+  .card-simples .icone { font-size: 32px; margin-bottom: 8px; display: block; }
+  .card-simples h4 { color: #00f2ff; font-size: 18px; margin-bottom: 5px; }
+  .card-simples p { color: #aaa; font-size: 12px; line-height: 1.4; }
+  .caixa-destaque { background: rgba(0,255,136,0.05); border-radius: 20px; padding: 20px; margin: 20px 0; border: 1px dashed #00ff88; }
+  .caixa-destaque h4 { color: #00ff88; font-size: 20px; margin-bottom: 15px; }
+  .lista-beneficios { list-style: none; padding: 0; }
+  .lista-beneficios li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ddd; display: flex; align-items: center; gap: 10px; }
+  .lista-beneficios li:last-child { border-bottom: none; }
+  .numeros-final { display: flex; justify-content: space-around; margin: 25px 0; text-align: center; }
+  .item-numero { background: rgba(255,215,0,0.08); padding: 12px 8px; border-radius: 15px; min-width: 80px; }
+  .valor-numero { color: #FFD700; font-size: 24px; font-weight: 800; }
+  .label-numero { font-size: 11px; color: #aaa; }
+  .explicacao-simples { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin: 20px 0; border-left: 4px solid #00f2ff; }
+  .explicacao-simples p { color: #ddd; line-height: 1.6; margin-bottom: 10px; }
+  .explicacao-simples strong { color: #FFD700; }
+  .botao-whatsapp { display: block; background: #25d366; color: white; text-align: center; padding: 16px; border-radius: 40px; text-decoration: none; font-weight: 700; font-size: 18px; margin: 20px 0 10px; box-shadow: 0 10px 20px rgba(37,211,100,0.3); }
+  .botao-whatsapp:hover { transform: scale(1.02); }
+  .oferta-especial { text-align: center; font-size: 14px; color: #888; margin-top: 15px; }
+  .aviso-legal { font-size: 11px; color: #666; text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); line-height: 1.5; }
 </style>
 
 <div class="pagina-divulgacao">
   <div class="divulgacao-titulo">ESPAÇO ENTRE AMIGOS</div>
   <div class="divulgacao-sub">🤝 Seu dinheiro circulando no grupo</div>
-  
-  <!-- Cards 2x2 -->
   <div class="grade-cards">
-    <div class="card-simples">
-      <span class="icone">🔐</span>
-      <h4>GUARDE</h4>
-      <p>Seu dinheiro vira elétrons e participa do crescimento do grupo</p>
-    </div>
-    <div class="card-simples">
-      <span class="icone">🔄</span>
-      <h4>CIRCULE</h4>
-      <p>Repasse para outros amigos da comunidade</p>
-    </div>
-    <div class="card-simples">
-      <span class="icone">📈</span>
-      <h4>BÔNUS</h4>
-      <p>Ganhe benefícios com a circulação no grupo</p>
-    </div>
-    <div class="card-simples">
-      <span class="icone">🤝</span>
-      <h4>TROQUE</h4>
-      <p>Combine trocas com outros participantes</p>
-    </div>
+    <div class="card-simples"><span class="icone">🔐</span><h4>GUARDE</h4><p>Seu dinheiro vira elétrons e participa do crescimento do grupo</p></div>
+    <div class="card-simples"><span class="icone">🔄</span><h4>CIRCULE</h4><p>Repasse para outros amigos da comunidade</p></div>
+    <div class="card-simples"><span class="icone">📈</span><h4>BÔNUS</h4><p>Ganhe benefícios com a circulação no grupo</p></div>
+    <div class="card-simples"><span class="icone">🤝</span><h4>TROQUE</h4><p>Combine trocas com outros participantes</p></div>
   </div>
-
-  <!-- Para quem é -->
   <div class="caixa-destaque">
     <h4>🎯 PRA VOCÊ QUE:</h4>
     <ul class="lista-beneficios">
@@ -1506,55 +1291,28 @@ window.comprarProdutoLoja = async function(prodId){
       <li>✅ Gosta de participar de grupos colaborativos</li>
     </ul>
   </div>
-
-  <!-- Números simples -->
   <div class="numeros-final">
-    <div class="item-numero">
-      <div class="valor-numero">100</div>
-      <div class="label-numero">Reais</div>
-    </div>
-    <div class="item-numero">
-      <div class="valor-numero">100</div>
-      <div class="label-numero">Elétrons</div>
-    </div>
-    <div class="item-numero">
-      <div class="valor-numero">10%</div>
-      <div class="label-numero">off nos produtos</div>
-    </div>
+    <div class="item-numero"><div class="valor-numero">100</div><div class="label-numero">Reais</div></div>
+    <div class="item-numero"><div class="valor-numero">100</div><div class="label-numero">Elétrons</div></div>
+    <div class="item-numero"><div class="valor-numero">10%</div><div class="label-numero">off nos produtos</div></div>
   </div>
-
-  <!-- Explicação simples -->
   <div class="explicacao-simples">
     <p><strong>📌 COMO FUNCIONA:</strong></p>
     <p>Você faz uma <strong style="color:#00ff88">contribuição</strong> e recebe <strong style="color:#FFD700">elétrons</strong>. Eles circulam entre os participantes do grupo.</p>
-    <p>Pode repassar para outros amigos, ou acumular elètrons para receber saldos, que podem ser sacado via pix ou compra produtos digitais e trocar por produtos fisìco ou <strong style="color:#ff00ff">combinando trocas</strong> com quem participa.</p>
+    <p>Pode repassar para outros amigos, ou acumular elétrons para receber saldos, que podem ser sacados via pix ou comprar produtos digitais e trocar por produtos físicos ou <strong style="color:#ff00ff">combinar trocas</strong> com quem participa.</p>
     <p style="margin-top:10px">👉 É uma forma diferente de <strong style="color:#00f2ff">organizar o dinheiro em grupo</strong>!</p>
   </div>
-
-  <!-- Contribuição sugerida e botão -->
   <div style="text-align: center; margin: 20px 0;">
     <span style="background: #FFD700; color: #000; padding: 2px 55px; border-radius: 30px; font-weight: 700;">🔥CONDIÇÃO ESPECIAL🔥</span>
     <div style="color: #aaa; margin-bottom: -20px;">contribuição sugerida</div>
     <div style="font-size: 42px; color: #FFD700; font-weight: 900; margin: 15px 0;">R$ 100</div>
     <div style="color: #00ff88; font-size: 16px; margin-bottom: 15px;">(faça parte da nossa comunidade)</div>
   </div>
-
-  <a href="https://wa.me/558599522997?text=Quero%20participar%20do%20grupo%20-%20Quero%20meus%20primeiros%20el%C3%A9trons" class="botao-whatsapp">
-    📲 QUERO PARTICIPAR
-  </a>
-
-  <div class="oferta-especial">
-    ⚡ 100% DIGITAL
-  </div>
-
-  <!-- AVISO LEGAL (adicional) -->
-  <div class="aviso-legal">
-    Este é um ambiente experimental e colaborativo entre pessoas conhecidas.<br>
-    Não constitui oferta pública, investimento regulado ou atividade comercial formal.<br>
-    Participação restrita a amigos e familiares convidados.
-  </div>
+  <a href="https://wa.me/558599522997?text=Quero%20participar%20do%20grupo%20-%20Quero%20meus%20primeiros%20el%C3%A9trons" class="botao-whatsapp">📲 QUERO PARTICIPAR</a>
+  <div class="oferta-especial">⚡ 100% DIGITAL</div>
+  <div class="aviso-legal">Este é um ambiente experimental e colaborativo entre pessoas conhecidas.<br>Não constitui oferta pública, investimento regulado ou atividade comercial formal.<br>Participação restrita a amigos e familiares convidados.</div>
 </div>
-<!-- ===== FIM DA PÁGINA DE DIVULGAÇÃO ===== -->
-<!-- ===== FIM DA APRESENTAÇÃO ===== -->
+<!-- ===== FIM ===== -->
+
 </body>
-  </html>
+</html>
