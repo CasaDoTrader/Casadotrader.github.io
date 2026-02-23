@@ -15,9 +15,9 @@
   <div class="orbit"><div class="e"></div><div class="e" style="animation-delay:-0.9s"></div><div class="e" style="animation-delay:-1.8s"></div></div>
   <input id="nome" class="input" placeholder="Digite seu nome" autofocus>
   <input id="senhaCli" type="password" class="input" placeholder="Sua senha (opcional)">
-  <button class="btn buy" id="btnEntrar">ENTRAR NA MINHA CONTA</button>
+  <button class="btn buy" id="btnEntrar">ENTRAR NA CONTA</button>
   <div class="msg err" id="msg"></div>
-  <p style="margin:20px 0;line-height:1.6">1 Átomo = 100 Elétrons<br><span class="off">50% DE DESCONTO</span></p>
+  <p style="margin:20px 0;line-height:1.6">100 Elétrons<br><span class="off">50% DE DESCONTO</span></p>
   <div class="price">R$ 100,00</div>
   <a href="https://wa.me/558599522997?text=Quero%201%20%C3%81tomo%20ATOMIC%20por%20R$100%20(50%25%20OFF)%20%F0%9F%94%A5%F0%9F%92%A5" target="_blank" class="btn buy">COMPRAR AGORA COM O PIX</a>
   <p style="margin:20px 0;font-size:15px">Venda Mínima Entre Clientes <b>R$ 2,00</b>/elétron<br>Taxa de: <b>10%</b></p>
@@ -1291,5 +1291,250 @@ window.comprarProdutoLoja = async function(prodId){
 ">Desenvolvido por Felipe Galdino Mendes
 </footer>
 
+  <!-- ===== NOVA SEÇÃO DE APRESENTAÇÃO ===== -->
+<style>
+  .apresentacao-final {
+    max-width: 390px;
+    width: 90%;
+    margin: 30px auto 20px;
+    background: rgba(20,20,40,.95);
+    border-radius: 30px;
+    padding: 30px 20px;
+    border: 1px solid rgba(255,215,0,0.3);
+    box-shadow: 0 20px 40px rgba(0,242,255,0.15);
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .apresentacao-titulo {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(135deg, #00f2ff, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+
+  .apresentacao-sub {
+    text-align: center;
+    color: #e0e0ff;
+    font-size: 16px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,215,0,0.3);
+  }
+
+  .grade-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .card-simples {
+    background: rgba(255,255,255,0.03);
+    border-radius: 20px;
+    padding: 15px 10px;
+    border: 1px solid rgba(0,242,255,0.2);
+    text-align: center;
+  }
+
+  .card-simples .icone {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .card-simples h4 {
+    color: #00f2ff;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .card-simples p {
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .caixa-destaque {
+    background: rgba(0,255,136,0.05);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px dashed #00ff88;
+  }
+
+  .caixa-destaque h4 {
+    color: #00ff88;
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .lista-beneficios {
+    list-style: none;
+    padding: 0;
+  }
+
+  .lista-beneficios li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #ddd;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lista-beneficios li:last-child {
+    border-bottom: none;
+  }
+
+  .numeros-final {
+    display: flex;
+    justify-content: space-around;
+    margin: 25px 0;
+    text-align: center;
+  }
+
+  .item-numero {
+    background: rgba(255,215,0,0.08);
+    padding: 12px 8px;
+    border-radius: 15px;
+    min-width: 80px;
+  }
+
+  .valor-numero {
+    color: #FFD700;
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  .label-numero {
+    font-size: 11px;
+    color: #aaa;
+  }
+
+  .explicacao-simples {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px 0;
+    border-left: 4px solid #00f2ff;
+  }
+
+  .explicacao-simples p {
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .explicacao-simples strong {
+    color: #FFD700;
+  }
+
+  .botao-whatsapp {
+    display: block;
+    background: #25d366;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 20px 0 10px;
+    box-shadow: 0 10px 20px rgba(37,211,100,0.3);
+  }
+
+  .botao-whatsapp:hover {
+    transform: scale(1.02);
+  }
+
+  .oferta-especial {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    margin-top: 15px;
+  }
+</style>
+
+<div class="apresentacao-final">
+  <div class="apresentacao-titulo">CASA DO TRADER</div>
+  <div class="apresentacao-sub">💰 Seu dinheiro trabalhando por você</div>
+  
+  <!-- Cards 2x2 -->
+  <div class="grade-cards">
+    <div class="card-simples">
+      <span class="icone">🔐</span>
+      <h4>GUARDE</h4>
+      <p>Seu dinheiro vira elétrons e se valoriza todo mês</p>
+    </div>
+    <div class="card-simples">
+      <span class="icone">📊</span>
+      <h4>INVISTA</h4>
+      <p>Compre e venda entre os clientes da plataforma</p>
+    </div>
+    <div class="card-simples">
+      <span class="icone">💸</span>
+      <h4>LUCRATIVO</h4>
+      <p>Ganhe com a valorização e com vendas</p>
+    </div>
+    <div class="card-simples">
+      <span class="icone">🛒</span>
+      <h4>TROQUE</h4>
+      <p>Seus elétrons por produtos físicos em casa</p>
+    </div>
+  </div>
+
+  <!-- Para quem é -->
+  <div class="caixa-destaque">
+    <h4>🎯 PARA VOCÊ QUE:</h4>
+    <ul class="lista-beneficios">
+      <li>✅ Tem dinheiro parado no banco</li>
+      <li>✅ Quer começar a investir de um jeito fácil</li>
+      <li>✅ Busca uma renda extra</li>
+      <li>✅ Já investe e quer diversificar</li>
+    </ul>
+  </div>
+
+  <!-- Números simples -->
+  <div class="numeros-final">
+    <div class="item-numero">
+      <div class="valor-numero">100</div>
+      <div class="label-numero">Reais</div>
+    </div>
+    <div class="item-numero">
+      <div class="valor-numero">100</div>
+      <div class="label-numero">Elétrons</div>
+    </div>
+    <div class="item-numero">
+      <div class="valor-numero">10%</div>
+      <div class="label-numero">Desconto na Loja</div>
+    </div>
+  </div>
+
+  <!-- Explicação para leigos -->
+  <div class="explicacao-simples">
+    <p><strong>📌 ENTENDEU?</strong></p>
+    <p>Você compra <strong style="color:#00ff88">ELÉTRONS</strong> e eles <strong style="color:#FFD700">valorizam</strong> igual ação de empresa.</p>
+    <p>Pode vender para outros clientes, comprar produtos ou <strong style="color:#ff00ff">trocar por itens físicos</strong> entregues na sua casa.</p>
+    <p style="margin-top:10px">👉 É tipo ter uma <strong style="color:#00f2ff">poupança que rende de verdade</strong>!</p>
+  </div>
+
+  <!-- Oferta e botão -->
+  <div style="text-align: center; margin: 20px 0;">
+    <span style="background: #FFD700; color: #000; padding: 2px 55px; border-radius: 30px; font-weight: 700;">🔥 50% DE DESCONTO 🔥</span>
+    <div style="color: #aaa; margin-bottom: -20px;">de R$ 200 por apenas</div>
+    <div style="font-size: 42px; color: #FFD700; font-weight: 900; margin: 15px 0;">R$ 100</div>
+    </div>
+
+  <a href="https://wa.me/558599522997?text=Quero%20investir%20na%20Casa%20do%20Trader%20-%20Quero%20meu%20primeiro%20%C3%81tomo%20com%2050%25%20OFF" class="botao-whatsapp">
+    📲 QUERO INVESTIR AGORA
+  </a>
+
+  <div class="oferta-especial">
+    ⚡ 100% DIGITAL</div>
+</div>
+<!-- ===== FIM DA APRESENTAÇÃO ===== -->
 </body>
   </html>
