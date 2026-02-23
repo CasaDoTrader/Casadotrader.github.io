@@ -11,7 +11,7 @@
 
 <div id="main" class="card">
   <div class="logo">I'say StorePay</div>
-  <div class="title">MERCADO DIGITAL</div>
+  <div class="title">ELTS/REAL</div>
   <div class="orbit"><div class="e"></div><div class="e" style="animation-delay:-0.9s"></div><div class="e" style="animation-delay:-1.8s"></div></div>
   <input id="nome" class="input" placeholder="Digite seu nome" autofocus>
   <input id="senhaCli" type="password" class="input" placeholder="Sua senha (opcional)">
@@ -19,7 +19,7 @@
   <div class="msg err" id="msg"></div>
   <p style="margin:20px 0;line-height:1.6">100 Elétrons<br><span class="off">50% DE DESCONTO</span></p>
   <div class="price">R$ 100,00</div>
-  <a href="https://wa.me/558599522997?text=Quero%201%20%C3%81tomo%20ATOMIC%20por%20R$100%20(50%25%20OFF)%20%F0%9F%94%A5%F0%9F%92%A5" target="_blank" class="btn buy">COMPRAR AGORA COM O PIX</a>
+  <a href="https://wa.me/558599522997?text=Quero%201%20%C3%81tomo%20ATOMIC%20por%20R$100%20(50%25%20OFF)%20%F0%9F%94%A5%F0%9F%92%A5" target="_blank" class="btn buy">APROVEITAR DESCONTO</a>
   <p style="margin:20px 0;font-size:15px">Venda Mínima Entre Clientes <b>R$ 2,00</b>/elétron<br>Taxa de: <b>10%</b></p>
   <small><a href="#" id="linkAdmin">área restrita</a></small>
 </div>
@@ -1291,9 +1291,9 @@ window.comprarProdutoLoja = async function(prodId){
 ">Desenvolvido por Felipe Galdino Mendes
 </footer>
 
-  <!-- ===== NOVA SEÇÃO DE APRESENTAÇÃO ===== -->
+  <!-- ===== PÁGINA DE DIVULGAÇÃO - CASA DO TRADER ===== -->
 <style>
-  .apresentacao-final {
+  .pagina-divulgacao {
     max-width: 390px;
     width: 90%;
     margin: 30px auto 20px;
@@ -1305,7 +1305,7 @@ window.comprarProdutoLoja = async function(prodId){
     font-family: 'Rajdhani', sans-serif;
   }
 
-  .apresentacao-titulo {
+  .divulgacao-titulo {
     font-size: 28px;
     font-weight: 800;
     text-align: center;
@@ -1315,7 +1315,7 @@ window.comprarProdutoLoja = async function(prodId){
     margin-bottom: 10px;
   }
 
-  .apresentacao-sub {
+  .divulgacao-sub {
     text-align: center;
     color: #e0e0ff;
     font-size: 16px;
@@ -1456,44 +1456,54 @@ window.comprarProdutoLoja = async function(prodId){
     color: #888;
     margin-top: 15px;
   }
+
+  .aviso-legal {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    line-height: 1.5;
+  }
 </style>
 
-<div class="apresentacao-final">
-  <div class="apresentacao-titulo">CASA DO TRADER</div>
-  <div class="apresentacao-sub">💰 Seu dinheiro trabalhando por você</div>
+<div class="pagina-divulgacao">
+  <div class="divulgacao-titulo">ESPAÇO ENTRE AMIGOS</div>
+  <div class="divulgacao-sub">🤝 Seu dinheiro circulando no grupo</div>
   
   <!-- Cards 2x2 -->
   <div class="grade-cards">
     <div class="card-simples">
       <span class="icone">🔐</span>
       <h4>GUARDE</h4>
-      <p>Seu dinheiro vira elétrons e se valoriza todo mês</p>
+      <p>Seu dinheiro vira elétrons e participa do crescimento do grupo</p>
     </div>
     <div class="card-simples">
-      <span class="icone">📊</span>
-      <h4>INVISTA</h4>
-      <p>Compre e venda entre os clientes da plataforma</p>
+      <span class="icone">🔄</span>
+      <h4>CIRCULE</h4>
+      <p>Repasse para outros amigos da comunidade</p>
     </div>
     <div class="card-simples">
-      <span class="icone">💸</span>
-      <h4>LUCRATIVO</h4>
-      <p>Ganhe com a valorização e com vendas</p>
+      <span class="icone">📈</span>
+      <h4>BÔNUS</h4>
+      <p>Ganhe benefícios com a circulação no grupo</p>
     </div>
     <div class="card-simples">
-      <span class="icone">🛒</span>
+      <span class="icone">🤝</span>
       <h4>TROQUE</h4>
-      <p>Seus elétrons por produtos físicos em casa</p>
+      <p>Combine trocas com outros participantes</p>
     </div>
   </div>
 
   <!-- Para quem é -->
   <div class="caixa-destaque">
-    <h4>🎯 PARA VOCÊ QUE:</h4>
+    <h4>🎯 PRA VOCÊ QUE:</h4>
     <ul class="lista-beneficios">
-      <li>✅ Tem dinheiro parado no banco</li>
-      <li>✅ Quer começar a investir de um jeito fácil</li>
-      <li>✅ Busca uma renda extra</li>
-      <li>✅ Já investe e quer diversificar</li>
+      <li>✅ Tem dinheiro parado e quer dar movimento</li>
+      <li>✅ Quer organizar suas economias de um jeito diferente</li>
+      <li>✅ Busca fazer o dinheiro circular entre amigos</li>
+      <li>✅ Gosta de participar de grupos colaborativos</li>
     </ul>
   </div>
 
@@ -1509,32 +1519,42 @@ window.comprarProdutoLoja = async function(prodId){
     </div>
     <div class="item-numero">
       <div class="valor-numero">10%</div>
-      <div class="label-numero">Desconto na Loja</div>
+      <div class="label-numero">off nos produtos</div>
     </div>
   </div>
 
-  <!-- Explicação para leigos -->
+  <!-- Explicação simples -->
   <div class="explicacao-simples">
-    <p><strong>📌 ENTENDEU?</strong></p>
-    <p>Você compra <strong style="color:#00ff88">ELÉTRONS</strong> e eles <strong style="color:#FFD700">valorizam</strong> igual ação de empresa.</p>
-    <p>Pode vender para outros clientes, comprar produtos ou <strong style="color:#ff00ff">trocar por itens físicos</strong> entregues na sua casa.</p>
-    <p style="margin-top:10px">👉 É tipo ter uma <strong style="color:#00f2ff">poupança que rende de verdade</strong>!</p>
+    <p><strong>📌 COMO FUNCIONA:</strong></p>
+    <p>Você faz uma <strong style="color:#00ff88">contribuição</strong> e recebe <strong style="color:#FFD700">elétrons</strong>. Eles circulam entre os participantes do grupo.</p>
+    <p>Pode repassar para outros amigos, ou acumular elètrons para receber saldos, que podem ser sacado via pix ou compra produtos digitais e trocar por produtos fisìco ou <strong style="color:#ff00ff">combinando trocas</strong> com quem participa.</p>
+    <p style="margin-top:10px">👉 É uma forma diferente de <strong style="color:#00f2ff">organizar o dinheiro em grupo</strong>!</p>
   </div>
 
-  <!-- Oferta e botão -->
+  <!-- Contribuição sugerida e botão -->
   <div style="text-align: center; margin: 20px 0;">
-    <span style="background: #FFD700; color: #000; padding: 2px 55px; border-radius: 30px; font-weight: 700;">🔥 50% DE DESCONTO 🔥</span>
-    <div style="color: #aaa; margin-bottom: -20px;">de R$ 200 por apenas</div>
+    <span style="background: #FFD700; color: #000; padding: 2px 55px; border-radius: 30px; font-weight: 700;">🔥CONDIÇÃO ESPECIAL🔥</span>
+    <div style="color: #aaa; margin-bottom: -20px;">contribuição sugerida</div>
     <div style="font-size: 42px; color: #FFD700; font-weight: 900; margin: 15px 0;">R$ 100</div>
-    </div>
+    <div style="color: #00ff88; font-size: 16px; margin-bottom: 15px;">(faça parte da nossa comunidade)</div>
+  </div>
 
-  <a href="https://wa.me/558599522997?text=Quero%20investir%20na%20Casa%20do%20Trader%20-%20Quero%20meu%20primeiro%20%C3%81tomo%20com%2050%25%20OFF" class="botao-whatsapp">
-    📲 QUERO INVESTIR AGORA
+  <a href="https://wa.me/558599522997?text=Quero%20participar%20do%20grupo%20-%20Quero%20meus%20primeiros%20el%C3%A9trons" class="botao-whatsapp">
+    📲 QUERO PARTICIPAR
   </a>
 
   <div class="oferta-especial">
-    ⚡ 100% DIGITAL</div>
+    ⚡ 100% DIGITAL
+  </div>
+
+  <!-- AVISO LEGAL (adicional) -->
+  <div class="aviso-legal">
+    Este é um ambiente experimental e colaborativo entre pessoas conhecidas.<br>
+    Não constitui oferta pública, investimento regulado ou atividade comercial formal.<br>
+    Participação restrita a amigos e familiares convidados.
+  </div>
 </div>
+<!-- ===== FIM DA PÁGINA DE DIVULGAÇÃO ===== -->
 <!-- ===== FIM DA APRESENTAÇÃO ===== -->
 </body>
   </html>
